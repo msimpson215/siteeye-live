@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="SiteEye Live — Interactive product briefing powered by AxonAI"/>
+  <title>SiteEye Live™ — AxonAI Briefing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/axon.css"/>
+</head>
+<body>
+
+  <div class="grain"></div>
+  <div class="glow glow-a"></div>
+  <div class="glow glow-b"></div>
+
+  <!-- Minimal brand mark -->
+  <header class="brand">
+    <div class="brand-logo">
+      <span class="b-site">Site</span><span class="b-eye">Eye</span>
+      <span class="b-live">LIVE</span>
+    </div>
+    <div class="brand-sub">Interactive Product Briefing</div>
+  </header>
+
+  <!-- Topic selector -->
+  <nav class="topics" id="topics">
+    <button class="topic active" data-topic="overview">Overview</button>
+    <button class="topic" data-topic="how">How It Works</button>
+    <button class="topic" data-topic="hardware">Hardware</button>
+    <button class="topic" data-topic="pricing">Pricing</button>
+    <button class="topic" data-topic="markets">Markets</button>
+    <button class="topic" data-topic="future">Future AI</button>
+    <button class="topic" data-topic="contact">Contact</button>
+  </nav>
+
+  <!-- Content stage -->
+  <main class="stage" id="stage">
+
+    <section class="panel active" data-panel="overview">
+      <div class="panel-tag">01 — OVERVIEW</div>
+      <h1 class="panel-title">Know What's Happening<br/><em>Without Being There.</em></h1>
+      <p class="panel-lead">Remote 360° job site monitoring for contractors. See every site from anywhere — no Wi-Fi, no hassle.</p>
+      <div class="stat-row">
+        <div class="stat"><span class="stat-n">360°</span><span class="stat-l">Live View</span></div>
+        <div class="stat"><span class="stat-n">4K</span><span class="stat-l">Camera</span></div>
+        <div class="stat"><span class="stat-n">8–12hr</span><span class="stat-l">Battery</span></div>
+        <div class="stat"><span class="stat-n">15ft</span><span class="stat-l">Mast</span></div>
+      </div>
+      <div class="pill-row">
+        <span class="pill">No Wi-Fi Required</span>
+        <span class="pill">Deploys in Minutes</span>
+        <span class="pill">Tamper Alerts</span>
+        <span class="pill">Any Device</span>
+      </div>
+    </section>
+
+    <section class="panel" data-panel="how">
+      <div class="panel-tag">02 — HOW IT WORKS</div>
+      <h2 class="panel-title">Five Steps.<br/><em>Zero Tools.</em></h2>
+      <div class="flow">
+        <div class="flow-step"><span>01</span><strong>Arrive</strong><p>Park at the job site</p></div>
+        <div class="flow-line"></div>
+        <div class="flow-step"><span>02</span><strong>Deploy</strong><p>Raise the mast — minutes</p></div>
+        <div class="flow-line"></div>
+        <div class="flow-step"><span>03</span><strong>Connect</strong><p>Auto 4G/5G cellular</p></div>
+        <div class="flow-line"></div>
+        <div class="flow-step"><span>04</span><strong>View Live</strong><p>Phone or office dashboard</p></div>
+        <div class="flow-line"></div>
+        <div class="flow-step"><span>05</span><strong>Pack Up</strong><p>Move to next site</p></div>
+      </div>
+    </section>
+
+    <section class="panel" data-panel="hardware">
+      <div class="panel-tag">03 — HARDWARE</div>
+      <h2 class="panel-title">What's In<br/><em>The Kit.</em></h2>
+      <div class="hw-grid">
+        <div class="hw-card"><div class="hw-icon">📷</div><h4>360° Camera</h4><p class="hw-model">Insta360 X3</p><p>Full panoramic live view</p><span class="hw-cost">~$300–$350</span></div>
+        <div class="hw-card"><div class="hw-icon">📶</div><h4>Telescoping Mast</h4><p class="hw-model">12–15 ft Fiberglass</p><p>Collapses to 3 ft</p><span class="hw-cost">~$100–$250</span></div>
+        <div class="hw-card"><div class="hw-icon">🦺</div><h4>Heavy Duty Tripod</h4><p class="hw-model">Commercial Stand</p><p>Stable in wind</p><span class="hw-cost">~$75–$150</span></div>
+        <div class="hw-card"><div class="hw-icon">📡</div><h4>4G/5G Hotspot</h4><p class="hw-model">Verizon Jetpack M2100</p><p>Works anywhere</p><span class="hw-cost">~$50–$200</span></div>
+        <div class="hw-card"><div class="hw-icon">🔒</div><h4>Weatherproof Enclosure</h4><p class="hw-model">Locking Box</p><p>Protects electronics</p><span class="hw-cost">~$25–$75</span></div>
+        <div class="hw-card"><div class="hw-icon">🔋</div><h4>Battery System</h4><p class="hw-model">24,000mAh</p><p>8–12 hour runtime</p><span class="hw-cost">~$50–$150</span></div>
+      </div>
+      <div class="hw-total">Prototype Cost: <strong>$625 – $1,250</strong></div>
+    </section>
+
+    <section class="panel" data-panel="pricing">
+      <div class="panel-tag">04 — PRICING</div>
+      <h2 class="panel-title">Two Tiers.<br/><em>Your Call.</em></h2>
+      <div class="price-grid">
+        <div class="price-card">
+          <div class="price-label">BASIC</div>
+          <div class="price-tagline">Affordable. Simple. Commercial Grade.</div>
+          <div class="price-block featured">
+            <div class="price-type">SERVICE <span class="badge">Most Popular</span></div>
+            <div class="price-big">$399 <small>setup</small></div>
+            <div class="price-mo">+ $89<span>/mo</span></div>
+          </div>
+          <div class="price-or">or</div>
+          <div class="price-block">
+            <div class="price-type">PURCHASE</div>
+            <div class="price-big">$1,999</div>
+            <div class="price-once">One-time</div>
+          </div>
+          <ul class="price-includes">
+            <li>Basic Unit + 360° Camera</li>
+            <li>Telescoping Pole</li>
+            <li>Mobile App + Cloud Dashboard</li>
+            <li>Support</li>
+          </ul>
+        </div>
+        <div class="price-card price-pro">
+          <div class="price-label">PRO</div>
+          <div class="price-tagline">Built For Serious Contractors.</div>
+          <div class="price-block featured">
+            <div class="price-type">SERVICE <span class="badge">Most Popular</span></div>
+            <div class="price-big">$999 <small>setup</small></div>
+            <div class="price-mo">+ $119<span>/mo</span></div>
+          </div>
+          <div class="price-or">or</div>
+          <div class="price-block">
+            <div class="price-type">PURCHASE</div>
+            <div class="price-big">$3,999</div>
+            <div class="price-once">One-time</div>
+          </div>
+          <ul class="price-includes">
+            <li>Commercial Mast + Premium Camera</li>
+            <li>Dedicated Hotspot + Enclosure</li>
+            <li>Beacon + Motion Alarm</li>
+            <li>Priority Support + Extended Storage</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" data-panel="markets">
+      <div class="panel-tag">05 — MARKETS</div>
+      <h2 class="panel-title">Built For<br/><em>Contractors.</em></h2>
+      <div class="market-grid">
+        <div>🛣️ Asphalt & Sealcoating</div>
+        <div>🏠 Roofing</div>
+        <div>🌿 Landscaping</div>
+        <div>🌳 Tree Services</div>
+        <div>🏗️ Concrete</div>
+        <div>🚧 Municipal Crews</div>
+        <div>🎪 Festivals & Events</div>
+        <div>🏆 Sports Tournaments</div>
+      </div>
+      <div class="safety-row">
+        <div><strong>🚨</strong> Flashing Beacon</div>
+        <div><strong>📳</strong> Tamper Alarm</div>
+        <div><strong>☁️</strong> Cloud Storage</div>
+        <div><strong>🔐</strong> Encrypted</div>
+        <div><strong>🇺🇸</strong> USA Support</div>
+      </div>
+    </section>
+
+    <section class="panel" data-panel="future">
+      <div class="panel-tag">06 — ROADMAP</div>
+      <h2 class="panel-title">Future<br/><em>AI Features.</em></h2>
+      <div class="roadmap">
+        <div class="road-item"><span>01</span><div><h4>AI Activity Detection</h4><p>Know when work starts, stops, or slows — automatically.</p></div></div>
+        <div class="road-item"><span>02</span><div><h4>Productivity Alerts</h4><p>Get notified when crew activity drops below expected levels.</p></div></div>
+        <div class="road-item"><span>03</span><div><h4>Multi-Crew Dashboard</h4><p>Monitor multiple job sites from one screen.</p></div></div>
+        <div class="road-item"><span>04</span><div><h4>Project Documentation</h4><p>Time-stamped records for disputes and invoicing.</p></div></div>
+      </div>
+    </section>
+
+    <section class="panel" data-panel="contact">
+      <div class="panel-tag">07 — GET IN TOUCH</div>
+      <h2 class="panel-title">Ready To<br/><em>Learn More?</em></h2>
+      <p class="panel-lead">Request early access or ask AxonAI anything first — then drop your info below.</p>
+      <form class="contact-form" id="contact-form">
+        <div class="form-row">
+          <input type="text" id="c-name" placeholder="Your Name" required/>
+          <input type="email" id="c-email" placeholder="Email" required/>
+        </div>
+        <div class="form-row">
+          <input type="tel" id="c-phone" placeholder="Phone"/>
+          <input type="text" id="c-company" placeholder="Company"/>
+        </div>
+        <select id="c-type">
+          <option value="">Contractor type…</option>
+          <option>Asphalt & Sealcoating</option>
+          <option>Roofing</option>
+          <option>Landscaping</option>
+          <option>Tree Service</option>
+          <option>Concrete</option>
+          <option>Investor / Partner</option>
+          <option>Other</option>
+        </select>
+        <textarea id="c-message" rows="3" placeholder="Tell us about your operation…"></textarea>
+        <button type="submit" class="submit-btn">Request Early Access</button>
+        <p class="form-msg" id="contact-msg"></p>
+      </form>
+    </section>
+
+  </main>
+
+  <!-- AxonAI console -->
+  <aside class="axon-console" id="axon-console">
+    <div class="axon-header">
+      <img src="/assets/orb.svg" alt="" class="axon-orb-sm"/>
+      <div>
+        <div class="axon-name">AxonAI</div>
+        <div class="axon-role">SiteEye Live Expert</div>
+      </div>
+      <div class="axon-live" id="axon-status">Ready</div>
+    </div>
+
+    <div class="axon-messages" id="axon-messages">
+      <div class="msg bot">
+        <strong>AxonAI</strong>
+        <p>Hey — I'm your SiteEye Live expert. Click the orb to talk, or type a question below. Ask me about pricing, hardware, how it works, anything.</p>
+      </div>
+    </div>
+
+    <div class="axon-input-row">
+      <input type="text" id="chat-input" placeholder="Ask AxonAI anything…" autocomplete="off"/>
+      <button id="chat-send" aria-label="Send">→</button>
+    </div>
+
+    <div class="axon-voice-row">
+      <button class="voice-btn" id="voice-btn">
+        <img src="/assets/orb.svg" alt="Talk to AxonAI" class="voice-orb" id="voice-orb"/>
+        <span id="voice-label">Tap to Talk</span>
+      </button>
+    </div>
+  </aside>
+
+  <script src="/js/axon.js"></script>
+</body>
+</html>
