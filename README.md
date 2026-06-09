@@ -1,27 +1,18 @@
-# SiteEye Live — AI Briefing
+# SiteEye Live — AP Presenter Briefing
 
-**This is not a website. It's a briefing link.**
+**Not a website. An Artificial Person briefing link.**
 
-Send the URL to a room of contractors, investors, or parents. AxonAI — the artificial presenter — walks them through SiteEye Live. They ask questions. They take the link home.
-
----
-
-## What to call it
-
-| Old term | New term |
-|----------|----------|
-| Website | **Briefing link** |
-| Chatbot | **AxonAI** (artificial presenter) |
-| Nav / footer | **Slides + dots** (PowerPoint familiarity) |
-| Browse | **Follow along** |
+Send Joe or Tony the URL. They enter the briefing. AxonAI presents. They ask questions. Same link works from Lebanon, Florida, anywhere.
 
 ---
 
-## Layout
+## What Joe / Tony experience
 
-- **Left:** Full-screen slides (09 deck) — no nav bar, no footer
-- **Right:** AxonAI — voice briefing + text Q&A
-- **Controls:** Arrow keys or dots — like PowerPoint
+1. Open link → **Enter Briefing**
+2. **Slides** tab — PowerPoint-style deck with charts
+3. **AxonAI** tab — click **Start Presentation** → AP walks all 9 slides
+4. When done → **Open Q&A — Your Turn** → voice or text
+5. **Early Access** tab — leave info if interested
 
 ---
 
@@ -30,18 +21,26 @@ Send the URL to a room of contractors, investors, or parents. AxonAI — the art
 ```bash
 npm install
 copy .env.example .env
-# Add OPENAI_API_KEY
+# OPENAI_API_KEY=sk-...
 npm start
 ```
 
-Open http://localhost:3000 → click **Start Briefing**
+http://localhost:3000
 
 ---
 
 ## Render
 
-- **Build:** `npm install`
-- **Start:** `npm start`
-- **Env:** `OPENAI_API_KEY` (required)
+| Setting | Value |
+|---------|-------|
+| Build | `npm install` |
+| Start | `npm start` |
+| Env | `OPENAI_API_KEY` (required) |
 
 Repo: https://github.com/msimpson215/siteeye-live
+
+---
+
+## Room of 10 (later)
+
+Presenter runs one laptop. Only presenter mic live during intro. Audience uses text Q&A on phones. v2 adds raise-hand queue.

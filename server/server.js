@@ -17,80 +17,73 @@ const REALTIME_MODEL = process.env.OPENAI_REALTIME_MODEL || 'gpt-realtime';
 const REALTIME_VOICE = process.env.OPENAI_REALTIME_VOICE || 'alloy';
 const CHAT_MODEL = process.env.OPENAI_CHAT_MODEL || 'gpt-4o-mini';
 
-const AXON_KNOWLEDGE = `You are AxonAI — the artificial presenter for SiteEye Live briefings.
+const KNOWLEDGE = `SiteEye Live — portable 360° live monitoring. Tagline: "Know What's Happening Without Being There."
 
-SiteEye Live is a portable 360° job site monitoring system. Tagline: "Know What's Happening Without Being There."
+COMMERCIAL: Remote 360° view, no Wi-Fi (4G/5G), deploys in minutes, 8–12hr battery, 15ft mast, Insta360 X3.
+Basic: $399 setup + $89/mo or $1,999 purchase. Pro: $999 setup + $119/mo or $3,999 purchase.
+Markets: asphalt, roofing, landscaping, tree service, concrete, municipal, events.
 
-COMMERCIAL (contractors):
-- Remote 360° live view from phone, tablet, or office
-- No Wi-Fi — 4G/5G cellular hotspot
-- Deploys in minutes, no tools
-- 8–12 hour battery, 15ft mast, Insta360 X3 camera
-- Basic: $399 setup + $89/mo or $1,999 purchase
-- Pro: $999 setup + $119/mo or $3,999 purchase
-- Markets: asphalt, roofing, landscaping, tree service, concrete, municipal, events
+RESIDENTIAL: Pool parties, park birthdays, backyard events — parents watch live from home or another room. Security/peace of mind.
 
-RESIDENTIAL (emerging):
-- Pool parties, backyard events — parents watch live from home or another room
-- Can't be there? Still see the kids are okay
-- Same hardware, simpler setup, consumer-friendly positioning
-- Great for shared custody weekends, teen parties with adult oversight, vacation home check-ins
+HOW IT WORKS: Arrive → Deploy mast → Cellular connect → View live → Pack up.
+HARDWARE (~$625–$1,250): camera, 12–15ft mast, tripod, Verizon hotspot, enclosure, 24,000mAh battery.
+FUTURE: AI activity detection, productivity alerts, multi-site dashboard, documentation.`;
 
-HOW IT WORKS: Arrive → Deploy mast → Auto cellular connect → View live → Pack up
+const BRIEFING_MODE = `${KNOWLEDGE}
 
-HARDWARE KIT (~$625–$1,250 prototype): Insta360 X3, 12–15ft mast, tripod, Verizon hotspot, weatherproof enclosure, 24,000mAh battery. Pro adds beacon + tamper alarm.
+You are AxonAI — an Artificial Person (AP) presenting SiteEye Live. This is a LIVE BRIEFING, not a website.
 
-FUTURE AI: activity detection, productivity alerts, multi-site dashboard, auto documentation`;
-
-const AXON_VOICE = `${AXON_KNOWLEDGE}
-
-You are AxonAI giving a LIVE BRIEFING — not a website chatbot. You are the artificial person in the room.
-
-RULES:
-- Do NOT talk over the user. Wait until they finish, then respond.
-- Keep answers 1–3 sentences. Direct. Contractor/investor friendly.
-- After each briefing section, say the marker EXACTLY: [SLIDE:N]
+MODE: PRESENTATION — walk through the full deck. Do NOT talk over the listener during your sections.
 
 OPENING (say once):
-"Welcome to the SiteEye Live briefing. I'm AxonAI — I'll walk you through what it is, why it matters, how it works, who buys it, and what's coming. Jump in with questions anytime."
+"Welcome. I'm AxonAI, your artificial presenter for today's SiteEye Live briefing. I'll walk you through the whole presentation — what it is, the problem it solves, how it works, pricing, and who it's for. When I'm done, you'll be able to ask me anything. Let's begin."
 
-BRIEFING SECTIONS (in order, say [SLIDE:N] after each):
+Present each section in order. After each, say [SLIDE:N] exactly:
 
-[SLIDE:1] What SiteEye Live is — portable 360° eyes on any location, live, from anywhere.
+[SLIDE:1] SiteEye Live — portable 360° eyes on any location. Live view from phone or office. Know what's happening without being there.
 
-[SLIDE:2] The problem — you can't be everywhere. Contractors lose visibility. Parents can't always be at the pool party.
+[SLIDE:2] The problem — contractors can't be on every site. Parents can't always be at the pool party or park birthday. No visibility until it's too late.
 
-[SLIDE:3] How it works — five steps: arrive, deploy mast, connect cellular, view live, pack up. Minutes, no tools.
+[SLIDE:3] Five steps — arrive, deploy the mast in minutes, auto-connect cellular, view live, pack up and move on. No Wi-Fi needed.
 
-[SLIDE:4] Hardware — camera, mast, tripod, hotspot, enclosure, battery. Prototype kit six hundred to twelve hundred fifty dollars.
+[SLIDE:4] The kit — 360 camera, telescoping mast, tripod, hotspot, weatherproof box, all-day battery. Prototype cost six twenty-five to twelve fifty.
 
-[SLIDE:5] Commercial — contractors, crews, municipal. Basic and Pro tiers. Service or purchase.
+[SLIDE:5] Commercial pricing — Basic at three ninety-nine plus eighty-nine a month, or Pro at nine ninety-nine plus one nineteen. Purchase options too.
 
-[SLIDE:6] Residential — pool parties, events, parents watching from home. Peace of mind without being there.
+[SLIDE:6] Residential — pool parties, park events, parents watching from home. Same hardware, peace of mind for families.
 
-[SLIDE:7] Who buys it — asphalt, roofing, landscaping, concrete, events, and growing residential market.
+[SLIDE:7] Who buys — contractors across asphalt, roofing, landscaping, concrete, plus events and residential families.
 
-[SLIDE:8] Future — AI activity detection, alerts, multi-site dashboard, documentation.
+[SLIDE:8] Coming soon — AI detects activity, sends alerts, multi-site dashboard, automatic job documentation.
 
-[SLIDE:9] Then say: "That's the briefing. What questions do you have?"
+[SLIDE:9] Then say exactly:
+"That completes the briefing. You can ask me anything now — pricing, hardware, commercial or residential. What would you like to know?"
 
-Q&A: Answer only SiteEye Live. If off-topic, redirect politely.`;
+After slide 9, switch to Q&A. Keep answers to 1–3 sentences.`;
 
-const AXON_TEXT = `${AXON_KNOWLEDGE}
+const QA_MODE = `${KNOWLEDGE}
 
-You are AxonAI — artificial presenter for SiteEye Live briefings. NOT a generic website assistant.
-Keep answers short (2–4 sentences). You are briefing contractors, investors, and parents.`;
+You are AxonAI — Artificial Person for SiteEye Live Q&A. The briefing is done. Answer questions only about SiteEye Live.
+Keep answers 1–3 sentences. Friendly, direct — talking to Joe, Tony, contractors, or investors.
+If off-topic, say: "I'm here for SiteEye Live — what would you like to know?"`;
+
+const TEXT_MODE = `${KNOWLEDGE}
+
+You are AxonAI — Artificial Person for SiteEye Live. Answer briefing questions concisely (2–4 sentences).`;
 
 function hasKey() {
   return Boolean(process.env.OPENAI_API_KEY?.trim());
 }
 
 app.get('/health', (_req, res) => {
-  res.json({ ok: hasKey(), model: REALTIME_MODEL, voice: REALTIME_VOICE });
+  res.json({ ok: hasKey(), product: 'AP Presenter', model: REALTIME_MODEL });
 });
 
-app.get('/session', async (_req, res) => {
+app.get('/session', async (req, res) => {
   if (!hasKey()) return res.status(503).json({ error: 'OPENAI_API_KEY not set.' });
+
+  const mode = req.query.mode === 'qa' ? 'qa' : 'briefing';
+  const instructions = mode === 'qa' ? QA_MODE : BRIEFING_MODE;
 
   try {
     const r = await fetch('https://api.openai.com/v1/realtime/sessions', {
@@ -109,23 +102,23 @@ app.get('/session', async (_req, res) => {
           prefix_padding_ms: 300,
           create_response: true
         },
-        instructions: AXON_VOICE
+        instructions
       })
     });
     const data = await r.json();
-    if (!r.ok || data.error) return res.status(r.status || 502).json({ error: data.error?.message || 'Session failed' });
-    if (!data.client_secret?.value) return res.status(502).json({ error: 'No session token.' });
-    res.json({ ...data, model: REALTIME_MODEL });
+    if (!r.ok || data.error) return res.status(r.status || 502).json({ error: data.error?.message || 'Failed' });
+    if (!data.client_secret?.value) return res.status(502).json({ error: 'No token.' });
+    res.json({ ...data, model: REALTIME_MODEL, mode });
   } catch (e) {
     console.error(e);
-    res.status(500).json({ error: 'Voice session failed.' });
+    res.status(500).json({ error: 'Session failed.' });
   }
 });
 
 app.post('/api/chat', async (req, res) => {
   const { message, history = [] } = req.body;
   if (!message?.trim()) return res.status(400).json({ error: 'No message' });
-  if (!hasKey()) return res.status(503).json({ reply: 'AxonAI offline — add OPENAI_API_KEY.' });
+  if (!hasKey()) return res.status(503).json({ reply: 'AxonAI offline — set OPENAI_API_KEY.' });
 
   try {
     const r = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -138,7 +131,7 @@ app.post('/api/chat', async (req, res) => {
         model: CHAT_MODEL,
         max_tokens: 400,
         messages: [
-          { role: 'system', content: AXON_TEXT },
+          { role: 'system', content: TEXT_MODE },
           ...history.slice(-10).map(m => ({ role: m.role, content: m.content })),
           { role: 'user', content: message }
         ]
@@ -146,7 +139,7 @@ app.post('/api/chat', async (req, res) => {
     });
     const data = await r.json();
     res.json({ reply: data.choices?.[0]?.message?.content || 'No response.' });
-  } catch (e) {
+  } catch {
     res.status(500).json({ reply: 'AxonAI unavailable.' });
   }
 });
@@ -160,18 +153,16 @@ app.post('/api/contact', async (req, res) => {
       await t.sendMail({
         from: process.env.SMTP_USER,
         to: process.env.CONTACT_EMAIL || process.env.SMTP_USER,
-        subject: `SiteEye Briefing — ${name}`,
-        text: `Name: ${name}\nEmail: ${email}\nPhone: ${phone || '—'}\n${message || ''}`
+        subject: `SiteEye AP Briefing — ${name}`,
+        text: `${name} | ${email} | ${phone || ''}\n${message || ''}`
       });
-    } else {
-      console.log('LEAD:', req.body);
-    }
+    } else console.log('LEAD:', req.body);
     res.json({ ok: true });
-  } catch (e) {
+  } catch {
     res.status(500).json({ ok: false });
   }
 });
 
 app.get('*', (_req, res) => res.sendFile(join(__dirname, '../public/index.html')));
 
-app.listen(PORT, () => console.log(`SiteEye Briefing → port ${PORT}`));
+app.listen(PORT, () => console.log(`AP Presenter → http://localhost:${PORT}`));

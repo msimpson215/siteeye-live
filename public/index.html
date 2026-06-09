@@ -3,157 +3,201 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SiteEye Live — AI Briefing</title>
+  <title>SiteEye Live — AP Presenter Briefing</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/briefing.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/ap.css"/>
 </head>
 <body>
 
-  <!-- LEFT: THE DECK (PowerPoint zone — no nav, no footer) -->
-  <div class="deck" id="deck">
-
-    <div class="slide active" data-slide="1">
-      <p class="slide-num">01 / 09</p>
+  <!-- WELCOME GATE — not a homepage -->
+  <div class="gate" id="gate">
+    <div class="gate-box">
+      <p class="gate-label">ARTIFICIAL PERSON BRIEFING</p>
       <h1>SiteEye Live</h1>
-      <p class="slide-sub gold">Know What's Happening Without Being There.</p>
-      <p class="slide-body">Portable 360° live monitoring. Not a website — an AI briefing.</p>
-    </div>
-
-    <div class="slide" data-slide="2">
-      <p class="slide-num">02 / 09</p>
-      <h1>The Problem</h1>
-      <ul class="bullets">
-        <li>Contractors can't be on every job site</li>
-        <li>Parents can't always be at the pool party</li>
-        <li>No visibility until something goes wrong</li>
-      </ul>
-    </div>
-
-    <div class="slide" data-slide="3">
-      <p class="slide-num">03 / 09</p>
-      <h1>How It Works</h1>
-      <div class="steps">
-        <div><b>01</b> Arrive</div>
-        <div><b>02</b> Deploy</div>
-        <div><b>03</b> Connect</div>
-        <div><b>04</b> View Live</div>
-        <div><b>05</b> Pack Up</div>
-      </div>
-      <p class="slide-body">Minutes. No tools. No Wi-Fi — cellular only.</p>
-    </div>
-
-    <div class="slide" data-slide="4">
-      <p class="slide-num">04 / 09</p>
-      <h1>The Kit</h1>
-      <div class="kit-grid">
-        <div>360° Camera <span>Insta360 X3</span></div>
-        <div>12–15ft Mast <span>Fiberglass</span></div>
-        <div>4G/5G Hotspot <span>Verizon</span></div>
-        <div>Battery <span>8–12 hours</span></div>
-        <div>Enclosure <span>Weatherproof</span></div>
-        <div>Tripod <span>Commercial</span></div>
-      </div>
-      <p class="slide-foot gold">Prototype: $625 – $1,250</p>
-    </div>
-
-    <div class="slide" data-slide="5">
-      <p class="slide-num">05 / 09</p>
-      <h1>Commercial</h1>
-      <div class="tiers">
-        <div class="tier">
-          <h3>BASIC</h3>
-          <p class="price">$399 + $89/mo</p>
-          <p class="alt">or $1,999 buy</p>
-        </div>
-        <div class="tier tier-pro">
-          <h3>PRO</h3>
-          <p class="price">$999 + $119/mo</p>
-          <p class="alt">or $3,999 buy</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="slide" data-slide="6">
-      <p class="slide-num">06 / 09</p>
-      <h1>Residential</h1>
-      <p class="slide-sub">Pool parties. Backyard events. Parent peace of mind.</p>
-      <ul class="bullets">
-        <li>Watch live from another room — or from home</li>
-        <li>Other parents can check in remotely</li>
-        <li>Same hardware — simpler story for families</li>
-      </ul>
-    </div>
-
-    <div class="slide" data-slide="7">
-      <p class="slide-num">07 / 09</p>
-      <h1>Who Buys It</h1>
-      <div class="tags">
-        <span>Asphalt</span><span>Roofing</span><span>Landscaping</span>
-        <span>Concrete</span><span>Tree Service</span><span>Municipal</span>
-        <span>Events</span><span>Residential</span>
-      </div>
-    </div>
-
-    <div class="slide" data-slide="8">
-      <p class="slide-num">08 / 09</p>
-      <h1>What's Next</h1>
-      <ul class="bullets">
-        <li>AI activity detection</li>
-        <li>Productivity alerts</li>
-        <li>Multi-site dashboard</li>
-        <li>Auto documentation</li>
-      </ul>
-    </div>
-
-    <div class="slide" data-slide="9">
-      <p class="slide-num">09 / 09</p>
-      <h1>Your Questions</h1>
-      <p class="slide-body">Talk to AxonAI → ask anything. Take this link home — the briefing keeps going.</p>
-      <form class="lead-form" id="lead-form">
-        <input type="text" id="lead-name" placeholder="Name"/>
-        <input type="email" id="lead-email" placeholder="Email"/>
-        <button type="submit">Get Early Access</button>
-        <p id="lead-msg"></p>
-      </form>
-    </div>
-
-    <!-- PowerPoint-style controls only -->
-    <div class="deck-controls">
-      <button id="prev" aria-label="Previous">←</button>
-      <div class="dots" id="dots"></div>
-      <button id="next" aria-label="Next">→</button>
+      <p class="gate-sub">This is not a website. This is a live presentation link.<br/>AxonAI will walk you through the product — then take your questions.</p>
+      <button class="gate-btn" id="gate-enter">Enter Briefing</button>
+      <p class="gate-note">You'll need microphone access for voice. Text works too.</p>
     </div>
   </div>
 
-  <!-- RIGHT: THE ARTIFICIAL PERSON -->
-  <aside class="axon" id="axon">
-    <div class="axon-top">
-      <img src="/assets/orb.svg" alt="" class="axon-orb" id="axon-orb"/>
-      <div>
-        <div class="axon-name">AxonAI</div>
-        <div class="axon-tag">Artificial Presenter</div>
-      </div>
-      <span class="axon-state" id="axon-state">Ready</span>
-    </div>
+  <!-- POWERPOINT-STYLE TAB BAR (familiarity) -->
+  <header class="ppt-bar" id="ppt-bar">
+    <div class="ppt-brand">SiteEye <span>Briefing</span></div>
+    <nav class="ppt-tabs">
+      <button class="ppt-tab on" data-tab="slides">Slides</button>
+      <button class="ppt-tab" data-tab="ap">AxonAI</button>
+      <button class="ppt-tab" data-tab="access">Early Access</button>
+    </nav>
+    <div class="ppt-phase" id="phase-badge">Ready</div>
+  </header>
 
-    <div class="axon-feed" id="axon-feed">
-      <div class="feed-item axon">
-        <span class="who">AxonAI</span>
-        <p>Press <strong>Start Briefing</strong> and I'll walk you through SiteEye Live. Ask me anything — pricing, hardware, residential, commercial.</p>
-      </div>
-    </div>
+  <div class="app" id="app">
 
-    <div class="axon-actions">
-      <button class="btn-start" id="btn-start">Start Briefing</button>
-      <div class="axon-input">
-        <input id="ask" placeholder="Ask AxonAI…" autocomplete="off"/>
-        <button id="send">→</button>
-      </div>
-    </div>
-  </aside>
+    <!-- SLIDES PANEL -->
+    <section class="panel-slides on" id="panel-slides">
+      <div class="deck">
 
-  <script src="/js/briefing.js"></script>
+        <article class="slide on" data-n="1">
+          <header class="slide-hd"><span>01</span> INTRODUCTION</header>
+          <h2>SiteEye Live</h2>
+          <p class="lead gold">Know What's Happening Without Being There.</p>
+          <p class="body">Portable 360° live monitoring — commercial job sites and residential events.</p>
+          <div class="metrics">
+            <div><strong>360°</strong><small>Live View</small></div>
+            <div><strong>4G/5G</strong><small>Cellular</small></div>
+            <div><strong>8–12hr</strong><small>Battery</small></div>
+            <div><strong>15ft</strong><small>Mast</small></div>
+          </div>
+        </article>
+
+        <article class="slide" data-n="2">
+          <header class="slide-hd"><span>02</span> THE PROBLEM</header>
+          <h2>You Can't Be Everywhere</h2>
+          <div class="chart-bars">
+            <div class="bar-row"><label>Contractors — multi-site blind spots</label><div class="bar"><i style="width:88%"></i></div></div>
+            <div class="bar-row"><label>Parents — can't stay at every party</label><div class="bar"><i style="width:72%"></i></div></div>
+            <div class="bar-row"><label>Disputes — no visual proof</label><div class="bar"><i style="width:65%"></i></div></div>
+          </div>
+        </article>
+
+        <article class="slide" data-n="3">
+          <header class="slide-hd"><span>03</span> HOW IT WORKS</header>
+          <h2>5 Steps · Zero Tools</h2>
+          <div class="flow">
+            <div class="flow-node"><em>1</em>Arrive</div><div class="flow-arrow">→</div>
+            <div class="flow-node"><em>2</em>Deploy</div><div class="flow-arrow">→</div>
+            <div class="flow-node"><em>3</em>Connect</div><div class="flow-arrow">→</div>
+            <div class="flow-node"><em>4</em>View</div><div class="flow-arrow">→</div>
+            <div class="flow-node"><em>5</em>Pack Up</div>
+          </div>
+        </article>
+
+        <article class="slide" data-n="4">
+          <header class="slide-hd"><span>04</span> HARDWARE</header>
+          <h2>What's In The Kit</h2>
+          <div class="chart-bars cost">
+            <div class="bar-row"><label>360° Camera (Insta360 X3)</label><div class="bar"><i style="width:28%"></i></div><span>$350</span></div>
+            <div class="bar-row"><label>Telescoping Mast 12–15ft</label><div class="bar"><i style="width:18%"></i></div><span>$175</span></div>
+            <div class="bar-row"><label>4G/5G Hotspot</label><div class="bar"><i style="width:14%"></i></div><span>$125</span></div>
+            <div class="bar-row"><label>Battery + Enclosure + Tripod</label><div class="bar"><i style="width:22%"></i></div><span>$260</span></div>
+          </div>
+          <p class="foot gold">Prototype total: $625 – $1,250</p>
+        </article>
+
+        <article class="slide" data-n="5">
+          <header class="slide-hd"><span>05</span> COMMERCIAL PRICING</header>
+          <h2>Contractor Tiers</h2>
+          <div class="compare">
+            <div class="compare-col">
+              <h3>BASIC</h3>
+              <div class="big">$399</div>
+              <p>setup + $89/mo</p>
+              <p class="dim">or $1,999 buy</p>
+            </div>
+            <div class="compare-col hi">
+              <h3>PRO</h3>
+              <div class="big">$999</div>
+              <p>setup + $119/mo</p>
+              <p class="dim">or $3,999 buy</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="slide" data-n="6">
+          <header class="slide-hd"><span>06</span> RESIDENTIAL</header>
+          <h2>Pool · Park · Backyard</h2>
+          <p class="lead">Another security layer — not just for contractors.</p>
+          <ul class="checks">
+            <li>Pool party — parents watch from home</li>
+            <li>Park birthday — eyes on the kids remotely</li>
+            <li>Same kit — simpler story for families</li>
+          </ul>
+        </article>
+
+        <article class="slide" data-n="7">
+          <header class="slide-hd"><span>07</span> MARKETS</header>
+          <h2>Who Buys It</h2>
+          <div class="chip-grid">
+            <span>Asphalt</span><span>Roofing</span><span>Landscaping</span><span>Concrete</span>
+            <span>Tree Service</span><span>Municipal</span><span>Events</span><span>Residential</span>
+          </div>
+        </article>
+
+        <article class="slide" data-n="8">
+          <header class="slide-hd"><span>08</span> ROADMAP</header>
+          <h2>Future AI</h2>
+          <div class="road">
+            <div><b>01</b> Activity detection</div>
+            <div><b>02</b> Productivity alerts</div>
+            <div><b>03</b> Multi-site dashboard</div>
+            <div><b>04</b> Auto documentation</div>
+          </div>
+        </article>
+
+        <article class="slide" data-n="9">
+          <header class="slide-hd"><span>09</span> Q&amp;A</header>
+          <h2>Your Questions</h2>
+          <p class="body">Ask AxonAI anything — voice or text. Take this link home. The briefing continues.</p>
+        </article>
+
+        <footer class="ppt-footer">
+          <button id="btn-prev">◀</button>
+          <div class="ppt-dots" id="ppt-dots"></div>
+          <span class="ppt-count" id="ppt-count">1 / 9</span>
+          <button id="btn-next">▶</button>
+        </footer>
+      </div>
+    </section>
+
+    <!-- AXONAI PANEL (tab — not just a floating circle) -->
+    <section class="panel-ap" id="panel-ap">
+      <div class="ap-card">
+        <div class="ap-head">
+          <img src="/assets/orb.svg" alt="" class="ap-orb" id="ap-orb"/>
+          <div>
+            <h3>AxonAI</h3>
+            <p>Artificial Person · AP Presenter</p>
+          </div>
+          <span class="ap-pill" id="ap-pill">Ready</span>
+        </div>
+
+        <div class="ap-feed" id="ap-feed">
+          <div class="ap-msg">
+            <span class="ap-from">AxonAI</span>
+            <p>When you're ready, I'll present the full SiteEye Live briefing. After that — ask me anything.</p>
+          </div>
+        </div>
+
+        <div class="ap-controls">
+          <button class="ap-btn primary" id="btn-briefing">▶ Start Presentation</button>
+          <button class="ap-btn secondary" id="btn-qa" disabled>Open Q&amp;A — Your Turn</button>
+          <div class="ap-type">
+            <input id="ap-input" placeholder="Or type a question…" autocomplete="off"/>
+            <button id="ap-send">→</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EARLY ACCESS TAB -->
+    <section class="panel-access" id="panel-access">
+      <div class="access-card">
+        <h2>Early Access</h2>
+        <p>Interested after the briefing? Leave your info.</p>
+        <form id="access-form">
+          <input id="a-name" placeholder="Name" required/>
+          <input id="a-email" type="email" placeholder="Email" required/>
+          <input id="a-phone" placeholder="Phone"/>
+          <button type="submit">Submit</button>
+          <p id="a-msg"></p>
+        </form>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="/js/ap.js"></script>
 </body>
 </html>
