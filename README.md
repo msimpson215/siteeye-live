@@ -1,23 +1,8 @@
-# SiteEye Live — AP Presenter
+# SiteEye Live
 
-Deploy on Render only. GitHub repo: **msimpson215/siteeye-live**
+Simple presentation link for explaining SiteEye Live to someone who's never heard of it.
 
-## Render setup (one time)
+**GitHub:** msimpson215/siteeye-live  
+**Deploy:** Render — Build `npm install`, Start `npm start`, Env `OPENAI_API_KEY`
 
-1. [render.com](https://render.com) → **New** → **Web Service**
-2. Connect **msimpson215/siteeye-live**
-3. Render reads `render.yaml` automatically, or set manually:
-   - **Build:** `npm install`
-   - **Start:** `npm start`
-4. **Environment** → add `OPENAI_API_KEY` (your OpenAI key)
-5. Deploy
-
-Your live URL will be something like:
-
-**https://siteeye-live.onrender.com**
-
-That is the link you send to Joe and Tony — not localhost.
-
-## After code changes
-
-Push to GitHub → Render redeploys automatically.
+Send your Render URL to Joe, Tony, or Don.
