@@ -1,11 +1,15 @@
-# Replace placeholder photos
+# Your SiteEye photos go here
 
-Drop your real SiteEye photos here and update paths in `public/js/site.js`:
+Name them exactly:
 
-- `slide-1-job-site.jpg` — camera on pole at a job site
-- `slide-2-pool.jpg` — residential / pool party use case
-- `slide-3-setup.jpg` — someone deploying the unit
-- `slide-4-phone.jpg` — watching live on phone
-- `slide-5-pricing.jpg` — product kit or team photo
+| File | Slide |
+|------|-------|
+| `slide-1.jpg` | Camera on pole / job site |
+| `slide-2.jpg` | Pool, backyard, or residential |
+| `slide-3.jpg` | Deploying the unit |
+| `slide-4.jpg` | Watching on phone |
+| `slide-5.jpg` | Kit, product, or pricing visual |
 
-Then in `site.js`, change each `image:` to `/images/your-file.jpg`
+Drop files in this folder, push to GitHub, Render redeploys.
+
+Until then, slides show a neutral placeholder — **no stock photos**.

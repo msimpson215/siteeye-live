@@ -1,8 +1,9 @@
-// SiteEye Live — visual deck + Axon
+// SiteEye Live — slides (use YOUR photos in /public/images/)
 
 const SLIDES = [
   {
-    image: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=1200&q=80',
+    image: '/images/slide-1.jpg',
+    fallback: 'camera',
     title: 'See your job site from your phone.',
     line: 'A camera on a pole. Cell built in. Live video — from anywhere.',
     lead: 'SiteEye Live puts eyes where you can\'t be.',
@@ -14,7 +15,8 @@ const SLIDES = [
     axon: 'This is the big idea — you\'re not there, but you can still see everything.'
   },
   {
-    image: 'https://images.unsplash.com/photo-1576013551627-0ccacbf04b08?w=1200&q=80',
+    image: '/images/slide-2.jpg',
+    fallback: 'pool',
     title: 'Can\'t be there? Still see it.',
     line: 'Contractors on multiple sites. Parents at a pool party checking from the kitchen.',
     lead: 'Commercial crews and families — same peace of mind.',
@@ -23,12 +25,13 @@ const SLIDES = [
       'Parents: pool parties, backyard events, park birthdays',
       'Other parents can check in remotely too'
     ],
-    axon: 'Don — imagine your kid\'s pool party. You\'re inside making food but you can still see the pool on your phone.'
+    axon: 'Imagine a pool party — you\'re inside but you can still see the backyard on your phone.'
   },
   {
-    image: 'https://images.unsplash.com/photo-1581094794329-c8142f3836b5?w=1200&q=80',
+    image: '/images/slide-3.jpg',
+    fallback: 'setup',
     title: 'Set it up in minutes.',
-    line: 'No tools. No IT department. Pole up, it finds cell signal, you\'re watching.',
+    line: 'No tools. No IT department. Pole up, cell signal, you\'re watching.',
     lead: 'Three steps — that\'s the whole thing.',
     points: [
       '1 — Arrive and set the pole up (minutes)',
@@ -38,30 +41,53 @@ const SLIDES = [
     axon: 'Nobody needs to be tech-savvy. If you can use a phone, you can use this.'
   },
   {
-    image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=1200&q=80',
+    image: '/images/slide-4.jpg',
+    fallback: 'phone',
     title: 'Watch live. Anywhere.',
-    line: 'Office, truck, couch — same live view of the site or the backyard.',
+    line: 'Office, truck, couch — same live view.',
     lead: 'Your phone becomes a window.',
     points: [
       'Works on iPhone, Android, or web browser',
       'Battery runs a full workday on the pole',
       'Pack it up and move to the next site'
     ],
-    axon: 'The whole point is freedom — you\'re not tied to being on location.'
+    axon: 'You\'re not tied to being on location.'
   },
   {
-    image: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&q=80',
+    image: '/images/slide-5.jpg',
+    fallback: 'kit',
     title: 'Simple pricing.',
-    line: 'Contractor kits — monthly service or buy it outright. Ask Axon for your numbers.',
+    line: 'Contractor kits — monthly or buy outright. Ask Axon for your numbers.',
     lead: 'Basic for most crews. Pro for serious operations.',
     points: [
       'Basic — about $89/month plus setup, or ~$2,000 to buy',
       'Pro — about $119/month, more hardware and support',
-      'Residential options coming — same idea, simpler package'
+      'Residential options coming'
     ],
-    axon: 'Ask me what Basic vs Pro means for your situation — I\'ll keep it simple.'
+    axon: 'Ask me what Basic vs Pro means — I\'ll keep it simple.'
   }
 ];
+
+const FALLBACK_SVG = {
+  camera: `<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg"><rect fill="#E2E8F0" width="400" height="300"/><rect x="185" y="80" width="30" height="120" fill="#94A3B8" rx="4"/><circle cx="200" cy="60" r="28" fill="#2563EB" opacity="0.9"/><rect x="240" y="120" width="80" height="120" rx="12" fill="#1E293B"/><rect x="252" y="135" width="56" height="80" rx="4" fill="#93C5FD"/><text x="200" y="270" text-anchor="middle" fill="#64748B" font-size="14" font-family="sans-serif">Your photo: camera on pole</text></svg>`,
+  pool: `<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg"><rect fill="#DBEAFE" width="400" height="300"/><ellipse cx="200" cy="200" rx="120" ry="50" fill="#2563EB" opacity="0.3"/><text x="200" y="160" text-anchor="middle" fill="#1E40AF" font-size="16" font-family="sans-serif">Your photo: pool / backyard</text></svg>`,
+  setup: `<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg"><rect fill="#F1F5F9" width="400" height="300"/><text x="200" y="140" text-anchor="middle" fill="#64748B" font-size="16" font-family="sans-serif">Your photo: deploying the unit</text></svg>`,
+  phone: `<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg"><rect fill="#F1F5F9" width="400" height="300"/><rect x="160" y="60" width="80" height="140" rx="10" fill="#1E293B"/><rect x="170" y="75" width="60" height="100" rx="2" fill="#93C5FD"/><text x="200" y="240" text-anchor="middle" fill="#64748B" font-size="14" font-family="sans-serif">Your photo: watching on phone</text></svg>`,
+  kit: `<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg"><rect fill="#F1F5F9" width="400" height="300"/><text x="200" y="150" text-anchor="middle" fill="#64748B" font-size="16" font-family="sans-serif">Your photo: kit / product</text></svg>`
+};
+
+function imgSrc(slide) {
+  return slide.image;
+}
+
+function thumbSrc(slide) {
+  return slide.image;
+}
+
+function onImgError(img, fallbackKey) {
+  const svg = FALLBACK_SVG[fallbackKey];
+  if (svg) img.src = 'data:image/svg+xml,' + encodeURIComponent(svg);
+}
 
 let idx = 0;
 let history = [];
@@ -71,12 +97,19 @@ const chat = document.getElementById('axon-chat');
 const talkBtn = document.getElementById('talk-btn');
 const filmstrip = document.getElementById('filmstrip');
 
-// Build filmstrip thumbnails
 SLIDES.forEach((s, i) => {
   const btn = document.createElement('button');
   btn.type = 'button';
   btn.className = 'thumb' + (i === 0 ? ' on' : '');
-  btn.innerHTML = `<img src="${s.image.replace('1200', '200')}" alt=""/><span class="thumb-num">${i + 1}</span>`;
+  const img = document.createElement('img');
+  img.src = thumbSrc(s);
+  img.alt = `Slide ${i + 1}`;
+  img.onerror = () => onImgError(img, s.fallback);
+  btn.appendChild(img);
+  const num = document.createElement('span');
+  num.className = 'thumb-num';
+  num.textContent = i + 1;
+  btn.appendChild(num);
   btn.onclick = () => go(i);
   filmstrip.appendChild(btn);
 });
@@ -84,9 +117,11 @@ SLIDES.forEach((s, i) => {
 function go(n) {
   idx = Math.max(0, Math.min(SLIDES.length - 1, n));
   const s = SLIDES[idx];
+  const hero = document.getElementById('hero-img');
+  hero.src = imgSrc(s);
+  hero.alt = s.title;
+  hero.onerror = () => onImgError(hero, s.fallback);
 
-  document.getElementById('hero-img').src = s.image;
-  document.getElementById('hero-img').alt = s.title;
   document.getElementById('hero-title').textContent = s.title;
   document.getElementById('hero-line').textContent = s.line;
   document.getElementById('slide-tag').textContent = `Slide ${idx + 1}`;
@@ -97,13 +132,11 @@ function go(n) {
   document.getElementById('btn-back').disabled = idx === 0;
   document.getElementById('btn-fwd').textContent = idx === SLIDES.length - 1 ? '✓' : '▶';
 
-  // re-trigger slide animation
   const frame = document.getElementById('slide-frame');
   frame.style.animation = 'none';
   frame.offsetHeight;
   frame.style.animation = '';
 
-  // subtle Axon nudge per slide (once)
   if (s.axon && !s._shown) {
     s._shown = true;
     bubble(s.axon, 'them');
@@ -114,7 +147,7 @@ document.getElementById('btn-back').onclick = () => go(idx - 1);
 document.getElementById('btn-fwd').onclick = () => { if (idx < SLIDES.length - 1) go(idx + 1); };
 
 document.addEventListener('keydown', e => {
-  if (document.getElementById('lightbox').hidden === false) {
+  if (!document.getElementById('lightbox').hidden) {
     if (e.key === 'Escape') closeLightbox();
     return;
   }
@@ -122,16 +155,16 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowLeft') go(idx - 1);
 });
 
-// Lightbox
 const lb = document.getElementById('lightbox');
 
 function openLightbox() {
   const s = SLIDES[idx];
-  document.getElementById('lb-img').src = s.image;
+  const lbImg = document.getElementById('lb-img');
+  lbImg.src = imgSrc(s);
+  lbImg.onerror = () => onImgError(lbImg, s.fallback);
   document.getElementById('lb-title').textContent = s.title;
   document.getElementById('lb-lead').textContent = s.lead;
-  const ul = document.getElementById('lb-points');
-  ul.innerHTML = s.points.map(p => `<li>${esc(p)}</li>`).join('');
+  document.getElementById('lb-points').innerHTML = s.points.map(p => `<li>${esc(p)}</li>`).join('');
   lb.hidden = false;
   document.body.style.overflow = 'hidden';
 }
@@ -147,11 +180,10 @@ document.getElementById('lb-close').onclick = closeLightbox;
 
 go(0);
 
-// ---- Axon chat ----
 function bubble(text, who = 'them') {
   const el = document.createElement('div');
   el.className = `bubble ${who}`;
-  el.innerHTML = who === 'them' ? esc(text) : esc(text);
+  el.textContent = text;
   chat.appendChild(el);
   chat.scrollTop = chat.scrollHeight;
   return el;
@@ -168,7 +200,10 @@ async function sendText() {
   input.value = '';
   bubble(text, 'you');
   history.push({ role: 'user', content: text });
-  const wait = bubble('…');
+  const wait = document.createElement('div');
+  wait.className = 'bubble them';
+  wait.textContent = '…';
+  chat.appendChild(wait);
   try {
     const r = await fetch('/api/chat', {
       method: 'POST',
