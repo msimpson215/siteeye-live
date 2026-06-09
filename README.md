@@ -1,46 +1,23 @@
-# SiteEye Live — AP Presenter Briefing
+# SiteEye Live — AP Presenter
 
-**Not a website. An Artificial Person briefing link.**
+Deploy on Render only. GitHub repo: **msimpson215/siteeye-live**
 
-Send Joe or Tony the URL. They enter the briefing. AxonAI presents. They ask questions. Same link works from Lebanon, Florida, anywhere.
+## Render setup (one time)
 
----
+1. [render.com](https://render.com) → **New** → **Web Service**
+2. Connect **msimpson215/siteeye-live**
+3. Render reads `render.yaml` automatically, or set manually:
+   - **Build:** `npm install`
+   - **Start:** `npm start`
+4. **Environment** → add `OPENAI_API_KEY` (your OpenAI key)
+5. Deploy
 
-## What Joe / Tony experience
+Your live URL will be something like:
 
-1. Open link → **Enter Briefing**
-2. **Slides** tab — PowerPoint-style deck with charts
-3. **AxonAI** tab — click **Start Presentation** → AP walks all 9 slides
-4. When done → **Open Q&A — Your Turn** → voice or text
-5. **Early Access** tab — leave info if interested
+**https://siteeye-live.onrender.com**
 
----
+That is the link you send to Joe and Tony — not localhost.
 
-## Run locally
+## After code changes
 
-```bash
-npm install
-copy .env.example .env
-# OPENAI_API_KEY=sk-...
-npm start
-```
-
-http://localhost:3000
-
----
-
-## Render
-
-| Setting | Value |
-|---------|-------|
-| Build | `npm install` |
-| Start | `npm start` |
-| Env | `OPENAI_API_KEY` (required) |
-
-Repo: https://github.com/msimpson215/siteeye-live
-
----
-
-## Room of 10 (later)
-
-Presenter runs one laptop. Only presenter mic live during intro. Audience uses text Q&A on phones. v2 adds raise-hand queue.
+Push to GitHub → Render redeploys automatically.
