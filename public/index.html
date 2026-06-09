@@ -3,234 +3,157 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="SiteEye Live — Interactive product briefing powered by AxonAI"/>
-  <title>SiteEye Live™ — AxonAI Briefing</title>
+  <title>SiteEye Live — AI Briefing</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/axon.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/briefing.css"/>
 </head>
 <body>
 
-  <div class="grain"></div>
-  <div class="glow glow-a"></div>
-  <div class="glow glow-b"></div>
+  <!-- LEFT: THE DECK (PowerPoint zone — no nav, no footer) -->
+  <div class="deck" id="deck">
 
-  <!-- Minimal brand mark -->
-  <header class="brand">
-    <div class="brand-logo">
-      <span class="b-site">Site</span><span class="b-eye">Eye</span>
-      <span class="b-live">LIVE</span>
+    <div class="slide active" data-slide="1">
+      <p class="slide-num">01 / 09</p>
+      <h1>SiteEye Live</h1>
+      <p class="slide-sub gold">Know What's Happening Without Being There.</p>
+      <p class="slide-body">Portable 360° live monitoring. Not a website — an AI briefing.</p>
     </div>
-    <div class="brand-sub">Interactive Product Briefing</div>
-  </header>
 
-  <!-- Topic selector -->
-  <nav class="topics" id="topics">
-    <button class="topic active" data-topic="overview">Overview</button>
-    <button class="topic" data-topic="how">How It Works</button>
-    <button class="topic" data-topic="hardware">Hardware</button>
-    <button class="topic" data-topic="pricing">Pricing</button>
-    <button class="topic" data-topic="markets">Markets</button>
-    <button class="topic" data-topic="future">Future AI</button>
-    <button class="topic" data-topic="contact">Contact</button>
-  </nav>
+    <div class="slide" data-slide="2">
+      <p class="slide-num">02 / 09</p>
+      <h1>The Problem</h1>
+      <ul class="bullets">
+        <li>Contractors can't be on every job site</li>
+        <li>Parents can't always be at the pool party</li>
+        <li>No visibility until something goes wrong</li>
+      </ul>
+    </div>
 
-  <!-- Content stage -->
-  <main class="stage" id="stage">
-
-    <section class="panel active" data-panel="overview">
-      <div class="panel-tag">01 — OVERVIEW</div>
-      <h1 class="panel-title">Know What's Happening<br/><em>Without Being There.</em></h1>
-      <p class="panel-lead">Remote 360° job site monitoring for contractors. See every site from anywhere — no Wi-Fi, no hassle.</p>
-      <div class="stat-row">
-        <div class="stat"><span class="stat-n">360°</span><span class="stat-l">Live View</span></div>
-        <div class="stat"><span class="stat-n">4K</span><span class="stat-l">Camera</span></div>
-        <div class="stat"><span class="stat-n">8–12hr</span><span class="stat-l">Battery</span></div>
-        <div class="stat"><span class="stat-n">15ft</span><span class="stat-l">Mast</span></div>
+    <div class="slide" data-slide="3">
+      <p class="slide-num">03 / 09</p>
+      <h1>How It Works</h1>
+      <div class="steps">
+        <div><b>01</b> Arrive</div>
+        <div><b>02</b> Deploy</div>
+        <div><b>03</b> Connect</div>
+        <div><b>04</b> View Live</div>
+        <div><b>05</b> Pack Up</div>
       </div>
-      <div class="pill-row">
-        <span class="pill">No Wi-Fi Required</span>
-        <span class="pill">Deploys in Minutes</span>
-        <span class="pill">Tamper Alerts</span>
-        <span class="pill">Any Device</span>
-      </div>
-    </section>
+      <p class="slide-body">Minutes. No tools. No Wi-Fi — cellular only.</p>
+    </div>
 
-    <section class="panel" data-panel="how">
-      <div class="panel-tag">02 — HOW IT WORKS</div>
-      <h2 class="panel-title">Five Steps.<br/><em>Zero Tools.</em></h2>
-      <div class="flow">
-        <div class="flow-step"><span>01</span><strong>Arrive</strong><p>Park at the job site</p></div>
-        <div class="flow-line"></div>
-        <div class="flow-step"><span>02</span><strong>Deploy</strong><p>Raise the mast — minutes</p></div>
-        <div class="flow-line"></div>
-        <div class="flow-step"><span>03</span><strong>Connect</strong><p>Auto 4G/5G cellular</p></div>
-        <div class="flow-line"></div>
-        <div class="flow-step"><span>04</span><strong>View Live</strong><p>Phone or office dashboard</p></div>
-        <div class="flow-line"></div>
-        <div class="flow-step"><span>05</span><strong>Pack Up</strong><p>Move to next site</p></div>
+    <div class="slide" data-slide="4">
+      <p class="slide-num">04 / 09</p>
+      <h1>The Kit</h1>
+      <div class="kit-grid">
+        <div>360° Camera <span>Insta360 X3</span></div>
+        <div>12–15ft Mast <span>Fiberglass</span></div>
+        <div>4G/5G Hotspot <span>Verizon</span></div>
+        <div>Battery <span>8–12 hours</span></div>
+        <div>Enclosure <span>Weatherproof</span></div>
+        <div>Tripod <span>Commercial</span></div>
       </div>
-    </section>
+      <p class="slide-foot gold">Prototype: $625 – $1,250</p>
+    </div>
 
-    <section class="panel" data-panel="hardware">
-      <div class="panel-tag">03 — HARDWARE</div>
-      <h2 class="panel-title">What's In<br/><em>The Kit.</em></h2>
-      <div class="hw-grid">
-        <div class="hw-card"><div class="hw-icon">📷</div><h4>360° Camera</h4><p class="hw-model">Insta360 X3</p><p>Full panoramic live view</p><span class="hw-cost">~$300–$350</span></div>
-        <div class="hw-card"><div class="hw-icon">📶</div><h4>Telescoping Mast</h4><p class="hw-model">12–15 ft Fiberglass</p><p>Collapses to 3 ft</p><span class="hw-cost">~$100–$250</span></div>
-        <div class="hw-card"><div class="hw-icon">🦺</div><h4>Heavy Duty Tripod</h4><p class="hw-model">Commercial Stand</p><p>Stable in wind</p><span class="hw-cost">~$75–$150</span></div>
-        <div class="hw-card"><div class="hw-icon">📡</div><h4>4G/5G Hotspot</h4><p class="hw-model">Verizon Jetpack M2100</p><p>Works anywhere</p><span class="hw-cost">~$50–$200</span></div>
-        <div class="hw-card"><div class="hw-icon">🔒</div><h4>Weatherproof Enclosure</h4><p class="hw-model">Locking Box</p><p>Protects electronics</p><span class="hw-cost">~$25–$75</span></div>
-        <div class="hw-card"><div class="hw-icon">🔋</div><h4>Battery System</h4><p class="hw-model">24,000mAh</p><p>8–12 hour runtime</p><span class="hw-cost">~$50–$150</span></div>
-      </div>
-      <div class="hw-total">Prototype Cost: <strong>$625 – $1,250</strong></div>
-    </section>
-
-    <section class="panel" data-panel="pricing">
-      <div class="panel-tag">04 — PRICING</div>
-      <h2 class="panel-title">Two Tiers.<br/><em>Your Call.</em></h2>
-      <div class="price-grid">
-        <div class="price-card">
-          <div class="price-label">BASIC</div>
-          <div class="price-tagline">Affordable. Simple. Commercial Grade.</div>
-          <div class="price-block featured">
-            <div class="price-type">SERVICE <span class="badge">Most Popular</span></div>
-            <div class="price-big">$399 <small>setup</small></div>
-            <div class="price-mo">+ $89<span>/mo</span></div>
-          </div>
-          <div class="price-or">or</div>
-          <div class="price-block">
-            <div class="price-type">PURCHASE</div>
-            <div class="price-big">$1,999</div>
-            <div class="price-once">One-time</div>
-          </div>
-          <ul class="price-includes">
-            <li>Basic Unit + 360° Camera</li>
-            <li>Telescoping Pole</li>
-            <li>Mobile App + Cloud Dashboard</li>
-            <li>Support</li>
-          </ul>
+    <div class="slide" data-slide="5">
+      <p class="slide-num">05 / 09</p>
+      <h1>Commercial</h1>
+      <div class="tiers">
+        <div class="tier">
+          <h3>BASIC</h3>
+          <p class="price">$399 + $89/mo</p>
+          <p class="alt">or $1,999 buy</p>
         </div>
-        <div class="price-card price-pro">
-          <div class="price-label">PRO</div>
-          <div class="price-tagline">Built For Serious Contractors.</div>
-          <div class="price-block featured">
-            <div class="price-type">SERVICE <span class="badge">Most Popular</span></div>
-            <div class="price-big">$999 <small>setup</small></div>
-            <div class="price-mo">+ $119<span>/mo</span></div>
-          </div>
-          <div class="price-or">or</div>
-          <div class="price-block">
-            <div class="price-type">PURCHASE</div>
-            <div class="price-big">$3,999</div>
-            <div class="price-once">One-time</div>
-          </div>
-          <ul class="price-includes">
-            <li>Commercial Mast + Premium Camera</li>
-            <li>Dedicated Hotspot + Enclosure</li>
-            <li>Beacon + Motion Alarm</li>
-            <li>Priority Support + Extended Storage</li>
-          </ul>
+        <div class="tier tier-pro">
+          <h3>PRO</h3>
+          <p class="price">$999 + $119/mo</p>
+          <p class="alt">or $3,999 buy</p>
         </div>
       </div>
-    </section>
+    </div>
 
-    <section class="panel" data-panel="markets">
-      <div class="panel-tag">05 — MARKETS</div>
-      <h2 class="panel-title">Built For<br/><em>Contractors.</em></h2>
-      <div class="market-grid">
-        <div>🛣️ Asphalt & Sealcoating</div>
-        <div>🏠 Roofing</div>
-        <div>🌿 Landscaping</div>
-        <div>🌳 Tree Services</div>
-        <div>🏗️ Concrete</div>
-        <div>🚧 Municipal Crews</div>
-        <div>🎪 Festivals & Events</div>
-        <div>🏆 Sports Tournaments</div>
-      </div>
-      <div class="safety-row">
-        <div><strong>🚨</strong> Flashing Beacon</div>
-        <div><strong>📳</strong> Tamper Alarm</div>
-        <div><strong>☁️</strong> Cloud Storage</div>
-        <div><strong>🔐</strong> Encrypted</div>
-        <div><strong>🇺🇸</strong> USA Support</div>
-      </div>
-    </section>
+    <div class="slide" data-slide="6">
+      <p class="slide-num">06 / 09</p>
+      <h1>Residential</h1>
+      <p class="slide-sub">Pool parties. Backyard events. Parent peace of mind.</p>
+      <ul class="bullets">
+        <li>Watch live from another room — or from home</li>
+        <li>Other parents can check in remotely</li>
+        <li>Same hardware — simpler story for families</li>
+      </ul>
+    </div>
 
-    <section class="panel" data-panel="future">
-      <div class="panel-tag">06 — ROADMAP</div>
-      <h2 class="panel-title">Future<br/><em>AI Features.</em></h2>
-      <div class="roadmap">
-        <div class="road-item"><span>01</span><div><h4>AI Activity Detection</h4><p>Know when work starts, stops, or slows — automatically.</p></div></div>
-        <div class="road-item"><span>02</span><div><h4>Productivity Alerts</h4><p>Get notified when crew activity drops below expected levels.</p></div></div>
-        <div class="road-item"><span>03</span><div><h4>Multi-Crew Dashboard</h4><p>Monitor multiple job sites from one screen.</p></div></div>
-        <div class="road-item"><span>04</span><div><h4>Project Documentation</h4><p>Time-stamped records for disputes and invoicing.</p></div></div>
+    <div class="slide" data-slide="7">
+      <p class="slide-num">07 / 09</p>
+      <h1>Who Buys It</h1>
+      <div class="tags">
+        <span>Asphalt</span><span>Roofing</span><span>Landscaping</span>
+        <span>Concrete</span><span>Tree Service</span><span>Municipal</span>
+        <span>Events</span><span>Residential</span>
       </div>
-    </section>
+    </div>
 
-    <section class="panel" data-panel="contact">
-      <div class="panel-tag">07 — GET IN TOUCH</div>
-      <h2 class="panel-title">Ready To<br/><em>Learn More?</em></h2>
-      <p class="panel-lead">Request early access or ask AxonAI anything first — then drop your info below.</p>
-      <form class="contact-form" id="contact-form">
-        <div class="form-row">
-          <input type="text" id="c-name" placeholder="Your Name" required/>
-          <input type="email" id="c-email" placeholder="Email" required/>
-        </div>
-        <div class="form-row">
-          <input type="tel" id="c-phone" placeholder="Phone"/>
-          <input type="text" id="c-company" placeholder="Company"/>
-        </div>
-        <select id="c-type">
-          <option value="">Contractor type…</option>
-          <option>Asphalt & Sealcoating</option>
-          <option>Roofing</option>
-          <option>Landscaping</option>
-          <option>Tree Service</option>
-          <option>Concrete</option>
-          <option>Investor / Partner</option>
-          <option>Other</option>
-        </select>
-        <textarea id="c-message" rows="3" placeholder="Tell us about your operation…"></textarea>
-        <button type="submit" class="submit-btn">Request Early Access</button>
-        <p class="form-msg" id="contact-msg"></p>
+    <div class="slide" data-slide="8">
+      <p class="slide-num">08 / 09</p>
+      <h1>What's Next</h1>
+      <ul class="bullets">
+        <li>AI activity detection</li>
+        <li>Productivity alerts</li>
+        <li>Multi-site dashboard</li>
+        <li>Auto documentation</li>
+      </ul>
+    </div>
+
+    <div class="slide" data-slide="9">
+      <p class="slide-num">09 / 09</p>
+      <h1>Your Questions</h1>
+      <p class="slide-body">Talk to AxonAI → ask anything. Take this link home — the briefing keeps going.</p>
+      <form class="lead-form" id="lead-form">
+        <input type="text" id="lead-name" placeholder="Name"/>
+        <input type="email" id="lead-email" placeholder="Email"/>
+        <button type="submit">Get Early Access</button>
+        <p id="lead-msg"></p>
       </form>
-    </section>
+    </div>
 
-  </main>
+    <!-- PowerPoint-style controls only -->
+    <div class="deck-controls">
+      <button id="prev" aria-label="Previous">←</button>
+      <div class="dots" id="dots"></div>
+      <button id="next" aria-label="Next">→</button>
+    </div>
+  </div>
 
-  <!-- AxonAI console -->
-  <aside class="axon-console" id="axon-console">
-    <div class="axon-header">
-      <img src="/assets/orb.svg" alt="" class="axon-orb-sm"/>
+  <!-- RIGHT: THE ARTIFICIAL PERSON -->
+  <aside class="axon" id="axon">
+    <div class="axon-top">
+      <img src="/assets/orb.svg" alt="" class="axon-orb" id="axon-orb"/>
       <div>
         <div class="axon-name">AxonAI</div>
-        <div class="axon-role">SiteEye Live Expert</div>
+        <div class="axon-tag">Artificial Presenter</div>
       </div>
-      <div class="axon-live" id="axon-status">Ready</div>
+      <span class="axon-state" id="axon-state">Ready</span>
     </div>
 
-    <div class="axon-messages" id="axon-messages">
-      <div class="msg bot">
-        <strong>AxonAI</strong>
-        <p>Hey — I'm your SiteEye Live expert. Click the orb to talk, or type a question below. Ask me about pricing, hardware, how it works, anything.</p>
+    <div class="axon-feed" id="axon-feed">
+      <div class="feed-item axon">
+        <span class="who">AxonAI</span>
+        <p>Press <strong>Start Briefing</strong> and I'll walk you through SiteEye Live. Ask me anything — pricing, hardware, residential, commercial.</p>
       </div>
     </div>
 
-    <div class="axon-input-row">
-      <input type="text" id="chat-input" placeholder="Ask AxonAI anything…" autocomplete="off"/>
-      <button id="chat-send" aria-label="Send">→</button>
-    </div>
-
-    <div class="axon-voice-row">
-      <button class="voice-btn" id="voice-btn">
-        <img src="/assets/orb.svg" alt="Talk to AxonAI" class="voice-orb" id="voice-orb"/>
-        <span id="voice-label">Tap to Talk</span>
-      </button>
+    <div class="axon-actions">
+      <button class="btn-start" id="btn-start">Start Briefing</button>
+      <div class="axon-input">
+        <input id="ask" placeholder="Ask AxonAI…" autocomplete="off"/>
+        <button id="send">→</button>
+      </div>
     </div>
   </aside>
 
-  <script src="/js/axon.js"></script>
+  <script src="/js/briefing.js"></script>
 </body>
 </html>

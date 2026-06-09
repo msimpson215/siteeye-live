@@ -1,39 +1,47 @@
-# SiteEye Live™ — AxonAI Briefing
+# SiteEye Live — AI Briefing
 
-**Know What's Happening Without Being There.**
+**This is not a website. It's a briefing link.**
 
-An interactive product presentation — not a brochure site. Send the link to a contractor or investor; they talk to **AxonAI** and learn everything about SiteEye Live.
-
----
-
-## What This Is
-
-- **Briefing room layout** — topic panels + AxonAI console (not a scroll-page website)
-- **AxonAI** — voice + text expert on specs, pricing, hardware, markets
-- **OpenAI Realtime API** — same VoxTalk/Axon voice stack as liveai-email
-- Dark, premium design
+Send the URL to a room of contractors, investors, or parents. AxonAI — the artificial presenter — walks them through SiteEye Live. They ask questions. They take the link home.
 
 ---
 
-## Run Locally
+## What to call it
+
+| Old term | New term |
+|----------|----------|
+| Website | **Briefing link** |
+| Chatbot | **AxonAI** (artificial presenter) |
+| Nav / footer | **Slides + dots** (PowerPoint familiarity) |
+| Browse | **Follow along** |
+
+---
+
+## Layout
+
+- **Left:** Full-screen slides (09 deck) — no nav bar, no footer
+- **Right:** AxonAI — voice briefing + text Q&A
+- **Controls:** Arrow keys or dots — like PowerPoint
+
+---
+
+## Run locally
 
 ```bash
 npm install
 copy .env.example .env
-# Add OPENAI_API_KEY to .env
+# Add OPENAI_API_KEY
 npm start
 ```
 
-Open http://localhost:3000
+Open http://localhost:3000 → click **Start Briefing**
 
 ---
 
-## Deploy to Render
+## Render
 
-1. Push to GitHub
-2. Render → New Web Service → connect repo
-3. **Build:** `npm install` · **Start:** `npm start`
-4. Add `OPENAI_API_KEY` in Environment (required)
-5. Optional: `SMTP_USER`, `SMTP_PASS`, `CONTACT_EMAIL` for the contact form
+- **Build:** `npm install`
+- **Start:** `npm start`
+- **Env:** `OPENAI_API_KEY` (required)
 
-Send the Render URL to Joe or Tony.
+Repo: https://github.com/msimpson215/siteeye-live
