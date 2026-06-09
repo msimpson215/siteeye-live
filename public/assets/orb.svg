@@ -5,12 +5,12 @@
       <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
     <radialGradient id="orbGradient" cx="35%" cy="30%" r="70%">
-      <stop offset="0%" stop-color="#FFF2A6" stop-opacity="0.95"/>
-      <stop offset="35%" stop-color="#FED100" stop-opacity="1"/>
-      <stop offset="100%" stop-color="#D9AF00" stop-opacity="1"/>
+      <stop offset="0%" stop-color="#E0F7FA" stop-opacity="0.95"/>
+      <stop offset="35%" stop-color="#22D3EE" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#0891B2" stop-opacity="1"/>
     </radialGradient>
   </defs>
-  <circle cx="300" cy="300" r="220" fill="#FED100" opacity="0.25" filter="url(#glow)"/>
+  <circle cx="300" cy="300" r="220" fill="#22D3EE" opacity="0.2" filter="url(#glow)"/>
   <circle cx="300" cy="300" r="190" fill="url(#orbGradient)" filter="url(#glow)"/>
-  <ellipse cx="245" cy="210" rx="85" ry="60" fill="#FFFFFF" opacity="0.18"/>
+  <ellipse cx="245" cy="210" rx="85" ry="60" fill="#FFFFFF" opacity="0.25"/>
 </svg>
