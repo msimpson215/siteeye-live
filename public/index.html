@@ -13,68 +13,60 @@
 
   <main class="page">
 
-    <!-- LEFT: one simple picture + one sentence at a time -->
-    <section class="story" id="story">
+    <!-- VISUAL DECK: filmstrip + photo slides (subliminal PowerPoint) -->
+    <section class="deck-area">
 
-      <div class="story-slide on" data-step="1">
-        <div class="illus" aria-hidden="true">
-          <svg viewBox="0 0 200 160" fill="none"><rect x="20" y="100" width="160" height="40" rx="4" fill="#E2E8F0"/><rect x="95" y="30" width="10" height="70" fill="#94A3B8"/><circle cx="100" cy="24" r="16" fill="#3B82F6"/><rect x="130" y="50" width="40" height="70" rx="8" fill="#1E293B"/><rect x="138" y="58" width="24" height="40" rx="2" fill="#93C5FD"/></svg>
-        </div>
-        <h1>See your job site<br/>from your phone.</h1>
-        <p>A camera on a pole. Cell service built in. You watch live — from anywhere.</p>
-      </div>
+      <!-- tiny slide sorter — left edge, very subtle -->
+      <nav class="filmstrip" id="filmstrip" aria-label="Slides"></nav>
 
-      <div class="story-slide" data-step="2">
-        <div class="illus" aria-hidden="true">
-          <svg viewBox="0 0 200 160" fill="none"><circle cx="60" cy="80" r="30" fill="#DBEAFE"/><path d="M50 80h20M60 70v20" stroke="#3B82F6" stroke-width="3"/><rect x="110" y="50" width="70" height="60" rx="6" fill="#F1F5F9" stroke="#CBD5E1"/><path d="M120 90h50M120 75h35" stroke="#94A3B8" stroke-width="2"/></svg>
-        </div>
-        <h1>Can't be there?<br/>Still see it.</h1>
-        <p>Contractors with crews on multiple sites. Parents at a pool party who want to check in from the kitchen.</p>
-      </div>
+      <div class="stage">
+        <!-- stacked paper shadow = "deck" feel -->
+        <div class="paper paper-3"></div>
+        <div class="paper paper-2"></div>
 
-      <div class="story-slide" data-step="3">
-        <div class="illus" aria-hidden="true">
-          <svg viewBox="0 0 200 160" fill="none"><text x="30" y="50" font-size="14" fill="#64748B">1. Set up pole</text><text x="30" y="80" font-size="14" fill="#64748B">2. It finds cell signal</text><text x="30" y="110" font-size="14" fill="#64748B">3. Watch on your phone</text><circle cx="160" cy="80" r="28" fill="#3B82F6" opacity="0.15"/><path d="M152 80l6 6 12-12" stroke="#3B82F6" stroke-width="3" fill="none"/></svg>
-        </div>
-        <h1>Three steps.<br/>That's it.</h1>
-        <p>Set it up in minutes. No Wi-Fi. No IT guy. Just cell service and your phone.</p>
-      </div>
+        <article class="slide-frame" id="slide-frame">
+          <button type="button" class="hero-hit" id="hero-hit" aria-label="Open slide detail">
+            <img class="hero-img" id="hero-img" src="" alt=""/>
+            <span class="zoom-hint">Click photo for more</span>
+            <div class="hero-caption">
+              <p class="slide-tag" id="slide-tag">Slide 1</p>
+              <h1 id="hero-title"></h1>
+              <p id="hero-line"></p>
+            </div>
+          </button>
+        </article>
 
-      <div class="story-slide" data-step="4">
-        <div class="illus" aria-hidden="true">
-          <svg viewBox="0 0 200 160" fill="none"><rect x="40" y="40" width="55" height="80" rx="6" fill="#F8FAFC" stroke="#CBD5E1"/><text x="52" y="65" font-size="11" fill="#64748B">Basic</text><text x="48" y="90" font-size="16" font-weight="bold" fill="#1E293B">~$89/mo</text><rect x="105" y="30" width="55" height="90" rx="6" fill="#EFF6FF" stroke="#3B82F6"/><text x="118" y="55" font-size="11" fill="#3B82F6">Pro</text><text x="112" y="80" font-size="16" font-weight="bold" fill="#1E293B">~$119/mo</text></svg>
-        </div>
-        <h1>Simple pricing.</h1>
-        <p>Contractor kits — rent monthly or buy outright. Ask Axon for the numbers that fit you.</p>
-      </div>
-
-      <div class="story-nav">
-        <button type="button" id="story-back" disabled>Back</button>
-        <span id="story-count">1 of 4</span>
-        <button type="button" id="story-next">Next</button>
+        <footer class="deck-foot">
+          <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+          <div class="deck-controls">
+            <button type="button" id="btn-back" disabled aria-label="Previous slide">◀</button>
+            <span class="slide-num" id="slide-num">1 / 5</span>
+            <button type="button" id="btn-fwd" aria-label="Next slide">▶</button>
+          </div>
+        </footer>
       </div>
     </section>
 
-    <!-- RIGHT: Axon — one job, explain it -->
+    <!-- AXON -->
     <aside class="axon-panel">
       <div class="axon-head">
         <img src="/assets/orb.svg" alt="" width="36" height="36"/>
         <div>
           <strong>Axon</strong>
-          <span>Will explain SiteEye Live in plain English</span>
+          <span>Explains it like you're talking to Don next door</span>
         </div>
       </div>
 
       <div class="axon-chat" id="axon-chat">
         <div class="bubble them">
-          Hi — I'm Axon. Never heard of SiteEye Live? No problem. It's a camera on a pole so you can watch a place live on your phone. Tap <strong>Talk to Axon</strong> or type a question below.
+          Hey — I'm Axon. SiteEye Live is a camera on a pole. You watch live from your phone. Click through the photos on the left, or ask me anything.
         </div>
       </div>
 
       <button type="button" class="talk-btn" id="talk-btn">Talk to Axon</button>
 
       <div class="type-row">
-        <input id="type-input" placeholder="Type a question…" autocomplete="off"/>
+        <input id="type-input" placeholder="Ask Don-level questions…" autocomplete="off"/>
         <button type="button" id="type-send">Send</button>
       </div>
 
@@ -91,6 +83,20 @@
     </aside>
 
   </main>
+
+  <!-- LIGHTBOX: click photo → full detail -->
+  <div class="lightbox" id="lightbox" hidden>
+    <div class="lb-backdrop" id="lb-close"></div>
+    <div class="lb-panel">
+      <button type="button" class="lb-x" id="lb-x" aria-label="Close">×</button>
+      <img class="lb-img" id="lb-img" src="" alt=""/>
+      <div class="lb-text">
+        <h2 id="lb-title"></h2>
+        <p id="lb-lead"></p>
+        <ul id="lb-points"></ul>
+      </div>
+    </div>
+  </div>
 
   <script src="/js/site.js"></script>
 </body>

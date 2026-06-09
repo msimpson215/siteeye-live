@@ -1,29 +1,157 @@
-// SiteEye Live — simple client
+// SiteEye Live — visual deck + Axon
 
-let step = 1;
-const STEPS = 4;
+const SLIDES = [
+  {
+    image: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=1200&q=80',
+    title: 'See your job site from your phone.',
+    line: 'A camera on a pole. Cell built in. Live video — from anywhere.',
+    lead: 'SiteEye Live puts eyes where you can\'t be.',
+    points: [
+      '360° camera on a telescoping pole — 12 to 15 feet up',
+      'Connects over cell service — no Wi-Fi at the site',
+      'Watch on your phone, tablet, or office computer'
+    ],
+    axon: 'This is the big idea — you\'re not there, but you can still see everything.'
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1576013551627-0ccacbf04b08?w=1200&q=80',
+    title: 'Can\'t be there? Still see it.',
+    line: 'Contractors on multiple sites. Parents at a pool party checking from the kitchen.',
+    lead: 'Commercial crews and families — same peace of mind.',
+    points: [
+      'Contractors: know the crew is working without driving there',
+      'Parents: pool parties, backyard events, park birthdays',
+      'Other parents can check in remotely too'
+    ],
+    axon: 'Don — imagine your kid\'s pool party. You\'re inside making food but you can still see the pool on your phone.'
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1581094794329-c8142f3836b5?w=1200&q=80',
+    title: 'Set it up in minutes.',
+    line: 'No tools. No IT department. Pole up, it finds cell signal, you\'re watching.',
+    lead: 'Three steps — that\'s the whole thing.',
+    points: [
+      '1 — Arrive and set the pole up (minutes)',
+      '2 — It connects to cell service automatically',
+      '3 — Open the app and watch live'
+    ],
+    axon: 'Nobody needs to be tech-savvy. If you can use a phone, you can use this.'
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=1200&q=80',
+    title: 'Watch live. Anywhere.',
+    line: 'Office, truck, couch — same live view of the site or the backyard.',
+    lead: 'Your phone becomes a window.',
+    points: [
+      'Works on iPhone, Android, or web browser',
+      'Battery runs a full workday on the pole',
+      'Pack it up and move to the next site'
+    ],
+    axon: 'The whole point is freedom — you\'re not tied to being on location.'
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&q=80',
+    title: 'Simple pricing.',
+    line: 'Contractor kits — monthly service or buy it outright. Ask Axon for your numbers.',
+    lead: 'Basic for most crews. Pro for serious operations.',
+    points: [
+      'Basic — about $89/month plus setup, or ~$2,000 to buy',
+      'Pro — about $119/month, more hardware and support',
+      'Residential options coming — same idea, simpler package'
+    ],
+    axon: 'Ask me what Basic vs Pro means for your situation — I\'ll keep it simple.'
+  }
+];
+
+let idx = 0;
 let history = [];
 let pc = null, stream = null, dc = null, connecting = false;
 
 const chat = document.getElementById('axon-chat');
 const talkBtn = document.getElementById('talk-btn');
+const filmstrip = document.getElementById('filmstrip');
 
-function showStep(n) {
-  step = Math.max(1, Math.min(STEPS, n));
-  document.querySelectorAll('.story-slide').forEach(s =>
-    s.classList.toggle('on', +s.dataset.step === step));
-  document.getElementById('story-count').textContent = `${step} of ${STEPS}`;
-  document.getElementById('story-back').disabled = step === 1;
-  document.getElementById('story-next').textContent = step === STEPS ? 'Done' : 'Next';
+// Build filmstrip thumbnails
+SLIDES.forEach((s, i) => {
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'thumb' + (i === 0 ? ' on' : '');
+  btn.innerHTML = `<img src="${s.image.replace('1200', '200')}" alt=""/><span class="thumb-num">${i + 1}</span>`;
+  btn.onclick = () => go(i);
+  filmstrip.appendChild(btn);
+});
+
+function go(n) {
+  idx = Math.max(0, Math.min(SLIDES.length - 1, n));
+  const s = SLIDES[idx];
+
+  document.getElementById('hero-img').src = s.image;
+  document.getElementById('hero-img').alt = s.title;
+  document.getElementById('hero-title').textContent = s.title;
+  document.getElementById('hero-line').textContent = s.line;
+  document.getElementById('slide-tag').textContent = `Slide ${idx + 1}`;
+  document.getElementById('slide-num').textContent = `${idx + 1} / ${SLIDES.length}`;
+  document.getElementById('progress-fill').style.width = `${((idx + 1) / SLIDES.length) * 100}%`;
+
+  document.querySelectorAll('.thumb').forEach((t, i) => t.classList.toggle('on', i === idx));
+  document.getElementById('btn-back').disabled = idx === 0;
+  document.getElementById('btn-fwd').textContent = idx === SLIDES.length - 1 ? '✓' : '▶';
+
+  // re-trigger slide animation
+  const frame = document.getElementById('slide-frame');
+  frame.style.animation = 'none';
+  frame.offsetHeight;
+  frame.style.animation = '';
+
+  // subtle Axon nudge per slide (once)
+  if (s.axon && !s._shown) {
+    s._shown = true;
+    bubble(s.axon, 'them');
+  }
 }
 
-document.getElementById('story-back').onclick = () => showStep(step - 1);
-document.getElementById('story-next').onclick = () => { if (step < STEPS) showStep(step + 1); };
+document.getElementById('btn-back').onclick = () => go(idx - 1);
+document.getElementById('btn-fwd').onclick = () => { if (idx < SLIDES.length - 1) go(idx + 1); };
 
+document.addEventListener('keydown', e => {
+  if (document.getElementById('lightbox').hidden === false) {
+    if (e.key === 'Escape') closeLightbox();
+    return;
+  }
+  if (e.key === 'ArrowRight') go(idx + 1);
+  if (e.key === 'ArrowLeft') go(idx - 1);
+});
+
+// Lightbox
+const lb = document.getElementById('lightbox');
+
+function openLightbox() {
+  const s = SLIDES[idx];
+  document.getElementById('lb-img').src = s.image;
+  document.getElementById('lb-title').textContent = s.title;
+  document.getElementById('lb-lead').textContent = s.lead;
+  const ul = document.getElementById('lb-points');
+  ul.innerHTML = s.points.map(p => `<li>${esc(p)}</li>`).join('');
+  lb.hidden = false;
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  lb.hidden = true;
+  document.body.style.overflow = '';
+}
+
+document.getElementById('hero-hit').onclick = openLightbox;
+document.getElementById('lb-x').onclick = closeLightbox;
+document.getElementById('lb-close').onclick = closeLightbox;
+
+go(0);
+
+// ---- Axon chat ----
 function bubble(text, who = 'them') {
   const el = document.createElement('div');
   el.className = `bubble ${who}`;
-  el.innerHTML = who === 'them' ? text : esc(text);
+  el.innerHTML = who === 'them' ? esc(text) : esc(text);
   chat.appendChild(el);
   chat.scrollTop = chat.scrollHeight;
   return el;
@@ -49,11 +177,11 @@ async function sendText() {
     });
     const data = await r.json();
     wait.remove();
-    bubble(esc(data.reply || 'Try again.'), 'them');
+    bubble(data.reply || 'Try again.', 'them');
     history.push({ role: 'assistant', content: data.reply });
   } catch {
     wait.remove();
-    bubble('Connection problem. Try again.', 'them');
+    bubble('Connection problem.', 'them');
   }
 }
 
@@ -73,17 +201,14 @@ async function startVoice() {
   if (pc || connecting) { await stopVoice(); return; }
   connecting = true;
   talkBtn.textContent = 'Connecting…';
-
   try {
     const r = await fetch('/session');
     const data = await r.json();
     if (!r.ok) throw new Error(data.error || 'Could not connect');
-
     pc = new RTCPeerConnection();
     const audio = document.createElement('audio');
     audio.autoplay = true;
     pc.ontrack = e => { if (audio.srcObject !== e.streams[0]) audio.srcObject = e.streams[0]; };
-
     dc = pc.createDataChannel('oai-events');
     dc.onopen = () => {
       talkBtn.textContent = 'Stop';
@@ -93,20 +218,14 @@ async function startVoice() {
     dc.onmessage = e => {
       try {
         const ev = JSON.parse(e.data);
-        if (ev.type === 'response.audio_transcript.done' && ev.transcript) {
-          bubble(esc(ev.transcript.trim()), 'them');
-        }
-        if (ev.type === 'conversation.item.input_audio_transcription.completed' && ev.transcript) {
-          bubble(esc(ev.transcript), 'you');
-        }
+        if (ev.type === 'response.audio_transcript.done' && ev.transcript) bubble(ev.transcript.trim(), 'them');
+        if (ev.type === 'conversation.item.input_audio_transcription.completed' && ev.transcript) bubble(ev.transcript, 'you');
       } catch {}
     };
-
     stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     pc.addTrack(stream.getTracks()[0]);
     const offer = await pc.createOffer();
     await pc.setLocalDescription(offer);
-
     const model = data.model || 'gpt-realtime';
     const sdp = await fetch(`https://api.openai.com/v1/realtime?model=${encodeURIComponent(model)}`, {
       method: 'POST', body: offer.sdp,
@@ -116,7 +235,7 @@ async function startVoice() {
     await pc.setRemoteDescription({ type: 'answer', sdp: await sdp.text() });
     connecting = false;
   } catch (err) {
-    bubble(esc(err.message || 'Voice not available — type your question instead.'), 'them');
+    bubble(err.message || 'Use text instead.', 'them');
     await stopVoice();
   }
 }
