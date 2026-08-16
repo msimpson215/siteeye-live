@@ -2,69 +2,121 @@
 
 const SLIDES = [
   {
-    image: '/images/slide-1.jpg',
+    image: '/images/asphalt.png',
     fallback: 'camera',
-    title: 'See your job site from your phone.',
-    line: 'A camera on a pole. Cell built in. Live video — from anywhere.',
-    lead: 'SiteEye Live puts eyes where you can\'t be.',
+    title: 'Asphalt & sealcoating.',
+    line: 'Watch the paving crew from the office — no drive-by check.',
+    lead: 'SiteEye Live for asphalt and paving jobs.',
     points: [
-      '360° camera on a telescoping pole — 12 to 15 feet up',
-      'Connects over cell service — no Wi-Fi at the site',
-      'Watch on your phone, tablet, or office computer'
+      'See progress on the road without sitting in traffic',
+      '360° live view on cell — no Wi-Fi at the site',
+      'Move the pole to the next stretch when you wrap'
     ],
-    axon: 'This is the big idea — you\'re not there, but you can still see everything.'
+    axon: 'Asphalt crews run multiple jobs. This keeps eyes on every site.'
   },
   {
-    image: '/images/slide-2.jpg',
-    fallback: 'pool',
-    title: 'Can\'t be there? Still see it.',
-    line: 'Contractors on multiple sites. Parents at a pool party checking from the kitchen.',
-    lead: 'Commercial crews and families — same peace of mind.',
+    image: '/images/roofing.png',
+    fallback: 'camera',
+    title: 'Roofing.',
+    line: 'Know the crew is on the roof — and still working — from your phone.',
+    lead: 'Built for roofing contractors who can\'t be on every house.',
     points: [
-      'Contractors: know the crew is working without driving there',
-      'Parents: pool parties, backyard events, park birthdays',
-      'Other parents can check in remotely too'
+      'Live view of the roof and yard',
+      'Tamper awareness while gear is set up',
+      'Works on any device'
     ],
-    axon: 'Imagine a pool party — you\'re inside but you can still see the backyard on your phone.'
+    axon: 'Roofing spreads across neighborhoods. SiteEye covers the ones you\'re not at.'
   },
   {
-    image: '/images/slide-3.jpg',
+    image: '/images/concrete.png',
     fallback: 'setup',
-    title: 'Set it up in minutes.',
-    line: 'No tools. No IT department. Pole up, cell signal, you\'re watching.',
-    lead: 'Three steps — that\'s the whole thing.',
+    title: 'Concrete.',
+    line: 'Forms, pours, and curing — check in without rolling the truck.',
+    lead: 'Concrete crews get remote eyes on the pour.',
     points: [
-      '1 — Arrive and set the pole up (minutes)',
-      '2 — It connects to cell service automatically',
-      '3 — Open the app and watch live'
+      'Watch pour day from the office or another job',
+      'Document the site with live video',
+      'Pack up and move to the next foundation'
     ],
-    axon: 'Nobody needs to be tech-savvy. If you can use a phone, you can use this.'
+    axon: 'Pour day is busy. You can still see it live if you\'re elsewhere.'
   },
   {
-    image: '/images/slide-4.jpg',
+    image: '/images/excavation.png',
+    fallback: 'setup',
+    title: 'Excavation.',
+    line: 'Heavy equipment sites — see activity without being on the dirt.',
+    lead: 'Excavation and earthwork, monitored remotely.',
+    points: [
+      'Eyes on dig sites across town',
+      'Cellular — no job-site Wi-Fi needed',
+      'Deploys in minutes'
+    ],
+    axon: 'Excavators move. So should your camera — SiteEye packs up with the job.'
+  },
+  {
+    image: '/images/demolition.png',
+    fallback: 'camera',
+    title: 'Demolition.',
+    line: 'High-risk sites. You still need visibility when you can\'t stand next to the machine.',
+    lead: 'Demolition and tear-down visibility.',
+    points: [
+      'Remote live view of the tear-down',
+      'Safer oversight from a distance',
+      'Same kit — pole, camera, cell'
+    ],
+    axon: 'Demolition is loud and messy. Watch from a safer spot.'
+  },
+  {
+    image: '/images/landscaping.png',
+    fallback: 'pool',
+    title: 'Landscaping.',
+    line: 'Crews on residential and commercial grounds — check without the drive.',
+    lead: 'Landscaping and grounds crews.',
+    points: [
+      'See multiple properties in one day',
+      'Live phone view for owners or GCs',
+      'Quick setup, quick teardown'
+    ],
+    axon: 'Landscapers bounce between yards. SiteEye stays pointed at the job.'
+  },
+  {
+    image: '/images/painting.png',
     fallback: 'phone',
-    title: 'Watch live. Anywhere.',
-    line: 'Office, truck, couch — same live view.',
-    lead: 'Your phone becomes a window.',
+    title: 'Painting.',
+    line: 'Interior or exterior crews — progress you can see from anywhere.',
+    lead: 'Painting contractors get live site visibility.',
     points: [
-      'Works on iPhone, Android, or web browser',
-      'Battery runs a full workday on the pole',
-      'Pack it up and move to the next site'
+      'Check progress between walkthroughs',
+      'Works indoors or on the exterior',
+      'Share the view with the GC if needed'
     ],
-    axon: 'You\'re not tied to being on location.'
+    axon: 'Paint days drag. A quick glance on the phone beats a wasted trip.'
   },
   {
-    image: '/images/slide-5.jpg',
+    image: '/images/pressure_washing.png',
     fallback: 'kit',
-    title: 'Simple pricing.',
-    line: 'Contractor kits — monthly or buy outright. Ask Axon for your numbers.',
-    lead: 'Basic for most crews. Pro for serious operations.',
+    title: 'Pressure washing.',
+    line: 'Before-and-after work you can oversee without standing in the spray.',
+    lead: 'Pressure washing and exterior cleaning.',
     points: [
-      'Basic — about $89/month plus setup, or ~$2,000 to buy',
-      'Pro — about $119/month, more hardware and support',
-      'Residential options coming'
+      'Watch commercial or residential cleans',
+      'Document the finish remotely',
+      'Same portable SiteEye kit'
     ],
-    axon: 'Ask me what Basic vs Pro means — I\'ll keep it simple.'
+    axon: 'Wash jobs are quick. Still nice to prove the work got done.'
+  },
+  {
+    image: '/images/utilities.png',
+    fallback: 'kit',
+    title: 'Utilities.',
+    line: 'Cable, power, municipal work — eyes on crews in the field.',
+    lead: 'Utility and infrastructure jobs.',
+    points: [
+      'Remote oversight for field crews',
+      'Cellular connection anywhere there\'s signal',
+      'Ask Axon about pricing for your crew size'
+    ],
+    axon: 'Utility work stretches across the map. SiteEye covers the sites you can\'t visit.'
   }
 ];
 

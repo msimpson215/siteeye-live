@@ -1,15 +1,17 @@
-# Your SiteEye photos go here
+# SiteEye Live — market photos
 
-Name them exactly:
+These images power the markets / job-type cards on the site.
 
-| File | Slide |
-|------|-------|
-| `slide-1.jpg` | Camera on pole / job site |
-| `slide-2.jpg` | Pool, backyard, or residential |
-| `slide-3.jpg` | Deploying the unit |
-| `slide-4.jpg` | Watching on phone |
-| `slide-5.jpg` | Kit, product, or pricing visual |
+| File | Market |
+|------|--------|
+| `asphalt.png` | Asphalt |
+| `concrete.png` | Concrete |
+| `demolition.png` | Demolition |
+| `excavation.png` | Excavation |
+| `landscaping.png` | Landscaping |
+| `painting.png` | Painting |
+| `pressure_washing.png` | Pressure washing |
+| `roofing.png` | Roofing |
+| `utilities.png` | Utilities |
 
-Drop files in this folder, push to GitHub, Render redeploys.
-
-Until then, slides show a neutral placeholder — **no stock photos**.
+Drop files here, push to GitHub, Render redeploys.
