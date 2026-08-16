@@ -2,6 +2,7 @@ node_modules/
 .env
 .DS_Store
 *.log
+data/
 
 _canva_restore/
 public/_old_deck/

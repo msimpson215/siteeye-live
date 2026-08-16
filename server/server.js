@@ -2,11 +2,13 @@ import express from 'express';
 import fetch from 'node-fetch';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { appendFile, mkdir } from 'fs/promises';
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 import {
   authEnabled,
-  requireAuth,
+  axonLocked,
+  requireAxonAuth,
   tryLogin,
   setAuthCookie,
   clearAuthCookie,
@@ -18,6 +20,7 @@ dotenv.config({ path: join(dirname(fileURLToPath(import.meta.url)), '../.env') }
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const publicDir = join(__dirname, '../public');
+const dataDir = join(__dirname, '../data');
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -61,19 +64,38 @@ function hasKey() {
   return Boolean(process.env.OPENAI_API_KEY?.trim());
 }
 
-/** Public while locked: login UI + auth APIs only */
+async function saveLead(lead) {
+  await mkdir(dataDir, { recursive: true });
+  await appendFile(join(dataDir, 'leads.jsonl'), JSON.stringify(lead) + '\n', 'utf8');
+}
+
+async function notifyLead(lead) {
+  if (!(process.env.SMTP_USER && process.env.SMTP_PASS)) {
+    console.log('LEAD:', lead);
+    return;
+  }
+  const t = nodemailer.createTransport({ service: 'gmail', auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS } });
+  await t.sendMail({
+    from: process.env.SMTP_USER,
+    to: process.env.CONTACT_EMAIL || process.env.SMTP_USER,
+    subject: `SiteEye Live — AI waitlist lead`,
+    text: `Email: ${lead.email}\nPhone: ${lead.phone}\nMarketing OK: ${lead.marketing}\nWhen: ${lead.at}\nSource: ${lead.source}`
+  });
+}
+
 app.get('/login.html', (_req, res) => res.sendFile(join(publicDir, 'login.html')));
 app.get('/api/auth/status', (req, res) => {
   const session = getSession(req);
   res.json({
     authEnabled: authEnabled(),
+    axonLocked: axonLocked(),
     loggedIn: Boolean(session),
     user: session?.u || null,
     brains: session?.brains || []
   });
 });
 app.post('/api/login', (req, res) => {
-  if (!authEnabled()) return res.json({ ok: true, authEnabled: false });
+  if (!authEnabled()) return res.status(503).json({ ok: false, error: 'Login not configured' });
   const { username, password } = req.body || {};
   const session = tryLogin(username, password);
   if (!session) return res.status(401).json({ ok: false, error: 'Invalid username or password' });
@@ -85,15 +107,60 @@ app.post('/api/logout', (_req, res) => {
   res.json({ ok: true });
 });
 
-app.get('/health', (_req, res) => res.json({ ok: hasKey(), auth: authEnabled() }));
+app.get('/health', (_req, res) => res.json({ ok: hasKey(), axonLocked: axonLocked(), auth: authEnabled() }));
 
-app.use(requireAuth);
-app.use(express.static(publicDir));
+/** Public waitlist — captures email/phone; does not open Axon */
+app.post('/api/lead', async (req, res) => {
+  const email = String(req.body?.email || '').trim();
+  const phone = String(req.body?.phone || '').trim();
+  const marketing = Boolean(req.body?.marketing);
+  if (!email || !phone) return res.status(400).json({ ok: false, error: 'Email and phone required' });
+  if (!marketing) return res.status(400).json({ ok: false, error: 'Please accept the notice to continue' });
+  const lead = {
+    email,
+    phone,
+    marketing,
+    source: 'ask-axon-waitlist',
+    at: new Date().toISOString()
+  };
+  try {
+    await saveLead(lead);
+    await notifyLead(lead);
+    res.json({ ok: true, status: 'coming_soon' });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ ok: false, error: 'Could not save' });
+  }
+});
 
-app.get('/session', async (req, res) => {
+app.post('/api/contact', async (req, res) => {
+  const { name, email, phone, message } = req.body;
+  if (!name && !email && !phone) return res.status(400).json({ ok: false });
+  try {
+    if (process.env.SMTP_USER && process.env.SMTP_PASS) {
+      const t = nodemailer.createTransport({ service: 'gmail', auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS } });
+      await t.sendMail({
+        from: process.env.SMTP_USER,
+        to: process.env.CONTACT_EMAIL || process.env.SMTP_USER,
+        subject: `SiteEye Live — ${name || 'Inquiry'}`,
+        text: `${name || ''}\n${email || ''}\n${phone || ''}\n${message || ''}`
+      });
+    } else console.log('CONTACT:', req.body);
+    res.json({ ok: true });
+  } catch {
+    res.status(500).json({ ok: false });
+  }
+});
+
+/** Real Axon only after proprietary login — registered before static so it cannot be bypassed */
+app.get('/siteeye-ai.html', requireAxonAuth, (_req, res) => {
+  res.sendFile(join(publicDir, 'siteeye-ai.html'));
+});
+
+app.get('/session', requireAxonAuth, async (req, res) => {
   if (!hasKey()) return res.status(503).json({ error: 'OPENAI_API_KEY not set.' });
   const brain = String(req.query.src || 'siteeye').toLowerCase();
-  if (authEnabled() && !canAccessBrain(req.auth, brain)) {
+  if (!canAccessBrain(req.auth, brain)) {
     return res.status(403).json({ error: 'No access to this Axon brain.' });
   }
   try {
@@ -117,7 +184,7 @@ app.get('/session', async (req, res) => {
   }
 });
 
-app.post('/api/chat', async (req, res) => {
+app.post('/api/chat', requireAxonAuth, async (req, res) => {
   const { message, history = [] } = req.body;
   if (!message?.trim()) return res.status(400).json({ error: 'No message' });
   if (!hasKey()) return res.status(503).json({ reply: 'Axon is not connected yet. Add OPENAI_API_KEY on the server.' });
@@ -142,32 +209,11 @@ app.post('/api/chat', async (req, res) => {
   }
 });
 
-app.post('/api/contact', async (req, res) => {
-  const { name, email, phone, message } = req.body;
-  if (!name && !email && !phone) return res.status(400).json({ ok: false });
-  try {
-    if (process.env.SMTP_USER && process.env.SMTP_PASS) {
-      const t = nodemailer.createTransport({ service: 'gmail', auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS } });
-      await t.sendMail({
-        from: process.env.SMTP_USER,
-        to: process.env.CONTACT_EMAIL || process.env.SMTP_USER,
-        subject: `SiteEye Live — ${name || 'Inquiry'}`,
-        text: `${name || ''}\n${email || ''}\n${phone || ''}\n${message || ''}`
-      });
-    } else console.log('CONTACT:', req.body);
-    res.json({ ok: true });
-  } catch {
-    res.status(500).json({ ok: false });
-  }
-});
+app.use(express.static(publicDir));
 
 app.get('*', (_req, res) => res.sendFile(join(publicDir, 'index.html')));
 
 app.listen(PORT, () => {
   console.log(`SiteEye Live → port ${PORT}`);
-  const on = authEnabled();
-  console.log(`Auth ${on ? 'ON (site private)' : 'OFF (public)'}`);
-  if (on && !process.env.AUTH_USERS?.trim()) {
-    console.warn('AUTH is ON but AUTH_USERS is empty — nobody can log in until you set users on Render.');
-  }
+  console.log(`Site: public | Axon locked: ${axonLocked()} | Dev login: ${authEnabled()}`);
 });

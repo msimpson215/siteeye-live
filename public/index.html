@@ -16,9 +16,8 @@ img{display:block;width:100%;height:auto}
 .actions{display:inline-flex;align-items:center;gap:10px;flex-shrink:0}
 .ask{background:#111;color:#fff;border:0;border-radius:6px;padding:10px 14px;font-weight:800;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
 .ask .dot{width:8px;height:8px;border-radius:50%;background:#E31C23;animation:blink 1.2s infinite}
-.out{background:transparent;border:1px solid #ccc;border-radius:6px;padding:9px 12px;font-weight:700;font-size:12px;cursor:pointer;color:#444}
+.out{display:none;background:transparent;border:1px solid #ccc;border-radius:6px;padding:9px 12px;font-weight:700;font-size:12px;cursor:pointer;color:#444}
 
-/* ONLY addition: moving banner */
 .banner{background:#111;overflow:hidden}
 .marquee{display:flex;width:max-content;animation:scroll 28s linear infinite}
 .banner:hover .marquee{animation-play-state:paused}
@@ -26,8 +25,29 @@ img{display:block;width:100%;height:auto}
 .tile{flex:0 0 150px;height:108px;overflow:hidden;border-right:2px solid #111}
 .tile img{width:100%;height:100%;object-fit:cover}
 
-/* Canva design — unchanged (top nav/static strip removed only so banner isn't doubled) */
 .canva{width:100%;background:#fff}
+
+.modal{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;padding:20px}
+.modal.open{display:flex}
+.modal .scrim{position:absolute;inset:0;background:rgba(0,0,0,.55)}
+.modal .box{position:relative;width:min(420px,100%);background:#fff;border:1px solid #e5e7eb;padding:24px 22px 18px;z-index:1}
+.modal h2{font-size:18px;font-weight:900;margin-bottom:6px}
+.modal .sub{font-size:13px;color:#555;line-height:1.4;margin-bottom:16px}
+.modal label{display:block;font-size:12px;font-weight:800;margin:0 0 6px}
+.modal input[type=email],.modal input[type=tel]{
+  width:100%;padding:11px 12px;border:1px solid #ccc;border-radius:4px;font-size:15px;margin-bottom:12px;background:#fafafa
+}
+.modal .check{display:flex;gap:10px;align-items:flex-start;margin:4px 0 12px;font-size:11px;color:#444;line-height:1.35}
+.modal .check input{margin-top:2px;flex-shrink:0}
+.modal .err{color:#E31C23;font-size:13px;font-weight:700;min-height:18px;margin-bottom:8px}
+.modal .go{width:100%;padding:12px;border:0;border-radius:4px;background:#E31C23;color:#fff;font-weight:800;font-size:14px;cursor:pointer}
+.modal .go:disabled{opacity:.55;cursor:wait}
+.modal .x{position:absolute;top:8px;right:12px;border:0;background:none;font-size:22px;cursor:pointer;color:#666}
+.modal .done{display:none;text-align:center;padding:12px 4px 6px}
+.modal.done-mode form{display:none}
+.modal.done-mode .done{display:block}
+.modal .done h3{font-size:20px;font-weight:900;margin-bottom:8px}
+.modal .done p{font-size:14px;color:#444;line-height:1.45}
 
 .panel{position:fixed;inset:0;z-index:80;display:none}
 .panel.open{display:block}
@@ -74,6 +94,32 @@ img{display:block;width:100%;height:auto}
   <img src="/images/canva-body.png?v=3" alt="SiteEye 360 LIVE Canva design"/>
 </main>
 
+<div class="modal" id="leadModal" aria-hidden="true">
+  <div class="scrim" id="leadScrim"></div>
+  <div class="box">
+    <button class="x" type="button" id="leadClose" aria-label="Close">×</button>
+    <form id="leadForm">
+      <h2>Talk to an AI team member</h2>
+      <p class="sub">Leave your email and phone so we can connect you with Axon when your access is ready.</p>
+      <label for="leadEmail">Email</label>
+      <input id="leadEmail" name="email" type="email" required autocomplete="email" placeholder="you@company.com"/>
+      <label for="leadPhone">Phone</label>
+      <input id="leadPhone" name="phone" type="tel" required autocomplete="tel" placeholder="(555) 555-5555"/>
+      <label class="check">
+        <input id="leadMarketing" type="checkbox" required/>
+        <span>I agree to be contacted by SiteEye about product updates, demos, and marketing materials. Message/data rates may apply.</span>
+      </label>
+      <div class="err" id="leadErr"></div>
+      <button class="go" type="submit" id="leadGo">Continue</button>
+    </form>
+    <div class="done">
+      <h3>Coming soon</h3>
+      <p>Thanks — you’re on the list. We’re finishing the AI team member experience and will reach out using the email and phone you provided.</p>
+      <button class="go" type="button" id="leadDone" style="margin-top:16px;background:#111">Got it</button>
+    </div>
+  </div>
+</div>
+
 <div class="panel" id="axonPanel">
   <div class="scrim" id="axonScrim"></div>
   <div class="sheet">
@@ -82,23 +128,81 @@ img{display:block;width:100%;height:auto}
   </div>
 </div>
 <script>
+let loggedIn = false;
+
+function openLead(){
+  const m = document.getElementById('leadModal');
+  m.classList.remove('done-mode');
+  document.getElementById('leadErr').textContent = '';
+  m.classList.add('open');
+  m.setAttribute('aria-hidden','false');
+}
+function closeLead(){
+  const m = document.getElementById('leadModal');
+  m.classList.remove('open','done-mode');
+  m.setAttribute('aria-hidden','true');
+}
 function openAxon(){
-  const f=document.getElementById('axonFrame');
-  if(!f.getAttribute('src')||f.getAttribute('src')==='about:blank') f.src='/siteeye-ai.html';
+  const f = document.getElementById('axonFrame');
+  if (!f.getAttribute('src') || f.getAttribute('src') === 'about:blank') f.src = '/siteeye-ai.html';
   document.getElementById('axonPanel').classList.add('open');
 }
-function closeAxon(){document.getElementById('axonPanel').classList.remove('open')}
-document.getElementById('askAxon').onclick=openAxon;
-document.getElementById('axonClose').onclick=closeAxon;
-document.getElementById('axonScrim').onclick=closeAxon;
-document.getElementById('logoutBtn').onclick=async()=>{
-  await fetch('/api/logout',{method:'POST'});
-  location.href='/login.html';
+function closeAxon(){ document.getElementById('axonPanel').classList.remove('open'); }
+
+document.getElementById('askAxon').onclick = () => {
+  if (loggedIn) openAxon();
+  else openLead();
 };
-fetch('/api/auth/status').then(r=>r.json()).then(s=>{
-  if(!s.authEnabled) document.getElementById('logoutBtn').style.display='none';
-}).catch(()=>{});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAxon()});
+document.getElementById('axonClose').onclick = closeAxon;
+document.getElementById('axonScrim').onclick = closeAxon;
+document.getElementById('leadClose').onclick = closeLead;
+document.getElementById('leadScrim').onclick = closeLead;
+document.getElementById('leadDone').onclick = closeLead;
+
+document.getElementById('leadForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const err = document.getElementById('leadErr');
+  const go = document.getElementById('leadGo');
+  err.textContent = '';
+  go.disabled = true;
+  try {
+    const r = await fetch('/api/lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: document.getElementById('leadEmail').value,
+        phone: document.getElementById('leadPhone').value,
+        marketing: document.getElementById('leadMarketing').checked
+      })
+    });
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok || !data.ok) {
+      err.textContent = data.error || 'Something went wrong';
+      go.disabled = false;
+      return;
+    }
+    document.getElementById('leadModal').classList.add('done-mode');
+  } catch {
+    err.textContent = 'Could not reach server';
+  }
+  go.disabled = false;
+});
+
+document.getElementById('logoutBtn').onclick = async () => {
+  await fetch('/api/logout', { method: 'POST' });
+  loggedIn = false;
+  document.getElementById('logoutBtn').style.display = 'none';
+  location.reload();
+};
+
+fetch('/api/auth/status').then(r => r.json()).then(s => {
+  loggedIn = Boolean(s.loggedIn);
+  if (loggedIn) document.getElementById('logoutBtn').style.display = 'inline-block';
+}).catch(() => {});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeAxon(); closeLead(); }
+});
 </script>
 </body>
 </html>

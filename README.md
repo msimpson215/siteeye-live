@@ -8,10 +8,12 @@ Simple presentation link for explaining SiteEye Live to someone who's never hear
 **Required env**
 - `OPENAI_API_KEY`
 
-**Private gate (dev / partners)**
-- `AUTH_ENABLED=true`
-- `AUTH_SECRET=` long random string
-- `AUTH_USERS=` `user:pass,user2:pass2`  
-  Optional brains: `user:pass:siteeye|tactical`
+**Public site + waitlist**
+- Visitors browse the page freely
+- **Ask Axon AI** → email + phone + marketing consent → “Coming soon” (lead saved)
+- Leads: `data/leads.jsonl` + email if SMTP is set
 
-With auth on, the site redirects to `/login.html`. Axon `/session` and chat stay locked without a cookie.
+**Real Axon (locked)**
+- `AXON_LOCKED=true` (default on Render)
+- `AUTH_USERS=marty:password` + `AUTH_SECRET=...`
+- Sign in at `/login.html` — only then does Ask Axon open the real brain

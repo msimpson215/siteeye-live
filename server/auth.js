@@ -28,11 +28,22 @@ export function parseUsers(raw) {
   return map;
 }
 
+/** Proprietary login is available when users are configured (or forced on). */
 export function authEnabled() {
   const flag = String(process.env.AUTH_ENABLED || '').toLowerCase();
   if (flag === 'false') return false;
   if (flag === 'true') return true;
-  // Fail closed on Render/production: no public Axon unless explicitly opened
+  return Boolean(process.env.AUTH_USERS?.trim());
+}
+
+/**
+ * Public can browse the site. Axon voice/chat stays locked unless logged in.
+ * Fail closed on Render/production.
+ */
+export function axonLocked() {
+  const flag = String(process.env.AXON_LOCKED || '').toLowerCase();
+  if (flag === 'false') return false;
+  if (flag === 'true') return true;
   return process.env.RENDER === 'true' || process.env.NODE_ENV === 'production';
 }
 
@@ -114,8 +125,12 @@ export function canAccessBrain(session, brain) {
   return session.brains.includes(b);
 }
 
-export function requireAuth(req, res, next) {
-  if (!authEnabled()) return next();
+/** Only protects Axon endpoints — marketing site stays public. */
+export function requireAxonAuth(req, res, next) {
+  if (!axonLocked()) {
+    req.auth = getSession(req) || { u: 'open', brains: ['*'] };
+    return next();
+  }
   const session = getSession(req);
   if (session) {
     req.auth = session;
@@ -125,7 +140,6 @@ export function requireAuth(req, res, next) {
     req.path.startsWith('/api/') ||
     req.path === '/session' ||
     (req.headers.accept || '').includes('application/json');
-  if (wantsJson) return res.status(401).json({ error: 'Login required', login: '/login.html' });
-  const nextUrl = encodeURIComponent(req.originalUrl || '/');
-  return res.redirect(302, `/login.html?next=${nextUrl}`);
+  if (wantsJson) return res.status(401).json({ error: 'Axon access requires login', login: '/login.html' });
+  return res.redirect(302, `/login.html?next=${encodeURIComponent(req.originalUrl || '/')}`);
 }
