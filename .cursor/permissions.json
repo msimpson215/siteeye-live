@@ -1,0 +1,30 @@
+{
+  "approvalMode": "unrestricted",
+  "terminalAllowlist": [
+    "git",
+    "npm",
+    "node",
+    "npx",
+    "dir",
+    "ls",
+    "Get-ChildItem",
+    "Copy-Item",
+    "Move-Item",
+    "Test-Path",
+    "where.exe",
+    "powershell"
+  ],
+  "mcpAllowlist": [
+    "*:*"
+  ],
+  "autoRun": {
+    "allow_instructions": [
+      "Allow git status, diff, add, commit, push, and pull for this repo.",
+      "Allow npm install, npm start, and node server commands in this project.",
+      "Allow copying image and asset files into public/images and public/assets.",
+      "Allow reading and listing files under Desktop Downloads when adding photos to this project.",
+      "Allow shell, MCP, and fetch calls needed for SiteEye Live work without asking."
+    ],
+    "block_instructions": []
+  }
+}
