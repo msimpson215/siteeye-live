@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SiteEye Live — Login</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  font-family:Arial,Helvetica,sans-serif;color:#111;
+  background:linear-gradient(165deg,#f7f7f8 0%,#e8eaee 45%,#f3f4f6 100%);
+  padding:24px;
+}
+.card{width:min(400px,100%);background:#fff;border:1px solid #e5e7eb;padding:28px 24px 22px}
+.brand{font-weight:900;font-size:22px;display:inline-flex;align-items:center;gap:8px;margin-bottom:6px}
+.brand .live{background:#E31C23;color:#fff;font-size:11px;font-weight:900;padding:4px 7px;border-radius:3px;display:inline-flex;gap:5px;align-items:center}
+.brand .live i{width:6px;height:6px;border-radius:50%;background:#fff}
+.sub{color:#555;font-size:13px;margin-bottom:22px;line-height:1.4}
+label{display:block;font-size:12px;font-weight:800;margin:0 0 6px;color:#222}
+input{
+  width:100%;padding:12px 12px;border:1px solid #ccc;border-radius:4px;
+  font-size:15px;margin-bottom:14px;background:#fafafa
+}
+input:focus{outline:2px solid #111;outline-offset:1px;background:#fff}
+button{
+  width:100%;margin-top:6px;padding:13px 14px;border:0;border-radius:4px;
+  background:#111;color:#fff;font-weight:800;font-size:14px;cursor:pointer
+}
+button:disabled{opacity:.55;cursor:wait}
+.err{color:#E31C23;font-size:13px;font-weight:700;min-height:18px;margin:4px 0 8px}
+.note{margin-top:16px;font-size:11px;color:#777;line-height:1.4}
+</style>
+</head>
+<body>
+<form class="card" id="form" autocomplete="on">
+  <div class="brand">SiteEye 360 <span class="live"><i></i>LIVE</span></div>
+  <p class="sub">Private development access. Sign in to open the site and speak with your Axon team member.</p>
+  <label for="username">Username</label>
+  <input id="username" name="username" type="text" autocomplete="username" required autofocus/>
+  <label for="password">Password</label>
+  <input id="password" name="password" type="password" autocomplete="current-password" required/>
+  <div class="err" id="err"></div>
+  <button type="submit" id="go">Sign in</button>
+  <p class="note">Proprietary login for internal / partner testing — not customer-facing yet.</p>
+</form>
+<script>
+const params = new URLSearchParams(location.search);
+const next = params.get('next') || '/';
+document.getElementById('form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const err = document.getElementById('err');
+  const go = document.getElementById('go');
+  err.textContent = '';
+  go.disabled = true;
+  try {
+    const r = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: document.getElementById('username').value,
+        password: document.getElementById('password').value
+      })
+    });
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok || !data.ok) {
+      err.textContent = data.error || 'Login failed';
+      go.disabled = false;
+      return;
+    }
+    location.href = next.startsWith('/') ? next : '/';
+  } catch {
+    err.textContent = 'Could not reach server';
+    go.disabled = false;
+  }
+});
+</script>
+</body>
+</html>

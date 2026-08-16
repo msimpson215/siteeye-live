@@ -4,13 +4,23 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
+import {
+  authEnabled,
+  requireAuth,
+  tryLogin,
+  setAuthCookie,
+  clearAuthCookie,
+  getSession,
+  canAccessBrain
+} from './auth.js';
 
 dotenv.config({ path: join(dirname(fileURLToPath(import.meta.url)), '../.env') });
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+const publicDir = join(__dirname, '../public');
 const app = express();
 app.use(express.json());
-app.use(express.static(join(__dirname, '../public')));
+app.use(express.urlencoded({ extended: false }));
 
 const PORT = process.env.PORT || 3000;
 const REALTIME_MODEL = process.env.OPENAI_REALTIME_MODEL || 'gpt-realtime';
@@ -51,10 +61,41 @@ function hasKey() {
   return Boolean(process.env.OPENAI_API_KEY?.trim());
 }
 
-app.get('/health', (_req, res) => res.json({ ok: hasKey() }));
+/** Public while locked: login UI + auth APIs only */
+app.get('/login.html', (_req, res) => res.sendFile(join(publicDir, 'login.html')));
+app.get('/api/auth/status', (req, res) => {
+  const session = getSession(req);
+  res.json({
+    authEnabled: authEnabled(),
+    loggedIn: Boolean(session),
+    user: session?.u || null,
+    brains: session?.brains || []
+  });
+});
+app.post('/api/login', (req, res) => {
+  if (!authEnabled()) return res.json({ ok: true, authEnabled: false });
+  const { username, password } = req.body || {};
+  const session = tryLogin(username, password);
+  if (!session) return res.status(401).json({ ok: false, error: 'Invalid username or password' });
+  setAuthCookie(res, session);
+  res.json({ ok: true, user: session.u, brains: session.brains });
+});
+app.post('/api/logout', (_req, res) => {
+  clearAuthCookie(res);
+  res.json({ ok: true });
+});
 
-app.get('/session', async (_req, res) => {
+app.get('/health', (_req, res) => res.json({ ok: hasKey(), auth: authEnabled() }));
+
+app.use(requireAuth);
+app.use(express.static(publicDir));
+
+app.get('/session', async (req, res) => {
   if (!hasKey()) return res.status(503).json({ error: 'OPENAI_API_KEY not set.' });
+  const brain = String(req.query.src || 'siteeye').toLowerCase();
+  if (authEnabled() && !canAccessBrain(req.auth, brain)) {
+    return res.status(403).json({ error: 'No access to this Axon brain.' });
+  }
   try {
     const r = await fetch('https://api.openai.com/v1/realtime/sessions', {
       method: 'POST',
@@ -70,7 +111,7 @@ app.get('/session', async (_req, res) => {
     const data = await r.json();
     if (!r.ok || data.error) return res.status(r.status || 502).json({ error: data.error?.message || 'Failed' });
     if (!data.client_secret?.value) return res.status(502).json({ error: 'No token.' });
-    res.json({ ...data, model: REALTIME_MODEL });
+    res.json({ ...data, model: REALTIME_MODEL, brain });
   } catch (e) {
     res.status(500).json({ error: 'Session failed.' });
   }
@@ -120,6 +161,9 @@ app.post('/api/contact', async (req, res) => {
   }
 });
 
-app.get('*', (_req, res) => res.sendFile(join(__dirname, '../public/index.html')));
+app.get('*', (_req, res) => res.sendFile(join(publicDir, 'index.html')));
 
-app.listen(PORT, () => console.log(`SiteEye Live → port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`SiteEye Live → port ${PORT}`);
+  console.log(`Auth ${authEnabled() ? 'ON (site private)' : 'OFF (public)'}`);
+});

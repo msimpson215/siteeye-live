@@ -13,8 +13,10 @@ img{display:block;width:100%;height:auto}
 .brand .live{background:#E31C23;color:#fff;font-size:11px;font-weight:900;padding:4px 7px;border-radius:3px;display:inline-flex;gap:5px;align-items:center}
 .brand .live i{width:6px;height:6px;border-radius:50%;background:#fff;animation:blink 1.1s infinite}
 @keyframes blink{50%{opacity:.35}}
+.actions{display:inline-flex;align-items:center;gap:10px;flex-shrink:0}
 .ask{background:#111;color:#fff;border:0;border-radius:6px;padding:10px 14px;font-weight:800;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
 .ask .dot{width:8px;height:8px;border-radius:50%;background:#E31C23;animation:blink 1.2s infinite}
+.out{background:transparent;border:1px solid #ccc;border-radius:6px;padding:9px 12px;font-weight:700;font-size:12px;cursor:pointer;color:#444}
 
 /* ONLY addition: moving banner */
 .banner{background:#111;overflow:hidden}
@@ -39,7 +41,10 @@ img{display:block;width:100%;height:auto}
 <body>
 <div class="top">
   <div class="brand">SiteEye 360 <span class="live"><i></i>LIVE</span></div>
-  <button class="ask" type="button" id="askAxon"><span class="dot"></span> Ask Axon AI</button>
+  <div class="actions">
+    <button class="ask" type="button" id="askAxon"><span class="dot"></span> Ask Axon AI</button>
+    <button class="out" type="button" id="logoutBtn" title="Sign out">Sign out</button>
+  </div>
 </div>
 
 <section class="banner" aria-label="Moving industry banner">
@@ -86,6 +91,13 @@ function closeAxon(){document.getElementById('axonPanel').classList.remove('open
 document.getElementById('askAxon').onclick=openAxon;
 document.getElementById('axonClose').onclick=closeAxon;
 document.getElementById('axonScrim').onclick=closeAxon;
+document.getElementById('logoutBtn').onclick=async()=>{
+  await fetch('/api/logout',{method:'POST'});
+  location.href='/login.html';
+};
+fetch('/api/auth/status').then(r=>r.json()).then(s=>{
+  if(!s.authEnabled) document.getElementById('logoutBtn').style.display='none';
+}).catch(()=>{});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAxon()});
 </script>
 </body>
