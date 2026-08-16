@@ -29,7 +29,11 @@ export function parseUsers(raw) {
 }
 
 export function authEnabled() {
-  return String(process.env.AUTH_ENABLED || '').toLowerCase() === 'true';
+  const flag = String(process.env.AUTH_ENABLED || '').toLowerCase();
+  if (flag === 'false') return false;
+  if (flag === 'true') return true;
+  // Fail closed on Render/production: no public Axon unless explicitly opened
+  return process.env.RENDER === 'true' || process.env.NODE_ENV === 'production';
 }
 
 export function getSecret() {

@@ -165,5 +165,9 @@ app.get('*', (_req, res) => res.sendFile(join(publicDir, 'index.html')));
 
 app.listen(PORT, () => {
   console.log(`SiteEye Live → port ${PORT}`);
-  console.log(`Auth ${authEnabled() ? 'ON (site private)' : 'OFF (public)'}`);
+  const on = authEnabled();
+  console.log(`Auth ${on ? 'ON (site private)' : 'OFF (public)'}`);
+  if (on && !process.env.AUTH_USERS?.trim()) {
+    console.warn('AUTH is ON but AUTH_USERS is empty — nobody can log in until you set users on Render.');
+  }
 });
