@@ -3,116 +3,286 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Production version &mdash; SiteEye 360 LIVE</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,Helvetica,sans-serif;color:#111;background:#fff}
-.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 18px;border-bottom:1px solid #eee}
-.brand{font-weight:900;font-size:18px;display:inline-flex;align-items:center;gap:8px;text-decoration:none;color:#111}
-.brand .live{background:#E31C23;color:#fff;font-size:11px;font-weight:900;padding:4px 7px;border-radius:3px}
-.home{color:#111;font-weight:700;font-size:13px;text-decoration:none}
-.wrap{max-width:960px;margin:0 auto;padding:36px 20px 70px}
-.tag{color:#E31C23;font-weight:800;font-size:12px;letter-spacing:.06em;margin-bottom:8px}
-h1{font-size:30px;font-weight:900;margin-bottom:8px;line-height:1.15}
-.lede{color:#444;font-size:15px;line-height:1.5;margin-bottom:28px;max-width:640px}
-h2{font-size:16px;font-weight:900;margin:30px 0 12px}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
-.card{border:1px solid #e5e7eb;border-radius:6px;padding:18px}
-.card .who{font-size:11px;font-weight:800;letter-spacing:.06em;color:#666;text-transform:uppercase;margin-bottom:6px}
-.card h3{font-size:18px;font-weight:900;margin-bottom:10px}
-.card .mo{font-size:26px;font-weight:900;color:#E31C23;line-height:1}
-.card .mo small{font-size:12px;font-weight:800;color:#666}
-.card .buy{font-size:13px;color:#333;margin-top:8px;font-weight:700}
-.card ul{list-style:none;margin-top:12px}
-.card li{font-size:13px;color:#555;line-height:1.5;padding-left:14px;position:relative}
-.card li::before{content:'';position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:#E31C23}
-.card.soon{background:#fafafa}
-.card.soon .mo{color:#111;font-size:18px}
-.note{margin-top:22px;color:#666;font-size:12.5px;line-height:1.55}
-.actions{margin-top:32px;display:flex;flex-wrap:wrap;gap:12px}
-.btn{display:inline-block;text-decoration:none;font-weight:800;font-size:14px;padding:13px 18px;border-radius:4px}
-.btn-red{background:#E31C23;color:#fff}
-.btn-dark{background:#111;color:#fff}
-@media (max-width:640px){ h1{font-size:24px} }
-</style>
+<title>Production Version &mdash; SiteEye 360 LIVE</title>
+<link rel="stylesheet" href="/css/build-pages.css?v=1"/>
 </head>
 <body>
+
 <div class="top">
-  <a class="brand" href="/">SiteEye 360 <span class="live">LIVE</span></a>
-  <a class="home" href="/">&larr; Home</a>
-</div>
-
-<div class="wrap">
-  <div class="tag">PRODUCTION VERSION &mdash; NEXT</div>
-  <h1>Proposed production model &amp; pricing</h1>
-  <p class="lede">A SiteEye 360 branded system built for sale or lease &mdash; one enclosure, one logo, no off-the-shelf labels. Monthly or buy outright.</p>
-
-  <h2>Contractor</h2>
-  <div class="cards">
-    <div class="card">
-      <div class="who">Contractor &mdash; Basic</div>
-      <h3>One camera, one site</h3>
-      <div class="mo">$89<small> / month</small></div>
-      <div class="buy">or buy outright about $2,000</div>
-      <ul>
-        <li>Cell service built in &mdash; no job-site Wi-Fi</li>
-        <li>Live view from phone or laptop</li>
-        <li>Travels with the crew, sets up in minutes</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="who">Contractor &mdash; Pro</div>
-      <h3>More sites, more features</h3>
-      <div class="mo">$119<small> / month</small></div>
-      <div class="buy">outright pricing on request</div>
-      <ul>
-        <li>Everything in Basic</li>
-        <li>Two-way audio</li>
-        <li>Multiple crews and job sites in one view</li>
-      </ul>
-    </div>
-
-    <div class="card soon">
-      <div class="who">Residential</div>
-      <h3>Simpler package</h3>
-      <div class="mo">Coming</div>
-      <div class="buy">pricing to be set</div>
-      <ul>
-        <li>Same idea, lighter setup</li>
-        <li>Backyard, pool party, remodel</li>
-      </ul>
-    </div>
-  </div>
-
-  <h2>What changes from the prototype</h2>
-  <div class="cards">
-    <div class="card">
-      <h3>Hardware upgrades</h3>
-      <ul>
-        <li>Rugged hard case</li>
-        <li>Stronger mast system</li>
-        <li>Weather sealed</li>
-        <li>Longer battery life</li>
-        <li>Enhanced camera</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>SiteEye 360 branded</h3>
-      <ul>
-        <li>Mast and case carry the SiteEye 360 logo &mdash; no supplier branding</li>
-        <li>Fixed part list, repeatable assembly</li>
-        <li>Lease or purchase, serviced as a unit</li>
-      </ul>
-    </div>
-  </div>
-
-  <p class="note">These are proposed numbers for the production system, not a quote. The prototype page shows what the first working build actually costs in parts today.</p>
-
+  <a class="brand" href="/">SiteEye 360 <span class="live"><i></i>LIVE</span></a>
   <div class="actions">
-    <a class="btn btn-red" href="/prototype.html">See prototype components &amp; pricing &rarr;</a>
-    <a class="btn btn-dark" href="/">Back to SiteEye 360 LIVE</a>
+    <a class="back" href="/">&larr; Home</a>
+    <button class="talk" type="button" data-ai>
+      <span class="dot"></span>Speak with our SiteEye 360 AI team member
+    </button>
   </div>
 </div>
+
+<section class="banner" aria-label="Moving industry banner">
+  <div class="marquee">
+    <div class="tile"><img src="/images/ind-roofing.png" alt="Roofing"/></div>
+    <div class="tile"><img src="/images/ind-asphalt.png" alt="Asphalt"/></div>
+    <div class="tile"><img src="/images/ind-concrete.png" alt="Concrete"/></div>
+    <div class="tile"><img src="/images/ind-painting.png" alt="Painting"/></div>
+    <div class="tile"><img src="/images/ind-landscaping.png" alt="Landscaping"/></div>
+    <div class="tile"><img src="/images/ind-excavation.png" alt="Excavation"/></div>
+    <div class="tile"><img src="/images/ind-utilities.png" alt="Utilities"/></div>
+    <div class="tile"><img src="/images/ind-demolition.png" alt="Demolition"/></div>
+    <div class="tile"><img src="/images/ind-pressure-washing.png" alt="Pressure Washing"/></div>
+    <div class="tile"><img src="/images/ind-roofing.png" alt=""/></div>
+    <div class="tile"><img src="/images/ind-asphalt.png" alt=""/></div>
+    <div class="tile"><img src="/images/ind-concrete.png" alt=""/></div>
+    <div class="tile"><img src="/images/ind-painting.png" alt=""/></div>
+    <div class="tile"><img src="/images/ind-landscaping.png" alt=""/></div>
+    <div class="tile"><img src="/images/ind-excavation.png" alt=""/></div>
+    <div class="tile"><img src="/images/ind-utilities.png" alt=""/></div>
+    <div class="tile"><img src="/images/ind-demolition.png" alt=""/></div>
+    <div class="tile"><img src="/images/ind-pressure-washing.png" alt=""/></div>
+  </div>
+</section>
+
+<header class="head">
+  <div class="wrap">
+    <div>
+      <span class="kicker">PRODUCTION VERSION &mdash; NEXT</span>
+      <h1>Same idea, built as <span>one finished product.</span></h1>
+      <p class="lede">The prototype proves it works. The production unit is purpose-built: a taller sealed mast,
+        a rugged hard case, longer battery life, and SiteEye 360 on the tower and the case &mdash; one piece of
+        equipment your crew grabs off the shelf, not a pile of parts.</p>
+      <div class="facts">
+        <b><i>&#10003;</i>SiteEye 360 branded</b>
+        <b><i>&#10003;</i>Weather sealed</b>
+        <b><i>&#10003;</i>Taller mast</b>
+        <b><i>&#10003;</i>Monthly or buy outright</b>
+      </div>
+    </div>
+    <div class="shot">
+      <img src="/images/unit-production.png?v=1" alt="SiteEye 360 LIVE production unit: yellow telescoping mast branded SiteEye 360 rising from a rugged black hard case"/>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <div class="sec">
+    <h2>What changes from <em>the prototype</em></h2>
+    <div class="rule"></div>
+    <p class="sub">Every part gets upgraded for daily abuse on a real job site &mdash; then it gets our name on it.</p>
+  </div>
+
+  <section class="grid g3">
+
+    <article class="card">
+      <span class="num">1</span>
+      <div class="pic"><img src="/images/part-tower.png?v=2" alt="Telescoping mast system"/></div>
+      <div class="body">
+        <h3>Stronger Mast System</h3>
+        <ul>
+          <li>Taller reach for a better vantage point</li>
+          <li>Locking sections that will not creep or drop</li>
+          <li>Wind-rated base with proper ballast points</li>
+          <li>SiteEye 360 printed vertically up the tower</li>
+        </ul>
+        <div class="cost"><span>UPGRADE</span><b>Built for us</b></div>
+      </div>
+    </article>
+
+    <article class="card">
+      <span class="num">2</span>
+      <div class="pic"><img src="/images/part-power.png?v=2" alt="Rugged branded hard case"/></div>
+      <div class="body">
+        <h3>Rugged Hard Case</h3>
+        <ul>
+          <li>Impact-resistant shell, wheels and a haul handle</li>
+          <li>Everything lives inside it &mdash; mast, camera, power</li>
+          <li>Doubles as the ballasted base when deployed</li>
+          <li>Branded SiteEye 360 LIVE</li>
+        </ul>
+        <div class="cost"><span>UPGRADE</span><b>Built for us</b></div>
+      </div>
+    </article>
+
+    <article class="card">
+      <span class="num">3</span>
+      <div class="pic"><img src="/images/part-camera.png?v=2" alt="Production pan and tilt camera"/></div>
+      <div class="body">
+        <h3>Enhanced Camera</h3>
+        <ul>
+          <li>Higher resolution with better low-light</li>
+          <li>Faster pan and tilt tracking</li>
+          <li>Hardened housing and cabling</li>
+          <li>Live view and playback from any phone</li>
+        </ul>
+        <div class="cost"><span>UPGRADE</span><b>Built for us</b></div>
+      </div>
+    </article>
+
+    <article class="card">
+      <span class="num">4</span>
+      <div class="pic"><img src="/images/part-generator.png?v=3" alt="Extended battery power system"/></div>
+      <div class="body">
+        <h3>Longer Battery Life</h3>
+        <ul>
+          <li>Bigger lithium pack for multi-day jobs</li>
+          <li>Optional solar or wall-charge top-off</li>
+          <li>Battery level visible in the app</li>
+          <li>Swap packs without taking the unit down</li>
+        </ul>
+        <div class="cost"><span>UPGRADE</span><b>Built for us</b></div>
+      </div>
+    </article>
+
+    <article class="card">
+      <span class="num">5</span>
+      <div class="pic"><img src="/images/part-mount.png?v=2" alt="Sealed connectors and mounting hardware"/></div>
+      <div class="body">
+        <h3>Weather Sealed Throughout</h3>
+        <ul>
+          <li>Gasketed lid and sealed cable glands</li>
+          <li>No exposed connectors or loose wiring</li>
+          <li>Rain, dust and wash-down tolerant</li>
+          <li>Integrated mounts instead of adapters</li>
+        </ul>
+        <div class="cost"><span>UPGRADE</span><b>Built for us</b></div>
+      </div>
+    </article>
+
+    <article class="card">
+      <span class="num">6</span>
+      <div class="pic"><img src="/images/brand-case.png?v=1" alt="Hard case printed with the SiteEye 360 LIVE name"/></div>
+      <div class="body">
+        <h3>It Carries Our Name</h3>
+        <ul>
+          <li>SiteEye 360 LIVE printed on the case</li>
+          <li>SiteEye 360 up the tower, visible on site</li>
+          <li>Consistent color and finish on every unit</li>
+          <li>Looks like equipment, not a science project</li>
+        </ul>
+        <div class="cost"><span>BRANDED</span><b>Ours</b></div>
+      </div>
+    </article>
+
+  </section>
+
+  <div class="sec">
+    <h2>Proposed <em>pricing</em></h2>
+    <div class="rule"></div>
+    <p class="sub">Rent it monthly with the streaming service included, or buy the unit outright. Final numbers are
+      set once production tooling and per-unit cost are locked in.</p>
+  </div>
+
+  <section class="tiers">
+
+    <div class="tier">
+      <div class="cap">CONTRACTOR &mdash; BASIC</div>
+      <div class="in">
+        <h3>One camera, one site</h3>
+        <div class="mo">$89<small> / month</small></div>
+        <div class="buy">or buy outright about $2,000</div>
+        <ul>
+          <li>One SiteEye 360 LIVE unit</li>
+          <li>Live streaming over 4G / 5G</li>
+          <li>24/7 recording with cloud playback</li>
+          <li>Phone and desktop live view</li>
+          <li>Standard support</li>
+        </ul>
+        <div class="pick"><a href="/" data-ai>Ask about Basic</a></div>
+      </div>
+    </div>
+
+    <div class="tier hero">
+      <div class="cap">CONTRACTOR &mdash; PRO</div>
+      <div class="in">
+        <h3>Multiple sites, whole crew</h3>
+        <div class="mo">$119<small> / month</small></div>
+        <div class="buy">or buy outright about $2,600</div>
+        <ul>
+          <li>Everything in Basic</li>
+          <li>Multiple units on one dashboard</li>
+          <li>Extended cloud recording history</li>
+          <li>Time-lapse clips for customers and bids</li>
+          <li>Crew logins and shareable site links</li>
+          <li>Priority support and replacement unit</li>
+        </ul>
+        <div class="pick"><a href="/" data-ai>Ask about Pro</a></div>
+      </div>
+    </div>
+
+    <div class="tier soon">
+      <div class="cap">RESIDENTIAL &mdash; COMING SOON</div>
+      <div class="in">
+        <h3>Homeowners and small property</h3>
+        <div class="mo">TBD</div>
+        <div class="buy">Smaller unit, simpler plan</div>
+        <ul>
+          <li>Watch a remodel or addition in progress</li>
+          <li>Driveway, barn, land and vacation property</li>
+          <li>Same live view, lighter hardware</li>
+          <li>Month-to-month, no contract</li>
+        </ul>
+        <div class="pick"><a href="/" data-ai>Get on the list</a></div>
+      </div>
+    </div>
+
+  </section>
+
+  <p class="note"><b>Pricing shown is proposed.</b> These figures are our current target for the production unit and
+    the streaming service, not a published price list. Specific makes, models and manufacturers are not listed here.
+    Monthly plans include the camera, the cellular connection and the cloud &mdash; there is nothing else to buy.</p>
+
+  <div class="next">
+    <div class="t">Want to see the numbers behind the first unit?
+      <small>The prototype page breaks down every component and what it costs to build one today.</small>
+    </div>
+    <a href="/prototype.html">See Prototype Build &rarr;</a>
+  </div>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="fb">SiteEye 360 <span>LIVE</span></div>
+    <p>Set it up in the morning. Stream live all day. Take it home at night.</p>
+  </div>
+</footer>
+
+<div class="modal" id="leadModal" aria-hidden="true">
+  <div class="scrim" id="leadScrim"></div>
+  <div class="box">
+    <button class="x" type="button" id="leadClose" aria-label="Close">&times;</button>
+    <form id="leadForm">
+      <h2>Speak with our SiteEye 360 AI team member</h2>
+      <p class="sub2">Powered by Axon AI. Enter your email and phone and we&rsquo;ll connect you when the AI team member is ready.</p>
+      <label for="leadEmail">Email</label>
+      <input id="leadEmail" name="email" type="email" required autocomplete="email" placeholder="you@company.com"/>
+      <label for="leadPhone">Phone</label>
+      <input id="leadPhone" name="phone" type="tel" required autocomplete="tel" placeholder="(555) 555-5555"/>
+      <label class="check">
+        <input id="leadMarketing" type="checkbox" required/>
+        <span>Your email and telephone number will not be shared with any other organizations.</span>
+      </label>
+      <div class="err" id="leadErr"></div>
+      <button class="go" type="submit" id="leadGo">Continue</button>
+    </form>
+    <div class="done">
+      <h3>Coming soon</h3>
+      <p>Thanks &mdash; we have your information. The SiteEye 360 AI team member isn&rsquo;t open yet; we&rsquo;ll use the email and phone you provided when it&rsquo;s ready.</p>
+      <button class="go" type="button" id="leadDone" style="margin-top:16px;background:#111">Got it</button>
+    </div>
+  </div>
+</div>
+
+<div class="panel" id="axonPanel">
+  <div class="scrim" id="axonScrim"></div>
+  <div class="sheet">
+    <div class="hd">
+      <span>SiteEye 360 AI team member<small class="powered">Powered by Axon AI</small></span>
+      <button class="x" type="button" id="axonClose">&times;</button>
+    </div>
+    <iframe id="axonFrame" title="SiteEye 360 AI team member, powered by Axon AI" src="about:blank" allow="microphone"></iframe>
+  </div>
+</div>
+
+<script src="/js/ai-tab.js?v=1"></script>
 </body>
 </html>
