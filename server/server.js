@@ -25,6 +25,14 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// Serve pages and Canva art fresh so a normal refresh always shows the latest deploy
+app.use((_req, res, next) => {
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+  next();
+});
+
 const PORT = process.env.PORT || 3000;
 const REALTIME_MODEL = process.env.OPENAI_REALTIME_MODEL || 'gpt-realtime';
 const REALTIME_VOICE = process.env.OPENAI_REALTIME_VOICE || 'alloy';
