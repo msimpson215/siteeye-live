@@ -15,12 +15,10 @@ img{display:block;width:100%;height:auto}
 @keyframes blink{50%{opacity:.35}}
 .actions{display:inline-flex;align-items:center;gap:10px;flex-shrink:0}
 .talk{
-  background:#111;color:#fff;border:0;border-radius:6px;padding:8px 14px;
-  font-weight:800;font-size:12px;cursor:pointer;text-align:left;line-height:1.25;
-  max-width:min(340px,62vw)
+  background:#111;color:#fff;border:0;border-radius:6px 6px 0 0;padding:11px 16px;
+  font-weight:800;font-size:13px;cursor:pointer;line-height:1;white-space:nowrap
 }
-.talk small{display:block;font-weight:700;font-size:10px;color:#ffd0d0;margin-top:3px}
-.talk .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#E31C23;margin-right:6px;animation:blink 1.2s infinite;vertical-align:middle}
+.talk .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#E31C23;margin-right:7px;animation:blink 1.2s infinite;vertical-align:middle}
 .out{display:none;background:transparent;border:1px solid #ccc;border-radius:6px;padding:9px 12px;font-weight:700;font-size:12px;cursor:pointer;color:#444}
 
 .banner{background:#111;overflow:hidden}
@@ -93,8 +91,7 @@ img{display:block;width:100%;height:auto}
   <a class="brand" href="/">SiteEye 360 <span class="live"><i></i>LIVE</span></a>
   <div class="actions">
     <button class="talk" type="button" id="askAi">
-      <span class="dot"></span>Talk or speak with our SiteEye 360 AI team member
-      <small>Powered by Axon AI</small>
+      <span class="dot"></span>Speak with our SiteEye 360 AI team member
     </button>
     <button class="out" type="button" id="logoutBtn" title="Sign out">Sign out</button>
   </div>
@@ -125,10 +122,10 @@ img{display:block;width:100%;height:auto}
 
 <main class="hero">
   <img src="/images/canva-hero.png?v=1" alt="SiteEye 360 LIVE — set up in the morning, stream all day, take it home at night"/>
-  <button class="cover-ai" type="button" id="heroAi" aria-label="Talk or speak with our SiteEye 360 AI team member. Powered by Axon AI.">
+  <button class="cover-ai" type="button" id="heroAi" aria-label="Speak with our SiteEye 360 AI team member. Powered by Axon AI.">
     <span class="bubble" aria-hidden="true">💬</span>
     <span class="copy">
-      <strong>Talk or speak with our SiteEye 360 AI team member</strong>
+      <strong>Speak with our SiteEye 360 AI team member</strong>
       <em>Powered by Axon AI</em>
     </span>
   </button>
@@ -141,7 +138,7 @@ img{display:block;width:100%;height:auto}
   <div class="box">
     <button class="x" type="button" id="leadClose" aria-label="Close">×</button>
     <form id="leadForm">
-      <h2>Talk or speak with our SiteEye 360 AI team member</h2>
+      <h2>Speak with our SiteEye 360 AI team member</h2>
       <p class="sub">Powered by Axon AI. Enter your email and phone and we’ll connect you when the AI team member is ready.</p>
       <label for="leadEmail">Email</label>
       <input id="leadEmail" name="email" type="email" required autocomplete="email" placeholder="you@company.com"/>
