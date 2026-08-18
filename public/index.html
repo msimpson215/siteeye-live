@@ -44,10 +44,10 @@ img{display:block;width:100%;height:auto}
 .cover-ai strong{display:block;font-size:clamp(10px,1.05vw,15px);font-weight:800}
 .cover-ai em{display:block;font-style:normal;font-size:clamp(8px,0.8vw,11px);color:#666;margin-top:2px}
 
-/* Whole prototype / production cards are clickable */
-.hot{position:absolute;z-index:5;display:block;opacity:0;top:67.2%;width:48%;height:26.9%}
-.hot-proto{left:1.5%}
-.hot-prod{left:50.5%}
+/* Whole prototype / production cards are clickable — invisible, edge to edge */
+.hot{position:absolute;z-index:7;display:block;opacity:0;cursor:pointer;top:66%;height:28.5%;width:50%}
+.hot-proto{left:0}
+.hot-prod{left:50%}
 
 .modal{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;padding:20px}
 .modal.open{display:flex}
