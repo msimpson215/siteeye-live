@@ -266,3 +266,54 @@ html,body{overflow-x:hidden}
   .plain .shot{max-width:230px;margin:0 auto;width:100%}
   .plain .shot img{max-height:190px}
 }
+/* ---------- research rows: model name, bullets, sub-parts, math ---------- */
+.row .model{margin-top:6px;font-size:13px;font-weight:900;color:#111;letter-spacing:.01em}
+.row .bul{list-style:none;margin-top:9px;display:flex;flex-wrap:wrap;gap:6px 8px}
+.row .bul li{position:relative;font-size:12px;color:#555;background:#f6f6f7;border:1px solid #e7e7e9;border-radius:100px;padding:5px 11px;line-height:1.3}
+.row .bul li b{color:#111;font-weight:900}
+.sub{margin-top:12px;border-left:3px solid #ececec;padding-left:14px}
+.sub + .sub{margin-top:12px}
+.sub .st{font-size:13.5px;font-weight:900;color:#111}
+.sub .st span{display:inline-block;background:#111;color:#fff;font-size:9.5px;font-weight:900;letter-spacing:.07em;padding:3px 7px;border-radius:3px;margin-right:8px;vertical-align:1px}
+.sub .cost{margin-top:6px;font-size:13px;font-weight:900;color:#E31C23}
+.calc{margin-top:11px;background:#fbfbfc;border:1px solid #ebebed;border-radius:7px;padding:11px 13px}
+.calc .ct{font-size:10.5px;font-weight:900;letter-spacing:.08em;color:#999}
+.calc ol{margin:7px 0 0 16px}
+.calc li{font-size:12.5px;color:#555;line-height:1.6}
+.calc li b{color:#111}
+.calc .out{margin-top:8px;padding-top:8px;border-top:1px dashed #dcdcdc;font-size:13px;font-weight:900;color:#111}
+.calc .out u{text-decoration:none;color:#E31C23}
+.flag{display:inline-block;margin-top:9px;background:#fff4d6;border:1px solid #f0dca6;border-radius:5px;padding:7px 11px;font-size:12px;color:#7a5c14;line-height:1.5;font-weight:700}
+.tbc{font-size:12px!important;font-weight:900;color:#999;letter-spacing:.04em;text-align:right;line-height:1.4}
+
+/* ---------- power budget panel ---------- */
+.pwr{margin-top:26px;background:#0d0e12;border-radius:10px;padding:24px 26px;color:#fff}
+.pwr h3{font-size:17px;font-weight:900}
+.pwr h3 em{font-style:normal;color:#E31C23}
+.pwr .g{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:17px}
+.pwr .b{background:#171922;border:1px solid #24262f;border-radius:8px;padding:14px 15px}
+.pwr .b .k{font-size:10.5px;font-weight:900;letter-spacing:.08em;color:#8b8d99}
+.pwr .b .v{margin-top:6px;font-size:20px;font-weight:900;color:#fff}
+.pwr .b .v u{text-decoration:none;color:#E31C23}
+.pwr .b .n2{margin-top:5px;font-size:11.5px;color:#8b8d99;line-height:1.45}
+.pwr .res{margin-top:16px;background:#E31C23;border-radius:8px;padding:14px 16px;font-size:14px;font-weight:900;line-height:1.45}
+.pwr .fine{margin-top:11px;font-size:11.5px;color:#8b8d99;line-height:1.55}
+
+/* ---------- naming rule callout ---------- */
+.rule2{margin-top:24px;background:#fff;border:2px solid #111;border-radius:10px;padding:20px 22px}
+.rule2 .lb{display:inline-block;background:#111;color:#fff;font-size:10px;font-weight:900;letter-spacing:.09em;padding:5px 9px;border-radius:3px}
+.rule2 .no{margin-top:13px;font-size:14px;color:#8a8a8a;line-height:1.5}
+.rule2 .no s{color:#c0c0c0}
+.rule2 .yes{margin-top:9px;font-size:19px;font-weight:900;color:#111;line-height:1.3}
+.rule2 .yes em{font-style:normal;color:#E31C23}
+
+/* ---------- configuration summary band ---------- */
+.config{margin-top:26px;border:2px solid #E31C23;border-radius:10px;overflow:hidden}
+.config .cap{background:#E31C23;color:#fff;font-size:11px;font-weight:900;letter-spacing:.09em;padding:10px 18px}
+.config .in{padding:20px 22px}
+.config .in p{font-size:clamp(16px,1.7vw,21px);font-weight:900;line-height:1.4;color:#111}
+.config .in span{display:block;margin-top:9px;font-size:13px;font-weight:700;color:#777}
+@media (max-width:700px){
+  .pwr{padding:18px 17px}
+  .row .bul li{font-size:11.5px}
+}
