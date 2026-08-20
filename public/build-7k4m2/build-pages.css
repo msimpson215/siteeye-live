@@ -406,3 +406,15 @@ html,body{overflow-x:hidden}
   .cmp-row .c2:before{content:"5G UPGRADE — ";font-weight:900;color:#E31C23;font-size:11px;letter-spacing:.05em}
 }
 .pwr-note{margin-top:12px;font-size:14px;color:#b6b8c2;line-height:1.5;max-width:70ch}
+
+/* ---------- three columns: 4G / 5G / AI Supervisor ---------- */
+.opts3{grid-template-columns:repeat(3,1fr)}
+.opt2 .add{margin-top:6px;font-size:12.5px;font-weight:800;color:#888;letter-spacing:.02em}
+.opt2 .stack{margin-top:18px;padding-top:14px;border-top:1px solid #f0f0f0}
+.opt2 .stack .sk{font-size:10.5px;font-weight:900;letter-spacing:.08em;color:#999}
+.opt2 .stack .sv{margin-top:6px;font-size:18px;font-weight:900;color:#111}
+.opt2 .stack .sv b{color:#E31C23}
+.opt2.ai{border-color:#111}
+.opt2.ai .cap{background:#111}
+.opt2.ai .amt2{font-size:clamp(26px,3vw,36px)}
+@media (max-width:980px){ .opts3{grid-template-columns:1fr} }
