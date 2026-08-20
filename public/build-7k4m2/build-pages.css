@@ -346,3 +346,40 @@ html,body{overflow-x:hidden}
   .steps{grid-template-columns:1fr}
   .verdict b{font-size:64px}
 }
+/* ---------- BIGGER: part photos, numbers, prices ---------- */
+.row{grid-template-columns:46px 170px 1fr auto;gap:22px;padding:22px 22px}
+.row .n{width:40px;height:40px;border-radius:6px;font-size:18px}
+.row.opt .n{font-size:10px;padding:7px 8px}
+.row .th{height:170px}
+.row .th img{max-height:170px;max-width:165px}
+.row .nm{font-size:19px}
+.row .sp{font-size:14px}
+.row .model{font-size:15px;margin-top:8px}
+.row .pr{font-size:26px}
+.row .pr small{font-size:11.5px}
+.tbc{font-size:15px!important;color:#E31C23}
+.plain .shot img{max-height:320px}
+.plain .wrap{grid-template-columns:1fr 330px}
+@media (max-width:900px){ .plain .wrap{grid-template-columns:1fr} }
+@media (max-width:760px){
+  .row{grid-template-columns:40px 1fr;gap:14px}
+  .row .th{display:block;height:auto;grid-column:2;margin-bottom:4px}
+  .row .th img{max-height:200px;max-width:100%}
+  .row .pr{grid-column:2;text-align:left;margin-top:8px}
+}
+
+/* ---------- option comparison ---------- */
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:26px}
+.opt2{border:2px solid #e3e3e3;border-radius:10px;overflow:hidden;background:#fff;display:flex;flex-direction:column}
+.opt2.win{border-color:#E31C23}
+.opt2 .cap{background:#111;color:#fff;padding:12px 18px;font-size:11.5px;font-weight:900;letter-spacing:.07em}
+.opt2.win .cap{background:#E31C23}
+.opt2 .in{padding:20px 22px;display:flex;flex-direction:column;flex:1}
+.opt2 .amt2{font-size:clamp(32px,4vw,46px);font-weight:900;letter-spacing:-.02em;line-height:1}
+.opt2.win .amt2{color:#E31C23}
+.opt2 ul{list-style:none;margin-top:16px}
+.opt2 li{position:relative;padding-left:22px;font-size:14px;color:#444;line-height:1.5;margin-bottom:9px}
+.opt2 li:before{content:"\2713";position:absolute;left:0;top:0;color:#E31C23;font-weight:900}
+.opt2 li.x:before{content:"\2715";color:#bbb}
+.opt2 .why{margin-top:auto;padding-top:16px;border-top:1px solid #f0f0f0;font-size:13px;color:#666;line-height:1.55}
+@media (max-width:760px){ .opts{grid-template-columns:1fr} }
