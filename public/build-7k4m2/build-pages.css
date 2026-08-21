@@ -418,3 +418,9 @@ html,body{overflow-x:hidden}
 .opt2.ai .cap{background:#111}
 .opt2.ai .amt2{font-size:clamp(26px,3vw,36px)}
 @media (max-width:980px){ .opts3{grid-template-columns:1fr} }
+/* ---------- bigger cleaner package prices ---------- */
+.opts3 .opt2 .amt2{font-size:clamp(42px,5vw,58px);letter-spacing:-.03em;line-height:.95;margin-top:4px}
+.opts3 .opt2.win .amt2{color:#E31C23}
+.opts3 .opt2 .add{margin-top:10px;font-size:13.5px;line-height:1.4}
+.opts3 .opt2 .add b{color:#111;font-size:15px}
+.opts3 .opt2.ai .amt2{color:#111}
