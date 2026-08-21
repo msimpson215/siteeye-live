@@ -444,3 +444,7 @@ html,body{overflow-x:hidden}
   padding:18px 16px;
   text-align:center;
 }
+/* START HERE 4G — black header (not red; red is reserved for PROPOSED PRICING) */
+.opt2.win .cap{background:#111!important}
+.opt2.win .cap:hover{background:#111}
+.opts3 .opt2.win .cap.bigcap{background:#111}
