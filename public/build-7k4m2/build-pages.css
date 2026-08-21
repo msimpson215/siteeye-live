@@ -424,3 +424,23 @@ html,body{overflow-x:hidden}
 .opts3 .opt2 .add{margin-top:10px;font-size:13.5px;line-height:1.4}
 .opts3 .opt2 .add b{color:#111;font-size:15px}
 .opts3 .opt2.ai .amt2{color:#111}
+/* ---------- PROPOSED PRICING banner + bigger column caps ---------- */
+.propbanner{
+  margin:22px 0 0;
+  background:#E31C23;
+  color:#fff;
+  text-align:center;
+  font-size:clamp(22px,3.2vw,36px);
+  font-weight:900;
+  letter-spacing:.12em;
+  padding:16px 18px;
+  border-radius:10px 10px 0 0;
+}
+.opts3{margin-top:0;border-radius:0 0 10px 10px}
+.opts3 .opt2 .cap.bigcap{
+  font-size:clamp(15px,1.6vw,20px);
+  letter-spacing:.06em;
+  line-height:1.25;
+  padding:18px 16px;
+  text-align:center;
+}
