@@ -476,3 +476,19 @@ html,body{overflow-x:hidden}
 }
 .optblock .list{margin-top:20px}
 .optblock .warnnote{margin-top:18px}
+/* TO BE SOURCED thumbnail placeholder */
+.tbsbox{
+  height:170px;
+  display:grid;
+  place-items:center;
+  background:#f4f4f5;
+  border:1px dashed #ccc;
+  border-radius:8px;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.06em;
+  color:#888;
+  text-align:center;
+  line-height:1.35;
+  padding:8px;
+}
