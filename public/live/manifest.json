@@ -1,0 +1,8 @@
+{
+  "name": "SITE EYE 360",
+  "short_name": "SiteEye",
+  "start_url": "/live/watch",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000"
+}

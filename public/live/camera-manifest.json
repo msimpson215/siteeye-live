@@ -1,0 +1,8 @@
+{
+  "name": "SITE EYE 360 Camera",
+  "short_name": "SiteEye Cam",
+  "start_url": "/live/camera",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000"
+}

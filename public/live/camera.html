@@ -6,28 +6,34 @@
 <meta name="robots" content="noindex,nofollow"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="mobile-web-app-capable" content="yes"/>
-<title>SiteEye 360 — Camera</title>
-<link rel="stylesheet" href="/live/live.css"/>
+<meta name="theme-color" content="#000000"/>
+<title>SITE EYE 360 — Camera</title>
+<link rel="manifest" href="/live/camera-manifest.json"/>
+<link rel="stylesheet" href="/live/app.css"/>
 </head>
 <body>
-<div class="page">
-  <div class="top">
-    <a class="brand" href="/live">SiteEye 360 <span class="live"><i></i>LIVE</span></a>
-    <span class="tag">Camera</span>
-  </div>
+<div class="cam-page">
+  <header class="hd">
+    <a class="ic" href="/live" aria-label="Back">&#8592;</a>
+    <div class="logo">
+      <svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="#E8C547"/><circle cx="16" cy="16" r="8" fill="#111"/><circle cx="16" cy="16" r="4" fill="#E8C547"/></svg>
+      SITE <b>EYE</b> 360
+    </div>
+    <span class="logo" style="font-size:11px;color:#E8C547">CAMERA</span>
+  </header>
   <div class="stage">
     <video id="preview" autoplay muted playsinline></video>
     <div class="hud">
-      <div>Tell Joe this code</div>
+      <div class="k">Tell Joe this code</div>
       <div class="code" id="code">————</div>
-      <div class="status" id="status">Tap Start, then allow the camera.</div>
+      <div class="st" id="status">Tap Start, then allow the camera.</div>
     </div>
   </div>
   <div class="bar">
     <button class="go" id="start" type="button">Start SiteEye camera</button>
-    <button class="ghost" id="flip" type="button">Flip camera</button>
+    <button class="ghost" id="flip" type="button">Flip</button>
   </div>
-  <div class="err" id="err"></div>
+  <div class="err" id="err" style="padding:0 12px 10px"></div>
 </div>
 <script>
 const preview = document.getElementById('preview');
@@ -35,14 +41,16 @@ const codeEl = document.getElementById('code');
 const statusEl = document.getElementById('status');
 const errEl = document.getElementById('err');
 let facing = 'environment';
-let stream = null;
-let ws = null;
-let pc = null;
-let room = null;
-let wake = null;
+let stream = null, ws = null, pc = null, room = null, wake = null;
 
 function setStatus(t){ statusEl.textContent = t; }
 function setErr(t){ errEl.textContent = t || ''; }
+
+async function setTorch(on){
+  const track = stream && stream.getVideoTracks()[0];
+  if (!track) return;
+  try { await track.applyConstraints({ advanced: [{ torch: !!on }] }); } catch {}
+}
 
 async function getCam(){
   if (stream) stream.getTracks().forEach(t => t.stop());
@@ -96,6 +104,11 @@ function signal(){
 async function startCall(){
   if (pc){ pc.close(); pc = null; }
   pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
+  const ch = pc.createDataChannel('ctrl');
+  ch.onmessage = (ev) => {
+    if (ev.data === 'torch-on') setTorch(true);
+    if (ev.data === 'torch-off') setTorch(false);
+  };
   stream.getTracks().forEach(t => pc.addTrack(t, stream));
   pc.onicecandidate = (ev) => {
     if (ev.candidate && ws && ws.readyState === 1){
@@ -116,7 +129,7 @@ async function start(){
     }
     if (!ws || ws.readyState > 1) signal();
     else setStatus(room ? 'Waiting for Joe…' : 'Starting…');
-  } catch (e) {
+  } catch {
     setErr('Allow the camera when the phone asks. Chrome or Safari on the phone works.');
   }
 }
