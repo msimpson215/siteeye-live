@@ -153,7 +153,9 @@ button,input{font-family:inherit}
 .hub-page .card strong{display:block;font-size:18px}
 .hub-page .card span{display:block;margin-top:6px;font-size:13px;color:#666}
 .hub-page .card.watch span{color:#bbb}
-.hub-page .art{
-  width:100%;height:auto;display:block;margin:4px 0 18px;background:#000;border-radius:12px
-}
+.hub-page .screens{display:grid;grid-template-columns:1fr;gap:14px;margin:16px 0 18px}
+@media (min-width:700px){.hub-page .screens{grid-template-columns:1fr 1fr 1fr}}
+.hub-page .screen{background:#111;border-radius:12px;overflow:hidden;color:#fff;text-align:center}
+.hub-page .screen img{width:100%;height:auto;display:block;background:#000}
+.hub-page .screen span{display:block;padding:8px 8px 10px;font-size:12px;font-weight:800;letter-spacing:.06em}
 .hub-page .note{margin-top:18px;font-size:13px;color:#777;line-height:1.5;background:#fafafa;border-left:3px solid #ddd;padding:10px 12px}
