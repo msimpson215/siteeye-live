@@ -245,7 +245,14 @@ function liveSend(sock, obj) {
 wss.on('connection', (ws) => {
   ws.room = null;
   ws.role = null;
-  ws.on('message', (raw) => {
+  ws.on('message', (raw, isBinary) => {
+    const r0 = liveRooms.get(ws.room);
+    if (isBinary || (Buffer.isBuffer(raw) && raw.length > 0 && raw[0] !== 0x7b)) {
+      if (!r0) return;
+      const other = ws.role === 'camera' ? r0.watch : r0.camera;
+      if (other && other.readyState === 1) other.send(raw, { binary: true });
+      return;
+    }
     let msg;
     try { msg = JSON.parse(String(raw)); } catch { return; }
     if (msg.type === 'create') {

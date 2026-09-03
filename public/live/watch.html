@@ -17,7 +17,7 @@
   <div class="sheet" id="join">
     <div class="box">
       <h2>Connect the camera</h2>
-      <p>On the smartphone that is standing in for SiteEye, open Camera and tap Start. Type the 4-letter code here.</p>
+      <p>Marty will give you 4 letters. Type them here. You do not need to be on his Wi-Fi &mdash; you can be 20 miles away.</p>
       <input id="code" type="text" maxlength="4" autocapitalize="characters" autocomplete="off" placeholder="CODE"/>
       <div class="err" id="err"></div>
       <button class="go" id="joinBtn" type="button">Watch live</button>
@@ -78,6 +78,7 @@
     </div>
     <div class="stage" id="stage">
       <video id="liveVid" autoplay playsinline muted></video>
+      <img id="liveImg" alt="" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#111"/>
       <div class="ov"><span class="dot">LIVE</span><span id="timer">00:00:00</span></div>
       <div class="side">
         <button type="button" id="snap" aria-label="Photo">&#128247;</button>
@@ -141,9 +142,16 @@ const CAMS = [
 ];
 
 const liveVid = document.getElementById('liveVid');
+const liveImg = document.getElementById('liveImg');
 const errEl = document.getElementById('err');
-let ws = null, pc = null, dc = null, stream = null;
+let ws = null, pc = null, dc = null, stream = null, lastFrameUrl = '';
 let scale = 1, tx = 0, ty = 0, t0 = 0, timerId = 0, torch = false;
+const ICE = { iceServers: [
+  { urls: 'stun:stun.l.google.com:19302' },
+  { urls: 'stun:stun.relay.metered.ca:80' },
+  { urls: 'turn:openrelay.metered.ca:80', username: 'openrelayproject', credential: 'openrelayproject' },
+  { urls: 'turns:openrelay.metered.ca:443?transport=tcp', username: 'openrelayproject', credential: 'openrelayproject' }
+]};
 
 function setErr(t){ errEl.textContent = t || ''; }
 function applyZoom(){ liveVid.style.transform = `translate(${tx}px,${ty}px) scale(${scale})`; }
@@ -156,13 +164,24 @@ function tick(){
   document.getElementById('timer').textContent = hh+':'+mm+':'+ss;
 }
 
-function attachVideos(){
-  document.querySelectorAll('video[data-live]').forEach(v => {
-    v.srcObject = stream;
-    v.play().catch(()=>{});
-  });
-  liveVid.srcObject = stream;
-  liveVid.play().catch(()=>{});
+function gotLive(){
+  if (t0) return;
+  t0 = Date.now();
+  clearInterval(timerId);
+  timerId = setInterval(tick, 1000);
+  document.getElementById('join').classList.add('hide');
+  showTab('tabCameras');
+  openCam('live');
+}
+function showFrame(buf){
+  const blob = new Blob([buf], { type: 'image/jpeg' });
+  const url = URL.createObjectURL(blob);
+  liveImg.src = url;
+  liveImg.style.display = stream ? 'none' : 'block';
+  document.querySelectorAll('img[data-live-img]').forEach((im) => { im.src = url; });
+  if (lastFrameUrl) URL.revokeObjectURL(lastFrameUrl);
+  lastFrameUrl = url;
+  gotLive();
 }
 
 function renderList(){
@@ -170,7 +189,7 @@ function renderList(){
     <button class="row" type="button" data-open="${c.id}">
       <div class="thumb">
         ${c.live
-          ? `<video data-live autoplay muted playsinline></video><span class="badge">LIVE</span>`
+          ? `<img data-live-img alt=""/><video data-live autoplay muted playsinline></video><span class="badge">LIVE</span>`
           : `<img src="${c.img}" alt=""/><span class="badge off">DEMO</span>`}
       </div>
       <div class="meta"><strong>${c.name}</strong><em>${c.loc}</em></div>
@@ -181,12 +200,20 @@ function renderList(){
     <button class="gcard" type="button" data-open="${c.id}">
       <div class="gpic">
         ${c.live
-          ? `<video data-live autoplay muted playsinline></video><span class="badge">LIVE</span>`
+          ? `<img data-live-img alt=""/><video data-live autoplay muted playsinline></video><span class="badge">LIVE</span>`
           : `<img src="${c.img}" alt=""/><span class="badge off">DEMO</span>`}
       </div>
       <div class="nm">${c.name}<span>${c.loc}</span></div>
     </button>`).join('');
-  if (stream) attachVideos();
+  if (stream) {
+    document.querySelectorAll('video[data-live]').forEach(v => {
+      v.srcObject = stream;
+      v.play().catch(()=>{});
+    });
+    liveVid.srcObject = stream;
+    liveVid.play().catch(()=>{});
+    liveImg.style.display = 'none';
+  }
 }
 
 function showTab(id){
@@ -208,8 +235,13 @@ function openCam(id){
   if (c.live && stream){
     liveVid.srcObject = stream;
     liveVid.play().catch(()=>{});
-  } else if (!c.live){
+    liveImg.style.display = 'none';
+  } else if (c.live){
     liveVid.srcObject = null;
+    liveImg.style.display = 'block';
+  } else {
+    liveVid.srcObject = null;
+    liveImg.style.display = 'none';
     liveVid.poster = c.img;
     liveVid.removeAttribute('src');
   }
@@ -220,9 +252,14 @@ function connect(room){
   const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
   if (ws) try { ws.close(); } catch {}
   ws = new WebSocket(`${proto}//${location.host}/live-signal`);
+  ws.binaryType = 'arraybuffer';
   ws.onopen = () => ws.send(JSON.stringify({ type:'join', room }));
   ws.onerror = () => setErr('Could not reach SiteEye.');
   ws.onmessage = async (e) => {
+    if (e.data instanceof ArrayBuffer){
+      showFrame(e.data);
+      return;
+    }
     const msg = JSON.parse(e.data);
     if (msg.type === 'error'){ setErr(msg.error); return; }
     if (msg.type === 'joined'){
@@ -230,16 +267,18 @@ function connect(room){
     }
     if (msg.type === 'offer'){
       if (pc) pc.close();
-      pc = new RTCPeerConnection({ iceServers:[{ urls:'stun:stun.l.google.com:19302' }] });
+      pc = new RTCPeerConnection(ICE);
       pc.ondatachannel = (ev) => { dc = ev.channel; };
       pc.ontrack = (ev) => {
         stream = ev.streams[0];
-        t0 = Date.now();
-        clearInterval(timerId);
-        timerId = setInterval(tick, 1000);
-        attachVideos();
-        showTab('tabCameras');
-        openCam('live');
+        liveImg.style.display = 'none';
+        gotLive();
+        document.querySelectorAll('video[data-live]').forEach(v => {
+          v.srcObject = stream;
+          v.play().catch(()=>{});
+        });
+        liveVid.srcObject = stream;
+        liveVid.play().catch(()=>{});
       };
       pc.onicecandidate = (ev) => {
         if (ev.candidate && ws && ws.readyState === 1) ws.send(JSON.stringify({ type:'ice', payload: ev.candidate }));

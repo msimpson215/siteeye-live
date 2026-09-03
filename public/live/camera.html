@@ -25,7 +25,7 @@
     <video id="preview" autoplay muted playsinline></video>
     <div class="hud">
       <img src="/images/hero-cam.jpg" alt="" style="width:72px;height:72px;object-fit:cover;border-radius:8px;margin-bottom:8px;display:block"/>
-      <div class="k">Tell Joe this code</div>
+      <div class="k" id="hudK">Tell Joe this code</div>
       <div class="code" id="code">————</div>
       <div class="st" id="status">Tap Start, then allow the camera.</div>
     </div>
@@ -39,13 +39,32 @@
 <script>
 const preview = document.getElementById('preview');
 const codeEl = document.getElementById('code');
+const hudK = document.getElementById('hudK');
 const statusEl = document.getElementById('status');
 const errEl = document.getElementById('err');
 let facing = 'environment';
-let stream = null, ws = null, pc = null, room = null, wake = null;
+let stream = null, ws = null, pc = null, room = null, wake = null, relayTimer = 0, watching = false;
+const ICE = { iceServers: [
+  { urls: 'stun:stun.l.google.com:19302' },
+  { urls: 'stun:stun.relay.metered.ca:80' },
+  { urls: 'turn:openrelay.metered.ca:80', username: 'openrelayproject', credential: 'openrelayproject' },
+  { urls: 'turns:openrelay.metered.ca:443?transport=tcp', username: 'openrelayproject', credential: 'openrelayproject' }
+]};
 
 function setStatus(t){ statusEl.textContent = t; }
 function setErr(t){ errEl.textContent = t || ''; }
+function hideCode(){
+  watching = true;
+  codeEl.style.display = 'none';
+  hudK.textContent = 'LIVE';
+  setStatus('Joe can see this camera.');
+}
+function showCode(){
+  watching = false;
+  codeEl.style.display = '';
+  hudK.textContent = 'Tell Joe this code';
+  if (room) setStatus('Joe left. Same code — he can join again.');
+}
 
 async function setTorch(on){
   const track = stream && stream.getVideoTracks()[0];
@@ -86,25 +105,51 @@ function signal(){
     }
     if (msg.type === 'peer-joined'){
       setStatus('Joe is connecting…');
+      hideCode();
+      startRelay();
       await startCall();
     }
     if (msg.type === 'answer' && pc){
       await pc.setRemoteDescription(msg.payload);
-      setStatus('LIVE — Joe can see this camera.');
+      hideCode();
     }
     if (msg.type === 'ice' && pc && msg.payload){
       try { await pc.addIceCandidate(msg.payload); } catch {}
     }
     if (msg.type === 'peer-left'){
-      setStatus('Joe left. Leave this open — he can join again with the same code.');
+      showCode();
+      stopRelay();
       if (pc){ pc.close(); pc = null; }
     }
   };
 }
 
+function stopRelay(){
+  if (relayTimer){ clearTimeout(relayTimer); relayTimer = 0; }
+}
+function startRelay(){
+  stopRelay();
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  function tick(){
+    if (!watching || !ws || ws.readyState !== 1 || !preview.videoWidth){
+      relayTimer = setTimeout(tick, 200);
+      return;
+    }
+    canvas.width = 640;
+    canvas.height = Math.max(1, Math.round(640 * preview.videoHeight / preview.videoWidth));
+    ctx.drawImage(preview, 0, 0, canvas.width, canvas.height);
+    canvas.toBlob((blob) => {
+      if (blob && ws && ws.readyState === 1) blob.arrayBuffer().then((buf) => { try { ws.send(buf); } catch {} });
+    }, 'image/jpeg', 0.55);
+    relayTimer = setTimeout(tick, 140);
+  }
+  tick();
+}
+
 async function startCall(){
   if (pc){ pc.close(); pc = null; }
-  pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
+  pc = new RTCPeerConnection(ICE);
   const ch = pc.createDataChannel('ctrl');
   ch.onmessage = (ev) => {
     if (ev.data === 'torch-on') setTorch(true);
