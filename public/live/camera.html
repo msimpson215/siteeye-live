@@ -17,13 +17,14 @@
   <header class="hd">
     <a class="ic" href="/live" aria-label="Back">&#8592;</a>
     <div class="logo">
-      <svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="#E8C547"/><circle cx="16" cy="16" r="8" fill="#111"/><circle cx="16" cy="16" r="4" fill="#E8C547"/></svg>
+      <svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="6" fill="#C9A227"/><rect x="7" y="5" width="18" height="18" rx="2" fill="#111"/><circle cx="16" cy="14" r="6" fill="#1c1c1c"/><circle cx="16" cy="14" r="2.2" fill="#C9A227"/><path d="M16 7.5v2.2M16 18.3v2.2M9.5 14h2.2M20.3 14h2.2" stroke="#C9A227" stroke-width="1.3"/></svg>
       SITE <b>EYE</b> 360
     </div>
-    <span class="logo" style="font-size:11px;color:#E8C547">CAMERA</span>
+    <span class="logo" style="font-size:11px;color:#C9A227">CAMERA</span>
   </header>
   <div class="stage">
     <video id="preview" autoplay muted playsinline></video>
+    <audio id="talkBack" autoplay playsinline></audio>
     <div class="hud">
       <img src="/images/hero-cam.jpg" alt="" style="width:72px;height:72px;object-fit:cover;border-radius:8px;margin-bottom:8px;display:block"/>
       <div class="k" id="hudK">Tell Joe this code</div>
@@ -62,7 +63,7 @@ function hideCode(){
   watching = true;
   codeEl.style.display = 'none';
   hudK.textContent = 'LIVE';
-  setStatus('Joe can see this camera.');
+  setStatus('Joe can see this. If he hits TALK, you will hear him on this phone.');
 }
 function showCode(){
   watching = false;
@@ -80,8 +81,8 @@ async function setTorch(on){
 async function getCam(){
   if (stream) stream.getTracks().forEach(t => t.stop());
   const tryList = [
-    { video: { facingMode: { ideal: facing }, width: { ideal: 1280 }, height: { ideal: 720 } }, audio: true },
-    { video: true, audio: true }
+    { video: { facingMode: { ideal: facing }, width: { ideal: 1280 }, height: { ideal: 720 } }, audio: { echoCancellation: true } },
+    { video: true, audio: { echoCancellation: true } }
   ];
   let last = null;
   for (const opts of tryList){
@@ -117,6 +118,12 @@ function signal(){
     if (msg.type === 'answer' && pc){
       await pc.setRemoteDescription(msg.payload);
       hideCode();
+    }
+    if (msg.type === 'offer' && pc){
+      await pc.setRemoteDescription(msg.payload);
+      const answer = await pc.createAnswer();
+      await pc.setLocalDescription(answer);
+      ws.send(JSON.stringify({ type: 'answer', payload: pc.localDescription }));
     }
     if (msg.type === 'ice' && pc && msg.payload){
       try { await pc.addIceCandidate(msg.payload); } catch {}
@@ -161,6 +168,12 @@ async function startCall(){
     if (ev.data === 'torch-off') setTorch(false);
   };
   stream.getTracks().forEach(t => pc.addTrack(t, stream));
+  pc.ontrack = (ev) => {
+    if (ev.track.kind !== 'audio') return;
+    const a = document.getElementById('talkBack');
+    a.srcObject = new MediaStream([ev.track]);
+    a.play().catch(() => {});
+  };
   pc.onicecandidate = (ev) => {
     if (ev.candidate && ws && ws.readyState === 1){
       ws.send(JSON.stringify({ type: 'ice', payload: ev.candidate }));

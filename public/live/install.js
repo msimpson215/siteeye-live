@@ -11,6 +11,16 @@
   const hint = document.getElementById('installHint');
   if (!btn) return;
 
+  const mobile = /android|iphone|ipad|ipod/i.test(navigator.userAgent);
+  if (!mobile) {
+    btn.hidden = true;
+    if (hint) {
+      hint.hidden = false;
+      hint.textContent = 'No download on a computer. This page is already the app. On a phone, Chrome can put a SiteEye icon on the home screen.';
+    }
+    return;
+  }
+
   btn.hidden = false;
   let deferred = null;
   const ios = /iphone|ipad|ipod/i.test(navigator.userAgent);

@@ -30,7 +30,7 @@
   <header class="hd" id="mainHd">
     <button class="ic" type="button" aria-label="Menu">&#9776;</button>
     <div class="logo">
-      <svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="#E8C547"/><circle cx="16" cy="16" r="8" fill="#111"/><circle cx="16" cy="16" r="4" fill="#E8C547"/></svg>
+      <svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="6" fill="#C9A227"/><rect x="7" y="5" width="18" height="18" rx="2" fill="#111"/><circle cx="16" cy="14" r="6" fill="#1c1c1c"/><circle cx="16" cy="14" r="2.2" fill="#C9A227"/><path d="M16 7.5v2.2M16 18.3v2.2M9.5 14h2.2M20.3 14h2.2" stroke="#C9A227" stroke-width="1.3"/></svg>
       SITE <b>EYE</b> 360
     </div>
     <div class="right">
@@ -81,34 +81,34 @@
     </div>
     <div class="stage" id="stage">
       <video id="liveVid" autoplay playsinline muted></video>
-      <img id="liveImg" alt="" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#111"/>
+      <img id="liveImg" alt="" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#111;transform-origin:center center"/>
       <div class="ov"><span class="dot">LIVE</span><span id="timer">00:00:00</span></div>
       <div class="side">
-        <button type="button" id="snap" aria-label="Photo">&#128247;</button>
-        <button type="button" id="rec" aria-label="Record">&#127909;</button>
-        <button type="button" aria-label="Mic">&#127908;</button>
+        <button class="lab" type="button" id="snap" aria-label="Save a still photo">Photo</button>
       </div>
     </div>
     <div class="vbar">
-      <button type="button" id="vol" style="width:auto;height:auto;background:none;font-size:18px" aria-label="Sound">&#128263;</button>
+      <button class="lab" type="button" id="vol" aria-label="Hear the camera">Hear</button>
       <span class="hdq">HD</span>
-      <button type="button" id="full" style="width:auto;height:auto;background:none;font-size:16px" aria-label="Full screen">&#x26F6;</button>
-      <span style="margin-left:auto">zoom</span>
+      <button class="lab" type="button" id="full" aria-label="Full screen">Full screen</button>
+      <button class="lab" type="button" id="zoomOut" style="margin-left:auto" aria-label="Zoom out">zoom −</button>
+      <button class="lab" type="button" id="zoomIn" aria-label="Zoom in">zoom +</button>
     </div>
+    <div class="acts">
+      <button class="sq" id="ptz" type="button">ZOOM</button>
+      <button class="talk" id="talk" type="button">TALK</button>
+      <button class="sq" id="light" type="button">FLASH</button>
+    </div>
+    <p class="help" id="help">ZOOM makes the picture bigger. TALK lets them hear you on the camera phone. FLASH is the flashlight on that phone.</p>
     <div class="info">
       <h4>CAMERA INFO</h4>
       <dl>
         <dt>Location</dt><dd id="pLoc">On site now</dd>
         <dt>Last Update</dt><dd id="pUp">—</dd>
         <dt>Connection</dt><dd class="ok">Excellent</dd>
-        <dt>Power</dt><dd class="ok">Phone camera · prototype</dd>
-        <dt>Storage</dt><dd>Live only — not recording yet<div class="meter"><span></span></div></dd>
+        <dt>Power</dt><dd class="ok">Plug the camera phone in</dd>
+        <dt>Storage</dt><dd>Live only — tap Photo to save a still</dd>
       </dl>
-    </div>
-    <div class="acts">
-      <button class="sq" id="ptz" type="button">PTZ<br/>CONTROL</button>
-      <button class="talk" id="talk" type="button">TALK</button>
-      <button class="sq" id="light" type="button">LIGHT</button>
     </div>
   </div>
 
@@ -149,6 +149,8 @@ const liveImg = document.getElementById('liveImg');
 const errEl = document.getElementById('err');
 let ws = null, pc = null, dc = null, stream = null, lastFrameUrl = '';
 let scale = 1, tx = 0, ty = 0, t0 = 0, timerId = 0, torch = false;
+let talkStream = null, talking = false;
+const helpEl = document.getElementById('help');
 const ICE = { iceServers: [
   { urls: 'stun:stun.l.google.com:19302' },
   { urls: 'stun:stun.relay.metered.ca:80' },
@@ -157,7 +159,21 @@ const ICE = { iceServers: [
 ]};
 
 function setErr(t){ errEl.textContent = t || ''; }
-function applyZoom(){ liveVid.style.transform = `translate(${tx}px,${ty}px) scale(${scale})`; }
+function setHelp(t){ if (helpEl) helpEl.textContent = t; }
+function applyZoom(){
+  const t = `translate(${tx}px,${ty}px) scale(${scale})`;
+  liveVid.style.transform = t;
+  liveImg.style.transform = t;
+}
+function bumpZoom(dir){
+  if (dir < 0) scale = Math.max(1, +(scale - 0.6).toFixed(1));
+  else scale = scale >= 2.8 ? 1 : +(scale + 0.6).toFixed(1);
+  if (scale <= 1){ scale = 1; tx = 0; ty = 0; }
+  applyZoom();
+  setHelp(scale > 1
+    ? 'Zoomed in. Drag the picture to look around. Zoom − or tap ZOOM until it resets.'
+    : 'Picture is back to normal size.');
+}
 function tick(){
   if (!t0) return;
   const s = Math.floor((Date.now()-t0)/1000);
@@ -270,6 +286,8 @@ function connect(room){
     }
     if (msg.type === 'offer'){
       if (pc) pc.close();
+      talkStream = null;
+      talking = false;
       pc = new RTCPeerConnection(ICE);
       pc.ondatachannel = (ev) => { dc = ev.channel; };
       pc.ontrack = (ev) => {
@@ -291,11 +309,16 @@ function connect(room){
       await pc.setLocalDescription(answer);
       ws.send(JSON.stringify({ type:'answer', payload: pc.localDescription }));
     }
+    if (msg.type === 'answer' && pc){
+      try { await pc.setRemoteDescription(msg.payload); } catch {}
+    }
     if (msg.type === 'ice' && pc && msg.payload){
       try { await pc.addIceCandidate(msg.payload); } catch {}
     }
     if (msg.type === 'hangup'){
       stream = null;
+      if (talkStream){ talkStream.getTracks().forEach(t => t.stop()); talkStream = null; }
+      talking = false;
       setErr('Camera stopped. Start the phone again.');
       document.getElementById('join').classList.remove('hide');
     }
@@ -335,37 +358,81 @@ document.querySelectorAll('.toggles button').forEach(b => {
   };
 });
 
-document.getElementById('ptz').onclick = () => {
-  scale = scale >= 2.2 ? 1 : scale + 0.6;
-  if (scale === 1){ tx = 0; ty = 0; }
-  applyZoom();
-};
+document.getElementById('ptz').onclick = () => bumpZoom(1);
+document.getElementById('zoomIn').onclick = () => bumpZoom(1);
+document.getElementById('zoomOut').onclick = () => bumpZoom(-1);
 document.getElementById('light').onclick = () => {
   torch = !torch;
   document.getElementById('light').classList.toggle('on', torch);
-  if (dc && dc.readyState === 'open') dc.send(torch ? 'torch-on' : 'torch-off');
+  if (dc && dc.readyState === 'open') {
+    dc.send(torch ? 'torch-on' : 'torch-off');
+    setHelp(torch ? 'Flashlight on the camera phone is on.' : 'Flashlight off.');
+  } else {
+    document.getElementById('light').classList.remove('on');
+    torch = false;
+    setHelp('FLASH is the flashlight on the camera phone. It works once the live video link is up — not just still pictures.');
+  }
 };
 document.getElementById('vol').onclick = () => {
   liveVid.muted = !liveVid.muted;
-  document.getElementById('vol').textContent = liveVid.muted ? '\uD83D\uDD07' : '\uD83D\uDD0A';
+  document.getElementById('vol').textContent = liveVid.muted ? 'Hear' : 'Hearing';
+  setHelp(liveVid.muted
+    ? 'Sound is off. Tap Hear to listen to the job.'
+    : 'You should hear the camera phone. If you are in the same room, use headphones or you will get echo.');
 };
-document.getElementById('talk').onclick = () => {
+async function setTalk(on){
+  const btn = document.getElementById('talk');
+  if (!on){
+    talking = false;
+    if (talkStream) talkStream.getAudioTracks().forEach(t => t.enabled = false);
+    btn.classList.remove('on');
+    btn.textContent = 'TALK';
+    return;
+  }
   liveVid.muted = false;
-  document.getElementById('vol').textContent = '\uD83D\uDD0A';
-  document.getElementById('talk').textContent = 'HOLD TO TALK';
-  setTimeout(() => { document.getElementById('talk').textContent = 'TALK'; }, 1200);
-};
+  document.getElementById('vol').textContent = 'Hearing';
+  if (!pc){
+    setHelp('Talk needs the live sound link. Wait until the picture is moving, then tap TALK again.');
+    return;
+  }
+  try {
+    if (!talkStream){
+      talkStream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true } });
+      talkStream.getAudioTracks().forEach(t => pc.addTrack(t, talkStream));
+      const offer = await pc.createOffer();
+      await pc.setLocalDescription(offer);
+      if (ws && ws.readyState === 1) ws.send(JSON.stringify({ type:'offer', payload: pc.localDescription }));
+    } else {
+      talkStream.getAudioTracks().forEach(t => t.enabled = true);
+    }
+    talking = true;
+    btn.classList.add('on');
+    btn.textContent = 'TALKING';
+    setHelp('They can hear you on the camera phone. Tap TALK again to stop.');
+  } catch {
+    setHelp('Allow the microphone so they can hear you at the camera.');
+  }
+}
+document.getElementById('talk').onclick = () => setTalk(!talking);
 document.getElementById('full').onclick = () => {
   const el = document.getElementById('stage');
   if (!document.fullscreenElement) el.requestFullscreen?.();
   else document.exitFullscreen?.();
 };
 document.getElementById('snap').onclick = () => {
-  if (!stream) return;
   const c = document.createElement('canvas');
-  c.width = liveVid.videoWidth || 1280; c.height = liveVid.videoHeight || 720;
-  c.getContext('2d').drawImage(liveVid, 0, 0, c.width, c.height);
+  if (stream && liveVid.videoWidth){
+    c.width = liveVid.videoWidth; c.height = liveVid.videoHeight;
+    c.getContext('2d').drawImage(liveVid, 0, 0);
+  } else if (liveImg.src && liveImg.naturalWidth){
+    c.width = liveImg.naturalWidth; c.height = liveImg.naturalHeight;
+    c.getContext('2d').drawImage(liveImg, 0, 0);
+  } else {
+    setHelp('Wait for the live picture, then tap Photo.');
+    return;
+  }
   const a = document.createElement('a'); a.href = c.toDataURL('image/jpeg', 0.9); a.download = 'siteeye.jpg'; a.click();
+  setHelp('Saved a still picture to your downloads.');
 };
 
 let drag = null;
