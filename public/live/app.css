@@ -30,18 +30,9 @@ button,input{font-family:inherit}
 
 .scroll{flex:1;min-height:0;overflow:auto;-webkit-overflow-scrolling:touch}
 .hero{
-  margin:8px 12px 14px;border-radius:12px;overflow:hidden;position:relative;
-  min-height:132px;background:#1a1a1a;
-  display:flex;align-items:center;justify-content:space-between;padding:16px 10px 16px 16px
+  margin:8px 12px 14px;border-radius:12px;overflow:hidden;line-height:0;background:#111
 }
-.hero:before{
-  content:"";position:absolute;inset:0;
-  background:linear-gradient(90deg,#111 40%,transparent 100%), url('/images/hero-cam.jpg') right center / cover no-repeat;
-  opacity:.95
-}
-.hero .copy{position:relative;z-index:1}
-.hero h1{font-size:28px;font-weight:900;line-height:1}
-.hero p{color:var(--gold);font-weight:800;font-size:13px;margin-top:6px}
+.hero img{width:100%;height:auto;display:block}
 
 .sec{padding:0 14px 10px;display:flex;align-items:center;justify-content:space-between}
 .sec h2{color:var(--gold);font-size:12px;letter-spacing:.12em}
@@ -162,4 +153,7 @@ button,input{font-family:inherit}
 .hub-page .card strong{display:block;font-size:18px}
 .hub-page .card span{display:block;margin-top:6px;font-size:13px;color:#666}
 .hub-page .card.watch span{color:#bbb}
+.hub-page .art{
+  width:100%;height:auto;display:block;margin:4px 0 18px;background:#000;border-radius:12px
+}
 .hub-page .note{margin-top:18px;font-size:13px;color:#777;line-height:1.5;background:#fafafa;border-left:3px solid #ddd;padding:10px 12px}
