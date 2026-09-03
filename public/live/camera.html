@@ -56,8 +56,8 @@ async function setTorch(on){
 async function getCam(){
   if (stream) stream.getTracks().forEach(t => t.stop());
   const tryList = [
-    { video: { facingMode: { ideal: facing }, width: { ideal: 1280 }, height: { ideal: 720 } }, audio: false },
-    { video: true, audio: false }
+    { video: { facingMode: { ideal: facing }, width: { ideal: 1280 }, height: { ideal: 720 } }, audio: true },
+    { video: true, audio: true }
   ];
   let last = null;
   for (const opts of tryList){
@@ -131,7 +131,7 @@ async function start(){
     if (!ws || ws.readyState > 1) signal();
     else setStatus(room ? 'Waiting for Joe…' : 'Starting…');
   } catch {
-    setErr('Allow the camera when the phone asks. Chrome or Safari on the phone works.');
+    setErr('Allow the camera and the microphone when the phone asks.');
   }
 }
 

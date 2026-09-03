@@ -77,7 +77,7 @@
       <button class="ic" type="button">&#8942;</button>
     </div>
     <div class="stage" id="stage">
-      <video id="liveVid" autoplay playsinline></video>
+      <video id="liveVid" autoplay playsinline muted></video>
       <div class="ov"><span class="dot">LIVE</span><span id="timer">00:00:00</span></div>
       <div class="side">
         <button type="button" id="snap" aria-label="Photo">&#128247;</button>
@@ -86,7 +86,7 @@
       </div>
     </div>
     <div class="vbar">
-      <span>&#128266;</span>
+      <button type="button" id="vol" style="width:auto;height:auto;background:none;font-size:18px" aria-label="Sound">&#128263;</button>
       <span class="hdq">HD</span>
       <button type="button" id="full" style="width:auto;height:auto;background:none;font-size:16px" aria-label="Full screen">&#x26F6;</button>
       <span style="margin-left:auto">zoom</span>
@@ -303,7 +303,13 @@ document.getElementById('light').onclick = () => {
   document.getElementById('light').classList.toggle('on', torch);
   if (dc && dc.readyState === 'open') dc.send(torch ? 'torch-on' : 'torch-off');
 };
+document.getElementById('vol').onclick = () => {
+  liveVid.muted = !liveVid.muted;
+  document.getElementById('vol').textContent = liveVid.muted ? '\uD83D\uDD07' : '\uD83D\uDD0A';
+};
 document.getElementById('talk').onclick = () => {
+  liveVid.muted = false;
+  document.getElementById('vol').textContent = '\uD83D\uDD0A';
   document.getElementById('talk').textContent = 'HOLD TO TALK';
   setTimeout(() => { document.getElementById('talk').textContent = 'TALK'; }, 1200);
 };
