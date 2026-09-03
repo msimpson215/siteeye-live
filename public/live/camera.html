@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="robots" content="noindex,nofollow"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<title>SiteEye 360 — Camera</title>
+<link rel="stylesheet" href="/live/live.css"/>
+</head>
+<body>
+<div class="page">
+  <div class="top">
+    <a class="brand" href="/live">SiteEye 360 <span class="live"><i></i>LIVE</span></a>
+    <span class="tag">Camera</span>
+  </div>
+  <div class="stage">
+    <video id="preview" autoplay muted playsinline></video>
+    <div class="hud">
+      <div>Tell Joe this code</div>
+      <div class="code" id="code">————</div>
+      <div class="status" id="status">Tap Start, then allow the camera.</div>
+    </div>
+  </div>
+  <div class="bar">
+    <button class="go" id="start" type="button">Start SiteEye camera</button>
+    <button class="ghost" id="flip" type="button">Flip camera</button>
+  </div>
+  <div class="err" id="err"></div>
+</div>
+<script>
+const preview = document.getElementById('preview');
+const codeEl = document.getElementById('code');
+const statusEl = document.getElementById('status');
+const errEl = document.getElementById('err');
+let facing = 'environment';
+let stream = null;
+let ws = null;
+let pc = null;
+let room = null;
+let wake = null;
+
+function setStatus(t){ statusEl.textContent = t; }
+function setErr(t){ errEl.textContent = t || ''; }
+
+async function getCam(){
+  if (stream) stream.getTracks().forEach(t => t.stop());
+  const tryList = [
+    { video: { facingMode: { ideal: facing }, width: { ideal: 1280 }, height: { ideal: 720 } }, audio: false },
+    { video: true, audio: false }
+  ];
+  let last = null;
+  for (const opts of tryList){
+    try {
+      stream = await navigator.mediaDevices.getUserMedia(opts);
+      preview.srcObject = stream;
+      await preview.play().catch(() => {});
+      return;
+    } catch (e) { last = e; }
+  }
+  throw last || new Error('Camera blocked');
+}
+
+function signal(){
+  const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+  ws = new WebSocket(`${proto}//${location.host}/live-signal`);
+  ws.onopen = () => ws.send(JSON.stringify({ type: 'create' }));
+  ws.onclose = () => setStatus('Connection dropped. Tap Start again.');
+  ws.onerror = () => setErr('Could not reach SiteEye. Stay on this page and try Start again.');
+  ws.onmessage = async (e) => {
+    const msg = JSON.parse(e.data);
+    if (msg.type === 'created'){
+      room = msg.room;
+      codeEl.textContent = room;
+      setStatus('Waiting for Joe to open Watch and type this code.');
+    }
+    if (msg.type === 'peer-joined'){
+      setStatus('Joe is connecting…');
+      await startCall();
+    }
+    if (msg.type === 'answer' && pc){
+      await pc.setRemoteDescription(msg.payload);
+      setStatus('LIVE — Joe can see this camera.');
+    }
+    if (msg.type === 'ice' && pc && msg.payload){
+      try { await pc.addIceCandidate(msg.payload); } catch {}
+    }
+    if (msg.type === 'peer-left'){
+      setStatus('Joe left. Leave this open — he can join again with the same code.');
+      if (pc){ pc.close(); pc = null; }
+    }
+  };
+}
+
+async function startCall(){
+  if (pc){ pc.close(); pc = null; }
+  pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
+  stream.getTracks().forEach(t => pc.addTrack(t, stream));
+  pc.onicecandidate = (ev) => {
+    if (ev.candidate && ws && ws.readyState === 1){
+      ws.send(JSON.stringify({ type: 'ice', payload: ev.candidate }));
+    }
+  };
+  const offer = await pc.createOffer();
+  await pc.setLocalDescription(offer);
+  ws.send(JSON.stringify({ type: 'offer', payload: pc.localDescription }));
+}
+
+async function start(){
+  setErr('');
+  try {
+    await getCam();
+    if ('wakeLock' in navigator){
+      try { wake = await navigator.wakeLock.request('screen'); } catch {}
+    }
+    if (!ws || ws.readyState > 1) signal();
+    else setStatus(room ? 'Waiting for Joe…' : 'Starting…');
+  } catch (e) {
+    setErr('Allow the camera when the phone asks. Chrome or Safari on the phone works.');
+  }
+}
+
+document.getElementById('start').onclick = start;
+document.getElementById('flip').onclick = async () => {
+  facing = facing === 'environment' ? 'user' : 'environment';
+  try {
+    await getCam();
+    if (pc && stream){
+      const sender = pc.getSenders().find(s => s.track && s.track.kind === 'video');
+      const next = stream.getVideoTracks()[0];
+      if (sender && next) await sender.replaceTrack(next);
+    }
+  } catch {
+    setErr('Could not flip camera.');
+  }
+};
+</script>
+</body>
+</html>

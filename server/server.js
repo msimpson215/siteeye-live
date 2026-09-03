@@ -1,5 +1,7 @@
 import express from 'express';
 import fetch from 'node-fetch';
+import { createServer } from 'http';
+import { WebSocketServer } from 'ws';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { appendFile, mkdir } from 'fs/promises';
@@ -217,11 +219,80 @@ app.post('/api/chat', requireAxonAuth, async (req, res) => {
   }
 });
 
+app.get('/live', (_req, res) => res.sendFile(join(publicDir, 'live/index.html')));
+app.get('/live/camera', (_req, res) => res.sendFile(join(publicDir, 'live/camera.html')));
+app.get('/live/watch', (_req, res) => res.sendFile(join(publicDir, 'live/watch.html')));
+
 app.use(express.static(publicDir));
 
 app.get('*', (_req, res) => res.sendFile(join(publicDir, 'index.html')));
 
-app.listen(PORT, () => {
+const server = createServer(app);
+const wss = new WebSocketServer({ server, path: '/live-signal' });
+const liveRooms = new Map();
+
+function liveCode() {
+  const alphabet = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+  let s = '';
+  for (let i = 0; i < 4; i++) s += alphabet[Math.floor(Math.random() * alphabet.length)];
+  return liveRooms.has(s) ? liveCode() : s;
+}
+
+function liveSend(sock, obj) {
+  if (sock && sock.readyState === 1) sock.send(JSON.stringify(obj));
+}
+
+wss.on('connection', (ws) => {
+  ws.room = null;
+  ws.role = null;
+  ws.on('message', (raw) => {
+    let msg;
+    try { msg = JSON.parse(String(raw)); } catch { return; }
+    if (msg.type === 'create') {
+      const room = liveCode();
+      liveRooms.set(room, { camera: ws, watch: null });
+      ws.room = room;
+      ws.role = 'camera';
+      liveSend(ws, { type: 'created', room });
+      return;
+    }
+    if (msg.type === 'join') {
+      const room = String(msg.room || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+      const r = liveRooms.get(room);
+      if (!r || !r.camera) {
+        liveSend(ws, { type: 'error', error: 'No camera with that code. Start the phone first.' });
+        return;
+      }
+      r.watch = ws;
+      ws.room = room;
+      ws.role = 'watch';
+      liveSend(ws, { type: 'joined', room });
+      liveSend(r.camera, { type: 'peer-joined' });
+      return;
+    }
+    if (!ws.room) return;
+    const r = liveRooms.get(ws.room);
+    if (!r) return;
+    if (msg.type === 'offer' || msg.type === 'answer' || msg.type === 'ice') {
+      const other = ws.role === 'camera' ? r.watch : r.camera;
+      liveSend(other, msg);
+    }
+  });
+  ws.on('close', () => {
+    const r = liveRooms.get(ws.room);
+    if (!r) return;
+    if (ws.role === 'camera') {
+      liveSend(r.watch, { type: 'hangup' });
+      liveRooms.delete(ws.room);
+    } else if (r.watch === ws) {
+      r.watch = null;
+      liveSend(r.camera, { type: 'peer-left' });
+    }
+  });
+});
+
+server.listen(PORT, () => {
   console.log(`SiteEye Live → port ${PORT}`);
   console.log(`Site: public | Axon locked: ${axonLocked()} | Dev login: ${authEnabled()}`);
+  console.log(`Joe demo: http://localhost:${PORT}/live`);
 });

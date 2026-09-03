@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="robots" content="noindex,nofollow"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<title>SiteEye 360 — Watch</title>
+<link rel="stylesheet" href="/live/live.css"/>
+</head>
+<body>
+<div class="page">
+  <div class="top">
+    <a class="brand" href="/live">SiteEye 360 <span class="live"><i></i>LIVE</span></a>
+    <span class="tag">Watch</span>
+  </div>
+  <div class="stage" id="stage">
+    <video id="live" autoplay playsinline></video>
+    <div class="hud">
+      <div>SiteEye 360</div>
+      <div class="code" id="shown">LIVE</div>
+      <div class="status" id="status">Enter the code from the camera phone.</div>
+    </div>
+    <div class="zoom">
+      <button type="button" id="zin" aria-label="Zoom in">+</button>
+      <button type="button" id="zout" aria-label="Zoom out">&minus;</button>
+      <button type="button" id="zreset" aria-label="Reset">•</button>
+    </div>
+  </div>
+  <div class="bar">
+    <input id="code" type="text" maxlength="4" autocapitalize="characters" autocomplete="off" placeholder="CODE"/>
+    <button class="go" id="join" type="button">Watch live</button>
+  </div>
+  <div class="err" id="err"></div>
+</div>
+<script>
+const video = document.getElementById('live');
+const statusEl = document.getElementById('status');
+const errEl = document.getElementById('err');
+const shown = document.getElementById('shown');
+let ws = null;
+let pc = null;
+let scale = 1;
+let tx = 0;
+let ty = 0;
+
+function setStatus(t){ statusEl.textContent = t; }
+function setErr(t){ errEl.textContent = t || ''; }
+function applyZoom(){
+  video.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+}
+
+function connect(room){
+  setErr('');
+  const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+  if (ws) try { ws.close(); } catch {}
+  ws = new WebSocket(`${proto}//${location.host}/live-signal`);
+  ws.onopen = () => ws.send(JSON.stringify({ type: 'join', room }));
+  ws.onerror = () => setErr('Could not reach SiteEye.');
+  ws.onclose = () => {
+    if (statusEl.textContent.indexOf('LIVE') === 0) setStatus('Disconnected.');
+  };
+  ws.onmessage = async (e) => {
+    const msg = JSON.parse(e.data);
+    if (msg.type === 'error'){ setErr(msg.error); return; }
+    if (msg.type === 'joined'){
+      shown.textContent = msg.room;
+      setStatus('Waiting for the camera…');
+    }
+    if (msg.type === 'offer'){
+      if (pc) pc.close();
+      pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
+      pc.ontrack = (ev) => {
+        video.srcObject = ev.streams[0];
+        video.play().catch(() => {});
+        setStatus('LIVE — this is the SiteEye camera.');
+      };
+      pc.onicecandidate = (ev) => {
+        if (ev.candidate && ws && ws.readyState === 1){
+          ws.send(JSON.stringify({ type: 'ice', payload: ev.candidate }));
+        }
+      };
+      await pc.setRemoteDescription(msg.payload);
+      const answer = await pc.createAnswer();
+      await pc.setLocalDescription(answer);
+      ws.send(JSON.stringify({ type: 'answer', payload: pc.localDescription }));
+    }
+    if (msg.type === 'ice' && pc && msg.payload){
+      try { await pc.addIceCandidate(msg.payload); } catch {}
+    }
+    if (msg.type === 'hangup'){
+      setStatus('Camera stopped. Start the phone again, then type the new code.');
+      if (pc){ pc.close(); pc = null; }
+    }
+  };
+}
+
+document.getElementById('join').onclick = () => {
+  const room = document.getElementById('code').value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+  if (room.length !== 4){ setErr('Type the 4-letter code from the camera.'); return; }
+  connect(room);
+};
+document.getElementById('code').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') document.getElementById('join').click();
+});
+document.getElementById('zin').onclick = () => { scale = Math.min(4, scale + 0.35); applyZoom(); };
+document.getElementById('zout').onclick = () => { scale = Math.max(1, scale - 0.35); if (scale === 1){ tx = 0; ty = 0; } applyZoom(); };
+document.getElementById('zreset').onclick = () => { scale = 1; tx = 0; ty = 0; applyZoom(); };
+
+let drag = null;
+const stage = document.getElementById('stage');
+stage.addEventListener('pointerdown', (e) => {
+  if (scale <= 1) return;
+  drag = { x: e.clientX - tx, y: e.clientY - ty, id: e.pointerId };
+  stage.setPointerCapture(e.pointerId);
+});
+stage.addEventListener('pointermove', (e) => {
+  if (!drag || e.pointerId !== drag.id) return;
+  tx = e.clientX - drag.x;
+  ty = e.clientY - drag.y;
+  applyZoom();
+});
+stage.addEventListener('pointerup', () => { drag = null; });
+</script>
+</body>
+</html>
