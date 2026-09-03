@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <meta name="robots" content="noindex,nofollow"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-title" content="SiteEye Cam"/>
 <meta name="theme-color" content="#000000"/>
 <link rel="apple-touch-icon" href="/live/icon-192.png"/>
 <title>SITE EYE 360 — Camera</title>
@@ -34,6 +34,10 @@
   <div class="bar">
     <button class="go" id="start" type="button">Start SiteEye camera</button>
     <button class="ghost" id="flip" type="button">Flip</button>
+  </div>
+  <div style="padding:0 12px 12px">
+    <button class="install" id="installBtn" type="button" hidden>Add SiteEye to this phone</button>
+    <p class="install-hint" id="installHint" hidden></p>
   </div>
   <div class="err" id="err" style="padding:0 12px 10px"></div>
 </div>
@@ -196,5 +200,6 @@ document.getElementById('flip').onclick = async () => {
   }
 };
 </script>
+<script src="/live/install.js"></script>
 </body>
 </html>
