@@ -18,6 +18,7 @@
   --line:#454545;
   --muted:#9a9a9a;
   --green:#2EE56B;
+  --red:#FF6B4A;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
@@ -26,14 +27,49 @@ body{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,Helvetica,sans-serif;
   -webkit-font-smoothing:antialiased
 }
-button{font-family:inherit;cursor:pointer}
+button,input{font-family:inherit}
+.hide{display:none !important}
 
 .app{
   max-width:430px;margin:0 auto;min-height:100%;background:var(--bg);
   display:flex;flex-direction:column;position:relative
 }
 
-/* ---- header ---- */
+/* ---------- login ---------- */
+.login{
+  min-height:100%;padding:calc(52px + env(safe-area-inset-top)) 26px
+    calc(30px + env(safe-area-inset-bottom));
+  display:flex;flex-direction:column
+}
+.login .mark{width:64px;height:64px;border-radius:16px;margin-bottom:22px}
+.login .mark span{font-size:27px}
+.login h1{font-size:23px;font-weight:900;letter-spacing:-.01em;line-height:1.2}
+.login h1 em{display:block;font-style:normal;font-size:11px;font-weight:700;
+  color:var(--gold);letter-spacing:.18em;margin-top:9px}
+.login .lede{margin-top:14px;font-size:13.5px;color:var(--muted);line-height:1.5}
+
+.field{margin-top:20px}
+.field label{display:block;font-size:10.5px;letter-spacing:.14em;color:var(--muted);
+  font-weight:800;margin-bottom:7px}
+.field input{
+  width:100%;padding:15px 16px;border-radius:12px;border:1px solid var(--line);
+  background:#252525;color:#fff;font-size:16px;font-weight:700;letter-spacing:.04em
+}
+.field input:focus{outline:none;border-color:var(--gold)}
+.signin{
+  margin-top:22px;width:100%;padding:17px;border:0;border-radius:12px;
+  background:var(--gold);color:#141414;font-size:15.5px;font-weight:900;
+  letter-spacing:.04em;cursor:pointer
+}
+.signin:active{transform:scale(.99)}
+.loginErr{margin-top:12px;color:var(--red);font-size:12.5px;font-weight:700;min-height:16px}
+.demo{
+  margin-top:auto;padding:14px;border-radius:12px;background:#242424;
+  border:1px dashed var(--line);font-size:11.5px;color:var(--muted);line-height:1.7
+}
+.demo b{color:var(--gold);font-weight:800}
+
+/* ---------- header ---------- */
 .hd{
   padding:calc(18px + env(safe-area-inset-top)) 20px 16px;
   border-bottom:1px solid var(--line);background:#181818
@@ -44,33 +80,48 @@ button{font-family:inherit;cursor:pointer}
   display:grid;place-items:center;flex:0 0 auto
 }
 .mark span{font-weight:900;font-size:19px;color:#141414;letter-spacing:-.02em}
-.brand h1{font-size:15px;font-weight:900;letter-spacing:.02em;line-height:1.25}
-.brand h1 em{display:block;font-style:normal;font-size:10.5px;font-weight:700;color:var(--muted);letter-spacing:.16em;margin-top:3px}
-.hello{margin-top:16px;font-size:22px;font-weight:800;letter-spacing:-.01em}
-.hello b{color:var(--gold)}
+.brand h1{font-size:15px;font-weight:900;letter-spacing:.02em;line-height:1.25;flex:1}
+.brand h1 em{display:block;font-style:normal;font-size:10.5px;font-weight:700;
+  color:var(--muted);letter-spacing:.16em;margin-top:3px}
+.out{
+  border:1px solid var(--line);background:#2a2a2a;color:var(--muted);
+  font-size:10px;font-weight:800;letter-spacing:.1em;padding:7px 10px;
+  border-radius:8px;cursor:pointer;flex:0 0 auto
+}
+.who{margin-top:16px;display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+.who .hello{font-size:22px;font-weight:800;letter-spacing:-.01em}
+.who .hello b{color:var(--gold)}
+.tag{
+  font-size:9.5px;font-weight:900;letter-spacing:.12em;padding:4px 9px;
+  border-radius:99px;background:var(--gold);color:#141414
+}
+.tag.crew{background:#3d3d3d;color:var(--muted)}
 .sub{margin-top:5px;font-size:13px;color:var(--muted)}
 
-/* ---- status strip ---- */
+/* ---------- status ---------- */
+.strips{padding:14px 20px 0;display:flex;flex-direction:column;gap:9px}
 .strip{
-  margin:14px 20px 0;padding:12px 14px;border-radius:12px;
-  background:var(--card);border:1px solid var(--line);
-  display:flex;align-items:center;gap:10px;font-size:12.5px
+  padding:12px 14px;border-radius:12px;background:var(--card);
+  border:1px solid var(--line);display:flex;align-items:center;gap:10px;font-size:12.5px
 }
-.strip u{width:8px;height:8px;border-radius:50%;background:var(--green);text-decoration:none;flex:0 0 auto}
+.strip u{width:8px;height:8px;border-radius:50%;background:var(--green);
+  text-decoration:none;flex:0 0 auto}
+.strip.warn{border-color:var(--gold)}
+.strip.warn u{background:var(--gold)}
 .strip b{color:#fff;font-weight:800}
 .strip span{color:var(--muted)}
 
-/* ---- tiles ---- */
+/* ---------- tiles ---------- */
 .lab{padding:22px 20px 12px;font-size:11px;letter-spacing:.16em;color:var(--gold);font-weight:800}
 .grid{
   display:grid;grid-template-columns:1fr 1fr;gap:12px;
-  padding:0 20px calc(28px + env(safe-area-inset-bottom))
+  padding:0 20px calc(24px + env(safe-area-inset-bottom))
 }
 .tile{
   background:var(--card);border:1px solid var(--line);border-radius:16px;
   padding:18px 14px 16px;text-align:left;color:#fff;
   display:flex;flex-direction:column;gap:10px;min-height:152px;
-  transition:transform .08s ease,border-color .15s ease
+  transition:transform .08s ease
 }
 .tile:active{transform:scale(.97)}
 .tile.live{border-color:var(--gold)}
@@ -79,7 +130,8 @@ button{font-family:inherit;cursor:pointer}
   display:grid;place-items:center;flex:0 0 auto;border:1px solid var(--line)
 }
 .tile.live .circle{background:var(--gold);border-color:var(--gold)}
-.circle svg{width:26px;height:26px;stroke:var(--gold);fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.circle svg{width:26px;height:26px;stroke:var(--gold);fill:none;
+  stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 .tile.live .circle svg{stroke:#141414}
 .tile h2{font-size:14.5px;font-weight:900;letter-spacing:.01em;margin-top:auto}
 .tile p{font-size:11.5px;line-height:1.45;color:var(--muted)}
@@ -88,6 +140,7 @@ button{font-family:inherit;cursor:pointer}
   padding:3px 8px;border-radius:99px;background:#3d3d3d;color:var(--muted)
 }
 .tile.live .pill{background:var(--gold);color:#141414}
+.pill.alert{background:var(--red);color:#fff}
 
 .foot{
   padding:4px 20px calc(30px + env(safe-area-inset-bottom));
@@ -96,97 +149,169 @@ button{font-family:inherit;cursor:pointer}
 </style>
 </head>
 <body>
-<div class="app">
 
+<!-- ================= LOGIN ================= -->
+<div class="app hide" id="loginView">
+  <div class="login">
+    <div class="mark"><span>A1</span></div>
+    <h1>A1 PROFESSIONAL<br/>ASPHALT &amp; CONCRETE<em>CREW DASHBOARD</em></h1>
+    <p class="lede">Sign in to see your jobs, the book, and today's safety talk.</p>
+
+    <div class="field">
+      <label for="user">NAME</label>
+      <input id="user" type="text" autocapitalize="none" autocomplete="off" spellcheck="false" placeholder="joe"/>
+    </div>
+    <div class="field">
+      <label for="pin">PIN</label>
+      <input id="pin" type="password" inputmode="numeric" maxlength="6" autocomplete="off" placeholder="&bull;&bull;&bull;&bull;"/>
+    </div>
+
+    <div class="loginErr" id="loginErr"></div>
+    <button class="signin" id="signin" type="button">SIGN IN</button>
+
+    <div class="demo">
+      <b>DEMO LOGINS</b><br/>
+      Owner &mdash; <b>joe</b> / 1234<br/>
+      Crew &mdash; <b>omar</b> / 1111
+    </div>
+  </div>
+</div>
+
+<!-- ================= DASHBOARD ================= -->
+<div class="app hide" id="dashView">
   <header class="hd">
     <div class="brand">
       <div class="mark"><span>A1</span></div>
       <h1>A1 PROFESSIONAL<br/>ASPHALT &amp; CONCRETE<em>CREW DASHBOARD</em></h1>
+      <button class="out" id="signout" type="button">SIGN OUT</button>
     </div>
-    <div class="hello"><span id="greet">Morning</span>, <b>crew</b>.</div>
-    <div class="sub" id="today">Let's get after it.</div>
+    <div class="who">
+      <div class="hello"><span id="greet">Morning</span>, <b id="name">Joe</b>.</div>
+      <span class="tag" id="roleTag">OWNER</span>
+    </div>
+    <div class="sub" id="today"></div>
   </header>
 
-  <div class="strip">
-    <u></u><b>1 job live</b><span>&middot; Site camera streaming</span>
-  </div>
-
-  <div class="lab">WHAT DO YOU NEED?</div>
-
-  <div class="grid">
-
-    <button class="tile live" type="button" data-go="/live/watch">
-      <div class="circle">
-        <svg viewBox="0 0 24 24"><path d="M4 12c2-4 4-6 8-6s6 2 8 6-4 6-8 6-6-2-8-6z"/><circle cx="12" cy="12" r="2.4"/></svg>
-      </div>
-      <span class="pill">LIVE</span>
-      <h2>SITE EYE</h2>
-      <p>See the job right now. Talk to the crew.</p>
-    </button>
-
-    <button class="tile" type="button" data-soon="Foreman">
-      <div class="circle">
-        <svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 4.5-3.2 7.8-8 9-4.8-1.2-8-4.5-8-9V7z"/><path d="M12 10v3"/><circle cx="12" cy="16" r=".6" fill="currentColor"/></svg>
-      </div>
-      <span class="pill">ASK</span>
-      <h2>FOREMAN</h2>
-      <p>Stuck? Ask before you call Joe.</p>
-    </button>
-
-    <button class="tile" type="button" data-soon="The Book">
-      <div class="circle">
-        <svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M8 7.5h7M8 11h7"/></svg>
-      </div>
-      <span class="pill">SOP</span>
-      <h2>THE BOOK</h2>
-      <p>How A1 does it. Step by step.</p>
-    </button>
-
-    <button class="tile" type="button" data-soon="Day One">
-      <div class="circle">
-        <svg viewBox="0 0 24 24"><path d="M3 8l9-4 9 4-9 4z"/><path d="M7 10.5V15c0 1.4 2.2 2.5 5 2.5s5-1.1 5-2.5v-4.5"/><path d="M21 8v5"/></svg>
-      </div>
-      <span class="pill">TRAIN</span>
-      <h2>DAY ONE</h2>
-      <p>New guy? Start here. Tools and sequence.</p>
-    </button>
-
-    <button class="tile" type="button" data-soon="Job Log">
-      <div class="circle">
-        <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2.5"/><path d="M8 3v3M16 3v3M8 12h8M8 16h5"/></svg>
-      </div>
-      <span class="pill">LOG</span>
-      <h2>JOB LOG</h2>
-      <p>Clock in. Photos before and after.</p>
-    </button>
-
-    <button class="tile" type="button" data-soon="Safety">
-      <div class="circle">
-        <svg viewBox="0 0 24 24"><path d="M4 15a8 8 0 0 1 16 0z"/><path d="M2.5 15h19"/><path d="M9.5 15V8.2A2.5 2.5 0 0 1 12 6"/></svg>
-      </div>
-      <span class="pill">DAILY</span>
-      <h2>SAFETY</h2>
-      <p>Toolbox talk. Sign off in 30 seconds.</p>
-    </button>
-
-  </div>
-
+  <div class="strips" id="strips"></div>
+  <div class="lab" id="gridLab">WHAT DO YOU NEED?</div>
+  <div class="grid" id="grid"></div>
   <div class="foot">POWERED BY SITE EYE 360</div>
 </div>
 
 <script>
-const now = new Date();
-document.getElementById('greet').textContent =
-  now.getHours() < 12 ? 'Morning' : now.getHours() < 17 ? 'Afternoon' : 'Evening';
-document.getElementById('today').textContent =
-  now.toLocaleDateString([], { weekday:'long', month:'long', day:'numeric' });
+/* Demo accounts only — real sign-in moves to the server session in auth.js. */
+const ACCOUNTS = {
+  joe:  { pin:'1234', name:'Joe',  role:'owner', tag:'OWNER' },
+  omar: { pin:'1111', name:'Omar', role:'crew',  tag:'CREW'  }
+};
+
+const ICONS = {
+  eye:   '<path d="M4 12c2-4 4-6 8-6s6 2 8 6-4 6-8 6-6-2-8-6z"/><circle cx="12" cy="12" r="2.4"/>',
+  brain: '<path d="M12 3l8 4v5c0 4.5-3.2 7.8-8 9-4.8-1.2-8-4.5-8-9V7z"/><path d="M12 10v3"/><circle cx="12" cy="16" r=".6" fill="currentColor"/>',
+  book:  '<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M8 7.5h7M8 11h7"/>',
+  cap:   '<path d="M3 8l9-4 9 4-9 4z"/><path d="M7 10.5V15c0 1.4 2.2 2.5 5 2.5s5-1.1 5-2.5v-4.5"/><path d="M21 8v5"/>',
+  log:   '<rect x="4" y="4" width="16" height="16" rx="2.5"/><path d="M8 3v3M16 3v3M8 12h8M8 16h5"/>',
+  hat:   '<path d="M4 15a8 8 0 0 1 16 0z"/><path d="M2.5 15h19"/><path d="M9.5 15V8.2A2.5 2.5 0 0 1 12 6"/>'
+};
+
+/* Same six doors for everyone. What changes is what you can do behind them. */
+const VIEWS = {
+  owner: {
+    strips: [
+      { cls:'',     b:'1 job live',        s:'Amazon lot \u2014 camera streaming' },
+      { cls:'warn', b:'4 questions',       s:'waiting on your answer' }
+    ],
+    lab: 'RUN THE COMPANY',
+    tiles: [
+      { icon:'eye',   pill:'LIVE',  live:true, h:'SITE EYE',    p:'Every job. 1 camera live now.', go:'/live/watch' },
+      { icon:'brain', pill:'4 NEW', alert:true, h:'AI FOREMAN', p:'Review what it told the crew. Fix what is wrong.' },
+      { icon:'book',  pill:'EDIT',  h:'THE BOOK',  p:'How A1 does it. Add and change steps.' },
+      { icon:'cap',   pill:'2 NEW', h:'DAY ONE',   p:'2 new hires training. See where they are.' },
+      { icon:'log',   pill:'ALL',   h:'JOB LOG',   p:'All crews. Today\u2019s photos and hours.' },
+      { icon:'hat',   pill:'11/14', h:'SAFETY',    p:'Who signed today\u2019s talk. 3 missing.' }
+    ]
+  },
+  crew: {
+    strips: [
+      { cls:'', b:'Amazon lot', s:'\u00b7 Seal + stripe \u00b7 Crew 2' }
+    ],
+    lab: 'WHAT DO YOU NEED?',
+    tiles: [
+      { icon:'eye',   pill:'SET UP', live:true, h:'SITE EYE',   p:'Put the camera up on this job.', go:'/live/camera' },
+      { icon:'brain', pill:'ASK',   h:'AI FOREMAN', p:'Stuck? Ask here before you call Joe.' },
+      { icon:'book',  pill:'SOP',   h:'THE BOOK',   p:'Look up how A1 does it. Step by step.' },
+      { icon:'cap',   pill:'3/8',   h:'DAY ONE',    p:'Your training. 5 left to finish.' },
+      { icon:'log',   pill:'LOG',   h:'JOB LOG',    p:'Clock in. Photos before and after.' },
+      { icon:'hat',   pill:'TODAY', h:'SAFETY',     p:'Sign today\u2019s toolbox talk. 30 seconds.' }
+    ]
+  }
+};
+
+const $ = (id) => document.getElementById(id);
+
+function render(acct){
+  const v = VIEWS[acct.role];
+  const now = new Date();
+
+  $('greet').textContent = now.getHours() < 12 ? 'Morning'
+    : now.getHours() < 17 ? 'Afternoon' : 'Evening';
+  $('name').textContent = acct.name;
+  $('today').textContent = now.toLocaleDateString([], { weekday:'long', month:'long', day:'numeric' });
+
+  const tag = $('roleTag');
+  tag.textContent = acct.tag;
+  tag.className = 'tag' + (acct.role === 'crew' ? ' crew' : '');
+
+  $('strips').innerHTML = v.strips
+    .map(s => `<div class="strip ${s.cls}"><u></u><b>${s.b}</b><span>${s.s}</span></div>`)
+    .join('');
+
+  $('gridLab').textContent = v.lab;
+  $('grid').innerHTML = v.tiles.map(t => `
+    <button class="tile${t.live ? ' live' : ''}" type="button"
+            ${t.go ? `data-go="${t.go}"` : `data-soon="${t.h}"`}>
+      <div class="circle"><svg viewBox="0 0 24 24">${ICONS[t.icon]}</svg></div>
+      <span class="pill${t.alert ? ' alert' : ''}">${t.pill}</span>
+      <h2>${t.h}</h2>
+      <p>${t.p}</p>
+    </button>`).join('');
+
+  $('loginView').classList.add('hide');
+  $('dashView').classList.remove('hide');
+}
+
+function showLogin(){
+  $('dashView').classList.add('hide');
+  $('loginView').classList.remove('hide');
+  $('pin').value = '';
+  $('loginErr').textContent = '';
+}
+
+$('signin').onclick = () => {
+  const u = $('user').value.trim().toLowerCase();
+  const p = $('pin').value.trim();
+  const acct = ACCOUNTS[u];
+  if (!acct || acct.pin !== p){
+    $('loginErr').textContent = 'Wrong name or PIN. Try joe / 1234.';
+    return;
+  }
+  localStorage.setItem('a1-user', u);
+  render(acct);
+};
+$('pin').addEventListener('keydown', e => { if (e.key === 'Enter') $('signin').click(); });
+$('user').addEventListener('keydown', e => { if (e.key === 'Enter') $('pin').focus(); });
+
+$('signout').onclick = () => { localStorage.removeItem('a1-user'); showLogin(); };
 
 document.querySelector('.grid').addEventListener('click', (e) => {
   const t = e.target.closest('.tile');
   if (!t) return;
   if (t.dataset.go){ location.href = t.dataset.go; return; }
-  alert(t.dataset.soon + ' — this is where it opens.\n\nWe build this one next.');
+  alert(t.dataset.soon + ' \u2014 this is where it opens.\n\nWe build this one next.');
 });
+
+const remembered = ACCOUNTS[localStorage.getItem('a1-user')];
+if (remembered) render(remembered); else showLogin();
 </script>
 </body>
 </html>
