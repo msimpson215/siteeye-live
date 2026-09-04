@@ -27,7 +27,7 @@
     <audio id="talkBack" autoplay playsinline></audio>
     <div class="hud">
       <img src="/images/hero-cam.jpg" alt="" style="width:72px;height:72px;object-fit:cover;border-radius:8px;margin-bottom:8px;display:block"/>
-      <div class="k" id="hudK">Your 4-letter code</div>
+      <div class="k" id="hudK">Site code</div>
       <div class="code" id="code">————</div>
       <div class="st" id="status">Getting a code&hellip; then tap Start and allow the camera.</div>
     </div>
@@ -64,13 +64,13 @@ function hideCode(){
   watching = true;
   codeEl.style.display = 'none';
   hudK.textContent = 'LIVE';
-  setStatus('Joe can see this. If he hits TALK, you will hear him on this phone.');
+  setStatus('Live. A viewer can talk back to this camera.');
 }
 function showCode(){
   watching = false;
   codeEl.style.display = '';
-  hudK.textContent = 'Tell Joe this code';
-  if (room) setStatus('Joe left. Same code — he can join again.');
+  hudK.textContent = 'Site code';
+  if (room) setStatus('Viewer left. Same code — they can join again.');
 }
 
 function goLive(){
@@ -127,15 +127,15 @@ function signal(){
       room = msg.room;
       connectTries = 0;
       codeEl.textContent = room;
-      hudK.textContent = 'Tell Joe this code';
+      hudK.textContent = 'Site code';
       setStatus(stream
-        ? 'Waiting for Joe to open Watch and type this code.'
-        : 'Tap Start and allow the camera so Joe can see.');
+        ? 'Waiting for a viewer to enter this code.'
+        : 'Tap Start and allow the camera.');
     }
     if (msg.type === 'peer-joined'){
       joeWaiting = true;
       if (!stream){
-        setStatus('Joe is in. Tap Start and allow the camera so he can see.');
+        setStatus('A viewer is in. Tap Start and allow the camera.');
         return;
       }
       goLive();
@@ -218,7 +218,7 @@ async function start(){
       try { wake = await navigator.wakeLock.request('screen'); } catch {}
     }
     if (!ws || ws.readyState > 1) signal();
-    else if (room) setStatus('Waiting for Joe to open Watch and type this code.');
+    else if (room) setStatus('Waiting for a viewer to enter this code.');
     if (joeWaiting) goLive();
   } catch {
     setErr('Allow the camera and the microphone when the phone asks. Then tap Start again.');

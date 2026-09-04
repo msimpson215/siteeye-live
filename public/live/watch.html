@@ -19,15 +19,16 @@
     <div class="box">
       <div id="getApp">
         <h2>Download the app</h2>
-        <p>Put SiteEye on your home screen. Then type the 4 letters Marty texts you. You do not need his Wi-Fi &mdash; 10 miles away is fine.</p>
+        <p>Add SiteEye to your home screen, then enter the site code to view the live camera.</p>
         <button class="go" id="installBtn" type="button">Download the app</button>
         <p class="install-hint" id="installHint" hidden></p>
-        <p class="already">Already on your phone? Type the code below.</p>
+        <p class="already">Already installed?</p>
       </div>
-      <h2 id="joinTitle" class="hide">Type the 4 letters</h2>
-      <input id="code" type="text" maxlength="4" autocapitalize="characters" autocomplete="off" placeholder="CODE"/>
+      <h2 id="joinTitle" class="hide">Enter site code</h2>
+      <label class="code-lab" for="code">Pending code</label>
+      <input id="code" type="text" maxlength="4" autocapitalize="characters" autocomplete="off" placeholder="----"/>
       <div class="err" id="err"></div>
-      <button class="install" id="joinBtn" type="button">See the live camera</button>
+      <button class="install" id="joinBtn" type="button">View live camera</button>
     </div>
   </div>
 
@@ -69,7 +70,7 @@
   <div class="scroll hide" id="tabOther">
     <div class="placeholder">
       <h2 id="otherTitle">Coming on the production app</h2>
-      <p>Events, alerts and settings will live here. This prototype is the live picture so you can show Joe it works.</p>
+      <p>Events, alerts, and settings will live here.</p>
     </div>
   </div>
 
@@ -323,7 +324,7 @@ function connect(room){
       stream = null;
       if (talkStream){ talkStream.getTracks().forEach(t => t.stop()); talkStream = null; }
       talking = false;
-      setErr('Camera stopped. Start the phone again.');
+      setErr('Camera stopped. Ask the site to start it again.');
       document.getElementById('join').classList.remove('hide');
     }
   };
@@ -331,7 +332,7 @@ function connect(room){
 
 document.getElementById('joinBtn').onclick = () => {
   const room = document.getElementById('code').value.toUpperCase().replace(/[^A-Z0-9]/g,'');
-  if (room.length !== 4){ setErr('Type the 4-letter code from the camera.'); return; }
+  if (room.length !== 4){ setErr('Enter the 4-character site code.'); return; }
   sessionStorage.setItem('siteeye-room', room);
   connect(room);
 };

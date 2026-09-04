@@ -16,7 +16,7 @@
     if (joinTitle) joinTitle.classList.remove('hide');
     if (joinBtn) {
       joinBtn.className = 'go';
-      joinBtn.textContent = 'See the live camera';
+      joinBtn.textContent = 'View live camera';
     }
     return;
   }
@@ -31,8 +31,8 @@
     if (hint) {
       hint.hidden = false;
       hint.textContent = isJoe
-        ? 'Joe should open this on his phone, not a computer. On the phone, tap Download the app.'
-        : 'No download on a computer. This page is already the camera. On a phone, Chrome can put SiteEye on the home screen.';
+        ? 'Open this on a phone, then tap Download the app.'
+        : 'No download on a computer. On a phone, Chrome can put SiteEye on the home screen.';
     }
     return;
   }
@@ -56,7 +56,7 @@
       if (hint) {
         hint.hidden = false;
         hint.textContent = isJoe
-          ? 'It is on your home screen. Open SiteEye from there, then type the 4 letters.'
+          ? 'SiteEye is on your home screen. Open that icon, then enter the site code.'
           : 'It is on your home screen. Open that icon next time you run the camera.';
       }
       return;
@@ -66,7 +66,7 @@
       hint.textContent = ios
         ? 'Safari: tap Share, then Add to Home Screen.'
         : (isJoe
-          ? 'Chrome: tap the three dots, then Add to Home screen / Install app. Open that icon, then type the 4 letters.'
+          ? 'Chrome: tap the three dots, then Add to Home screen / Install app. Open that icon, then enter the site code.'
           : 'Chrome: tap the three dots, then Add to Home screen / Install app.');
     }
   });

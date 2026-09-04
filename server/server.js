@@ -267,7 +267,7 @@ wss.on('connection', (ws) => {
       const room = String(msg.room || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
       const r = liveRooms.get(room);
       if (!r || !r.camera) {
-        liveSend(ws, { type: 'error', error: 'No camera with that code. Start the phone first.' });
+        liveSend(ws, { type: 'error', error: 'No live camera for that code yet. Try again in a moment.' });
         return;
       }
       r.watch = ws;
