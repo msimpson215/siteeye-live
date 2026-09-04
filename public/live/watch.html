@@ -17,18 +17,16 @@
 
   <div class="sheet" id="join">
     <div class="box">
-      <div id="getApp">
-        <h2 id="getAppTitle">Add SiteEye to this phone</h2>
-        <p id="getAppCopy">Put SiteEye on the home screen, then enter the site code to view the live camera.</p>
-        <button class="go" id="installBtn" type="button">Add to Home Screen</button>
-        <p class="install-hint" id="installHint" hidden></p>
-        <p class="already">Already installed?</p>
-      </div>
-      <h2 id="joinTitle" class="hide">Enter site code</h2>
+      <h2>Enter site code</h2>
+      <p>Open this link, type the 4-letter code, tap View live camera. Safari or Chrome is fine.</p>
       <label class="code-lab" for="code">Pending code</label>
       <input id="code" type="text" maxlength="4" autocapitalize="characters" autocomplete="off" placeholder="----"/>
       <div class="err" id="err"></div>
-      <button class="install" id="joinBtn" type="button">View live camera</button>
+      <button class="go" id="joinBtn" type="button">View live camera</button>
+      <div id="getApp">
+        <button class="install" id="installBtn" type="button">Add to Home Screen (optional)</button>
+        <p class="install-hint" id="installHint" hidden></p>
+      </div>
     </div>
   </div>
 
