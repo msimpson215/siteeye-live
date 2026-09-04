@@ -17,13 +17,17 @@
 
   <div class="sheet" id="join">
     <div class="box">
-      <h2>Connect the camera</h2>
-      <p>Marty will give you 4 letters. Type them here. You do not need to be on his Wi-Fi &mdash; you can be 20 miles away.</p>
+      <div id="getApp">
+        <h2>Download the app</h2>
+        <p>Put SiteEye on your home screen. Then type the 4 letters Marty texts you. You do not need his Wi-Fi &mdash; 10 miles away is fine.</p>
+        <button class="go" id="installBtn" type="button">Download the app</button>
+        <p class="install-hint" id="installHint" hidden></p>
+        <p class="already">Already on your phone? Type the code below.</p>
+      </div>
+      <h2 id="joinTitle" class="hide">Type the 4 letters</h2>
       <input id="code" type="text" maxlength="4" autocapitalize="characters" autocomplete="off" placeholder="CODE"/>
       <div class="err" id="err"></div>
-      <button class="go" id="joinBtn" type="button">Watch live</button>
-      <button class="install" id="installBtn" type="button" hidden>Add SiteEye to this phone</button>
-      <p class="install-hint" id="installHint" hidden></p>
+      <button class="install" id="joinBtn" type="button">See the live camera</button>
     </div>
   </div>
 
