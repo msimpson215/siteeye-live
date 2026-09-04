@@ -18,7 +18,7 @@
   <div class="sheet" id="join">
     <div class="box">
       <h2>Enter site code</h2>
-      <p>Open this link, type the 4-letter code, tap View live camera. Safari or Chrome is fine.</p>
+      <p>Type the 4-letter site code, then tap View live camera.</p>
       <label class="code-lab" for="code">Pending code</label>
       <input id="code" type="text" maxlength="4" autocapitalize="characters" autocomplete="off" placeholder="----"/>
       <div class="err" id="err"></div>
@@ -451,8 +451,22 @@ document.getElementById('stage').addEventListener('pointermove', e => {
 document.getElementById('stage').addEventListener('pointerup', () => { drag = null; });
 
 renderList();
+
+function codeFromUrl(){
+  const q = new URLSearchParams(location.search).get('c') || '';
+  const hash = (location.hash || '').replace('#', '');
+  return (q || hash).toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 4);
+}
+
+const fromLink = codeFromUrl();
 const saved = sessionStorage.getItem('siteeye-room');
-if (saved) document.getElementById('code').value = saved;
+if (fromLink.length === 4){
+  document.getElementById('code').value = fromLink;
+  sessionStorage.setItem('siteeye-room', fromLink);
+  connect(fromLink);
+} else if (saved) {
+  document.getElementById('code').value = saved;
+}
 </script>
 <script src="/live/install.js"></script>
 </body>
