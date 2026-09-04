@@ -232,11 +232,11 @@ button{font-family:inherit;cursor:pointer}
     <div class="panel">
       <div class="ph"><h2>ON THE CLOCK</h2><span class="ct">9 IN</span></div>
       <div class="lst">
-        <div class="li"><span class="dot g"></span><div><div class="nm">Omar R. <span class="who">A1-07</span></div><div class="sub">Amazon lot &middot; Crew 2</div></div><div class="rt"><b>6:42a</b><em>5h 51m</em></div></div>
-        <div class="li"><span class="dot g"></span><div><div class="nm">Luis M. <span class="who">A1-03</span></div><div class="sub">Amazon lot &middot; Crew 2</div></div><div class="rt"><b>6:40a</b><em>5h 53m</em></div></div>
-        <div class="li"><span class="dot g"></span><div><div class="nm">Tyler K. <span class="who">A1-11</span></div><div class="sub">Kirkwood &middot; Crew 1</div></div><div class="rt"><b>6:58a</b><em>5h 35m</em></div></div>
-        <div class="li"><span class="dot y"></span><div><div class="nm">Marcus D. <span class="who">A1-05</span></div><div class="sub">Kirkwood &middot; Crew 1</div></div><div class="rt"><b>7:35a</b><em>late 35m</em></div></div>
-        <div class="li"><span class="dot o"></span><div><div class="nm">Ray S. <span class="who">A1-09</span></div><div class="sub">Not clocked in</div></div><div class="rt"><b>&mdash;</b><em>off today</em></div></div>
+        <div class="li"><span class="dot g"></span><div><div class="nm">Omar R.</div><div class="sub">Amazon lot &middot; Crew 2</div></div><div class="rt"><b>6:42a</b><em>5h 51m</em></div></div>
+        <div class="li"><span class="dot g"></span><div><div class="nm">Luis M.</div><div class="sub">Amazon lot &middot; Crew 2</div></div><div class="rt"><b>6:40a</b><em>5h 53m</em></div></div>
+        <div class="li"><span class="dot g"></span><div><div class="nm">Tyler K.</div><div class="sub">Kirkwood &middot; Crew 1</div></div><div class="rt"><b>6:58a</b><em>5h 35m</em></div></div>
+        <div class="li"><span class="dot y"></span><div><div class="nm">Marcus D.</div><div class="sub">Kirkwood &middot; Crew 1</div></div><div class="rt"><b>7:35a</b><em>late 35m</em></div></div>
+        <div class="li"><span class="dot o"></span><div><div class="nm">Ray S.</div><div class="sub">Not clocked in</div></div><div class="rt"><b>&mdash;</b><em>off today</em></div></div>
       </div>
     </div>
 
@@ -292,11 +292,11 @@ button{font-family:inherit;cursor:pointer}
       <div class="ph"><h2>NEW HIRES</h2><span class="ct">2 IN TRAINING</span></div>
       <div class="lst">
         <div class="mrow">
-          <div class="mtop"><b>Dave P.</b> <span class="who">A1-14</span> <span>day 3 &middot; 6 of 8</span></div>
+          <div class="mtop"><b>Dave P.</b> <span>day 3 &middot; 6 of 8</span></div>
           <div class="track"><div class="fill g" style="width:75%"></div></div>
         </div>
         <div class="mrow">
-          <div class="mtop"><b>Ray S.</b> <span class="who">A1-09</span> <span>day 1 &middot; 2 of 8</span></div>
+          <div class="mtop"><b>Ray S.</b> <span>day 1 &middot; 2 of 8</span></div>
           <div class="track"><div class="fill" style="width:25%"></div></div>
         </div>
       </div>
@@ -326,28 +326,29 @@ button{font-family:inherit;cursor:pointer}
 document.getElementById('date').textContent =
   new Date().toLocaleDateString([], { weekday:'long', month:'long', day:'numeric' });
 
-/* Every question carries the crew ID it came from, so Joe always knows the source. */
+/* Named so Joe can call the man back. Deliberately no per-person question
+   tally anywhere — counting questions punishes whoever uses the thing. */
 const QUEUE = [
   {
-    id:'A1-07', who:'Omar R.', job:'Amazon lot', ago:'8 min ago',
+    who:'Omar R.', job:'Amazon lot', ago:'8 min ago',
     q:'Second coat is beading up on the north end. Do we keep going or stop?',
     a:'Beading usually means the surface is still damp or the first coat has not cured. Stop, check for moisture, and wait for the surface to dry before continuing.',
     why:'Money call over $500 \u2014 sent to you'
   },
   {
-    id:'A1-11', who:'Tyler K.', job:'Kirkwood Plaza', ago:'23 min ago',
+    who:'Tyler K.', job:'Kirkwood Plaza', ago:'23 min ago',
     q:'Customer wants us to add 40 feet of curb that is not on the ticket. OK to do it?',
     a:'I cannot approve added scope. This needs Joe.',
     why:'Change order \u2014 always yours'
   },
   {
-    id:'A1-03', who:'Luis M.', job:'Amazon lot', ago:'41 min ago',
+    who:'Luis M.', job:'Amazon lot', ago:'41 min ago',
     q:'How long before the store can park on the section we finished at 9?',
     a:'Rule in The Book is 24 hours in full sun, longer if it is shaded or cool. Barricade until tomorrow 9am.',
     why:'Answered \u2014 confirm the rule is still right'
   },
   {
-    id:'A1-05', who:'Marcus D.', job:'Kirkwood Plaza', ago:'1 hr ago',
+    who:'Marcus D.', job:'Kirkwood Plaza', ago:'1 hr ago',
     q:'Kettle is reading 410. Is that too hot?',
     a:'That is above the range in The Book. Shut the burner down and let it come back to 380 before you pull material.',
     why:'Safety \u2014 confirm and log'
@@ -372,8 +373,8 @@ function draw(){
     return `
       <div class="q" data-open="${i}">
         <div class="qt">
-          <span class="who">${r.id}</span>
-          <span class="job">${r.who} &middot; ${r.job}</span>
+          <span class="who">${r.who}</span>
+          <span class="job">${r.job}</span>
           <span class="ago">${r.ago}</span>
         </div>
         <div class="qq">${r.q}</div>
