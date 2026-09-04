@@ -5,9 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <meta name="robots" content="noindex,nofollow"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-title" content="A1 Dashboard"/>
+<meta name="apple-mobile-web-app-title" content="A1"/>
 <meta name="theme-color" content="#1c1c1c"/>
 <link rel="apple-touch-icon" href="/live/icon-192.png"/>
+<link rel="manifest" href="/a1/manifest.json"/>
 <title>A1 Dashboard</title>
 <style>
 :root{
@@ -35,39 +36,59 @@ button,input{font-family:inherit}
   display:flex;flex-direction:column;position:relative
 }
 
-/* ---------- login ---------- */
-.login{
-  min-height:100%;padding:calc(52px + env(safe-area-inset-top)) 26px
-    calc(30px + env(safe-area-inset-bottom));
+/* ---------- shared gate chrome ---------- */
+.gate{
+  min-height:100%;padding:calc(46px + env(safe-area-inset-top)) 26px
+    calc(26px + env(safe-area-inset-bottom));
   display:flex;flex-direction:column
 }
-.login .mark{width:64px;height:64px;border-radius:16px;margin-bottom:22px}
-.login .mark span{font-size:27px}
-.login h1{font-size:23px;font-weight:900;letter-spacing:-.01em;line-height:1.2}
-.login h1 em{display:block;font-style:normal;font-size:11px;font-weight:700;
+.mark{
+  width:44px;height:44px;border-radius:12px;background:var(--gold);
+  display:grid;place-items:center;flex:0 0 auto
+}
+.mark span{font-weight:900;font-size:19px;color:#141414;letter-spacing:-.02em}
+.gate .mark{width:60px;height:60px;border-radius:15px;margin-bottom:20px}
+.gate .mark span{font-size:26px}
+.gate h1{font-size:22px;font-weight:900;letter-spacing:-.01em;line-height:1.2}
+.gate h1 em{display:block;font-style:normal;font-size:10.5px;font-weight:800;
   color:var(--gold);letter-spacing:.18em;margin-top:9px}
-.login .lede{margin-top:14px;font-size:13.5px;color:var(--muted);line-height:1.5}
+.gate .lede{margin-top:13px;font-size:13.5px;color:var(--muted);line-height:1.5}
 
 .field{margin-top:20px}
 .field label{display:block;font-size:10.5px;letter-spacing:.14em;color:var(--muted);
   font-weight:800;margin-bottom:7px}
 .field input{
   width:100%;padding:15px 16px;border-radius:12px;border:1px solid var(--line);
-  background:#252525;color:#fff;font-size:16px;font-weight:700;letter-spacing:.04em
+  background:#252525;color:#fff;font-size:17px;font-weight:800;letter-spacing:.2em;
+  text-align:center
 }
+.field input.txt{letter-spacing:.03em;text-align:left;font-size:16px}
 .field input:focus{outline:none;border-color:var(--gold)}
-.signin{
-  margin-top:22px;width:100%;padding:17px;border:0;border-radius:12px;
+.go{
+  margin-top:20px;width:100%;padding:17px;border:0;border-radius:12px;
   background:var(--gold);color:#141414;font-size:15.5px;font-weight:900;
   letter-spacing:.04em;cursor:pointer
 }
-.signin:active{transform:scale(.99)}
-.loginErr{margin-top:12px;color:var(--red);font-size:12.5px;font-weight:700;min-height:16px}
+.go:active{transform:scale(.99)}
+.err{margin-top:11px;color:var(--red);font-size:12.5px;font-weight:700;min-height:16px}
+.swap{
+  margin-top:16px;background:none;border:0;color:var(--muted);font-size:12.5px;
+  font-weight:700;text-decoration:underline;cursor:pointer;padding:6px 0;align-self:flex-start
+}
 .demo{
-  margin-top:auto;padding:14px;border-radius:12px;background:#242424;
+  margin-top:auto;padding:13px;border-radius:12px;background:#242424;
   border:1px dashed var(--line);font-size:11.5px;color:var(--muted);line-height:1.7
 }
 .demo b{color:var(--gold);font-weight:800}
+
+/* ---------- who are you ---------- */
+.names{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
+.nameBtn{
+  padding:19px 12px;border-radius:13px;border:1px solid var(--line);
+  background:var(--card);color:#fff;font-size:15.5px;font-weight:800;cursor:pointer
+}
+.nameBtn:active{transform:scale(.97)}
+.nameBtn.new{border-style:dashed;color:var(--muted);font-weight:700;font-size:13.5px}
 
 /* ---------- header ---------- */
 .hd{
@@ -75,17 +96,12 @@ button,input{font-family:inherit}
   border-bottom:1px solid var(--line);background:#181818
 }
 .brand{display:flex;align-items:center;gap:12px}
-.mark{
-  width:44px;height:44px;border-radius:12px;background:var(--gold);
-  display:grid;place-items:center;flex:0 0 auto
-}
-.mark span{font-weight:900;font-size:19px;color:#141414;letter-spacing:-.02em}
 .brand h1{font-size:15px;font-weight:900;letter-spacing:.02em;line-height:1.25;flex:1}
 .brand h1 em{display:block;font-style:normal;font-size:10.5px;font-weight:700;
   color:var(--muted);letter-spacing:.16em;margin-top:3px}
 .out{
-  border:1px solid var(--line);background:#2a2a2a;color:var(--muted);
-  font-size:10px;font-weight:800;letter-spacing:.1em;padding:7px 10px;
+  border:1px solid var(--line);background:#2a2a2a;color:#7d7d7d;
+  font-size:9.5px;font-weight:800;letter-spacing:.1em;padding:6px 9px;
   border-radius:8px;cursor:pointer;flex:0 0 auto
 }
 .who{margin-top:16px;display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
@@ -97,6 +113,14 @@ button,input{font-family:inherit}
 }
 .tag.crew{background:#3d3d3d;color:var(--muted)}
 .sub{margin-top:5px;font-size:13px;color:var(--muted)}
+
+/* ---------- install nag ---------- */
+.nag{
+  margin:14px 20px 0;padding:13px 14px;border-radius:12px;
+  background:#3a2f12;border:1px solid var(--gold);font-size:12px;line-height:1.55
+}
+.nag b{color:var(--gold);display:block;margin-bottom:3px;font-size:12.5px}
+.nag span{color:#e6d9b4}
 
 /* ---------- status ---------- */
 .strips{padding:14px 20px 0;display:flex;flex-direction:column;gap:9px}
@@ -150,47 +174,77 @@ button,input{font-family:inherit}
 </head>
 <body>
 
-<!-- ================= LOGIN ================= -->
-<div class="app hide" id="loginView">
-  <div class="login">
+<!-- ============ 1. CREW PIN ============ -->
+<div class="app hide" id="crewGate">
+  <div class="gate">
     <div class="mark"><span>A1</span></div>
-    <h1>A1 PROFESSIONAL<br/>ASPHALT &amp; CONCRETE<em>CREW DASHBOARD</em></h1>
-    <p class="lede">Sign in to see your jobs, the book, and today's safety talk.</p>
+    <h1>A1 PROFESSIONAL<br/>ASPHALT &amp; CONCRETE<em>CREW</em></h1>
+    <p class="lede">Punch in the crew PIN once. This phone stays signed in.</p>
 
     <div class="field">
-      <label for="user">NAME</label>
-      <input id="user" type="text" autocapitalize="none" autocomplete="off" spellcheck="false" placeholder="joe"/>
+      <label for="crewPin">CREW PIN</label>
+      <input id="crewPin" type="password" inputmode="numeric" maxlength="6" autocomplete="off" placeholder="&bull;&bull;&bull;&bull;"/>
     </div>
-    <div class="field">
-      <label for="pin">PIN</label>
-      <input id="pin" type="password" inputmode="numeric" maxlength="6" autocomplete="off" placeholder="&bull;&bull;&bull;&bull;"/>
-    </div>
+    <div class="err" id="crewErr"></div>
+    <button class="go" id="crewGo" type="button">SIGN IN</button>
+    <button class="swap" id="toMgr" type="button">Owner or manager? Sign in here</button>
 
-    <div class="loginErr" id="loginErr"></div>
-    <button class="signin" id="signin" type="button">SIGN IN</button>
-
-    <div class="demo">
-      <b>DEMO LOGINS</b><br/>
-      Owner &mdash; <b>joe</b> / 1234<br/>
-      Crew &mdash; <b>omar</b> / 1111
-    </div>
+    <div class="demo"><b>DEMO</b><br/>Crew PIN &mdash; <b>2468</b></div>
   </div>
 </div>
 
-<!-- ================= DASHBOARD ================= -->
+<!-- ============ 2. WHO ARE YOU ============ -->
+<div class="app hide" id="pickGate">
+  <div class="gate">
+    <div class="mark"><span>A1</span></div>
+    <h1>WHO'S ON<br/>THIS PHONE?<em>ONE TIME ONLY</em></h1>
+    <p class="lede">Tap your name. We won't ask again on this phone.</p>
+    <div class="names" id="names"></div>
+  </div>
+</div>
+
+<!-- ============ 3. MANAGER LOGIN ============ -->
+<div class="app hide" id="mgrGate">
+  <div class="gate">
+    <div class="mark"><span>A1</span></div>
+    <h1>OWNER &amp;<br/>MANAGER<em>ADMIN ACCESS</em></h1>
+    <p class="lede">Your own name and PIN. Signed in until you sign out.</p>
+
+    <div class="field">
+      <label for="mgrUser">NAME</label>
+      <input id="mgrUser" class="txt" type="text" autocapitalize="none" autocomplete="off" spellcheck="false" placeholder="joe"/>
+    </div>
+    <div class="field">
+      <label for="mgrPin">PIN</label>
+      <input id="mgrPin" type="password" inputmode="numeric" maxlength="6" autocomplete="off" placeholder="&bull;&bull;&bull;&bull;"/>
+    </div>
+    <div class="err" id="mgrErr"></div>
+    <button class="go" id="mgrGo" type="button">SIGN IN</button>
+    <button class="swap" id="toCrew" type="button">&larr; Back to crew sign in</button>
+
+    <div class="demo"><b>DEMO</b><br/>Owner &mdash; <b>joe</b> / 1234<br/>Manager &mdash; <b>dana</b> / 5678</div>
+  </div>
+</div>
+
+<!-- ============ 4. DASHBOARD ============ -->
 <div class="app hide" id="dashView">
   <header class="hd">
     <div class="brand">
       <div class="mark"><span>A1</span></div>
-      <h1>A1 PROFESSIONAL<br/>ASPHALT &amp; CONCRETE<em>CREW DASHBOARD</em></h1>
+      <h1>A1 PROFESSIONAL<br/>ASPHALT &amp; CONCRETE<em id="hdRole">CREW DASHBOARD</em></h1>
       <button class="out" id="signout" type="button">SIGN OUT</button>
     </div>
     <div class="who">
-      <div class="hello"><span id="greet">Morning</span>, <b id="name">Joe</b>.</div>
-      <span class="tag" id="roleTag">OWNER</span>
+      <div class="hello"><span id="greet">Morning</span>, <b id="name">Omar</b>.</div>
+      <span class="tag" id="roleTag">CREW</span>
     </div>
     <div class="sub" id="today"></div>
   </header>
+
+  <div class="nag hide" id="nag">
+    <b>Add this to your home screen</b>
+    <span id="nagHow"></span>
+  </div>
 
   <div class="strips" id="strips"></div>
   <div class="lab" id="gridLab">WHAT DO YOU NEED?</div>
@@ -199,14 +253,19 @@ button,input{font-family:inherit}
 </div>
 
 <script>
-/* Demo accounts only — real sign-in moves to the server session in auth.js. */
-const ACCOUNTS = {
-  joe:  { pin:'1234', name:'Joe',  role:'owner', tag:'OWNER' },
-  omar: { pin:'1111', name:'Omar', role:'crew',  tag:'CREW'  }
+/* Demo credentials live in the page. Real sign-in moves to the signed
+   server cookie in server/auth.js before any live crew data goes in. */
+const CREW_PIN = '2468';
+const MANAGERS = {
+  joe:  { name:'Joe',  tag:'OWNER'   },
+  dana: { name:'Dana', tag:'MANAGER' }
 };
+const MANAGER_PINS = { joe:'1234', dana:'5678' };
+const CREW = ['Omar','Luis','Tyler','Marcus','Dave','Ray'];
 
 const ICONS = {
   eye:   '<path d="M4 12c2-4 4-6 8-6s6 2 8 6-4 6-8 6-6-2-8-6z"/><circle cx="12" cy="12" r="2.4"/>',
+  cam:   '<rect x="3" y="7" width="13" height="10" rx="2"/><path d="M16 10l5-3v10l-5-3"/>',
   brain: '<path d="M12 3l8 4v5c0 4.5-3.2 7.8-8 9-4.8-1.2-8-4.5-8-9V7z"/><path d="M12 10v3"/><circle cx="12" cy="16" r=".6" fill="currentColor"/>',
   book:  '<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M8 7.5h7M8 11h7"/>',
   cap:   '<path d="M3 8l9-4 9 4-9 4z"/><path d="M7 10.5V15c0 1.4 2.2 2.5 5 2.5s5-1.1 5-2.5v-4.5"/><path d="M21 8v5"/>',
@@ -214,30 +273,32 @@ const ICONS = {
   hat:   '<path d="M4 15a8 8 0 0 1 16 0z"/><path d="M2.5 15h19"/><path d="M9.5 15V8.2A2.5 2.5 0 0 1 12 6"/>'
 };
 
-/* Same six doors for everyone. What changes is what you can do behind them. */
+/* Crew set the camera up and never watch it. Watching is admin only. */
 const VIEWS = {
-  owner: {
-    strips: [
-      { cls:'',     b:'1 job live',        s:'Amazon lot \u2014 camera streaming' },
-      { cls:'warn', b:'4 questions',       s:'waiting on your answer' }
+  admin: {
+    hdRole:'ADMIN DASHBOARD',
+    lab:'RUN THE COMPANY',
+    strips:[
+      { cls:'',     b:'1 job live',  s:'Amazon lot \u2014 camera streaming' },
+      { cls:'warn', b:'4 questions', s:'waiting on your answer' }
     ],
-    lab: 'RUN THE COMPANY',
-    tiles: [
-      { icon:'eye',   pill:'LIVE',  live:true, h:'SITE EYE',    p:'Every job. 1 camera live now.', go:'/live/watch' },
+    tiles:[
+      { icon:'eye',   pill:'WATCH', live:true, h:'SITE EYE', p:'Every job. 1 camera live now.', go:'/live/watch' },
       { icon:'brain', pill:'4 NEW', alert:true, h:'AI FOREMAN', p:'Review what it told the crew. Fix what is wrong.' },
-      { icon:'book',  pill:'EDIT',  h:'THE BOOK',  p:'How A1 does it. Add and change steps.' },
-      { icon:'cap',   pill:'2 NEW', h:'DAY ONE',   p:'2 new hires training. See where they are.' },
-      { icon:'log',   pill:'ALL',   h:'JOB LOG',   p:'All crews. Today\u2019s photos and hours.' },
-      { icon:'hat',   pill:'11/14', h:'SAFETY',    p:'Who signed today\u2019s talk. 3 missing.' }
+      { icon:'book',  pill:'EDIT',  h:'THE BOOK', p:'How A1 does it. Add and change steps.' },
+      { icon:'cap',   pill:'2 NEW', h:'DAY ONE',  p:'2 new hires training. See where they are.' },
+      { icon:'log',   pill:'ALL',   h:'JOB LOG',  p:'All crews. Today\u2019s photos and hours.' },
+      { icon:'hat',   pill:'11/14', h:'SAFETY',   p:'Who signed today\u2019s talk. 3 missing.' }
     ]
   },
   crew: {
-    strips: [
+    hdRole:'CREW DASHBOARD',
+    lab:'WHAT DO YOU NEED?',
+    strips:[
       { cls:'', b:'Amazon lot', s:'\u00b7 Seal + stripe \u00b7 Crew 2' }
     ],
-    lab: 'WHAT DO YOU NEED?',
-    tiles: [
-      { icon:'eye',   pill:'SET UP', live:true, h:'SITE EYE',   p:'Put the camera up on this job.', go:'/live/camera' },
+    tiles:[
+      { icon:'cam',   pill:'SET UP', live:true, h:'SITE EYE', p:'Put the camera up and start it. Joe watches from the office.', go:'/live/camera' },
       { icon:'brain', pill:'ASK',   h:'AI FOREMAN', p:'Stuck? Ask here before you call Joe.' },
       { icon:'book',  pill:'SOP',   h:'THE BOOK',   p:'Look up how A1 does it. Step by step.' },
       { icon:'cap',   pill:'3/8',   h:'DAY ONE',    p:'Your training. 5 left to finish.' },
@@ -248,23 +309,47 @@ const VIEWS = {
 };
 
 const $ = (id) => document.getElementById(id);
+const SAVE = 'a1-session';
 
-function render(acct){
-  const v = VIEWS[acct.role];
+function load(){ try { return JSON.parse(localStorage.getItem(SAVE)) || null; } catch { return null; } }
+function save(s){ localStorage.setItem(SAVE, JSON.stringify(s)); }
+
+/* Ask the browser not to evict us when the phone gets low on space. */
+if (navigator.storage?.persist) navigator.storage.persist().catch(() => {});
+
+function only(id){
+  ['crewGate','pickGate','mgrGate','dashView'].forEach(v => $(v).classList.toggle('hide', v !== id));
+}
+
+/* iOS clears a Safari tab's storage after 7 days idle; home screen apps are
+   exempt. Installing is what actually keeps them signed in. */
+function installNag(){
+  const standalone = window.matchMedia('(display-mode: standalone)').matches
+    || window.navigator.standalone === true;
+  if (standalone) return;
+  const ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  $('nagHow').textContent = ios
+    ? 'Tap the Share button at the bottom of Safari, then "Add to Home Screen." Otherwise iPhone signs you out after a week.'
+    : 'Tap the menu (three dots), then "Add to Home screen." Then open it from the icon, not the browser.';
+  $('nag').classList.remove('hide');
+}
+
+function render(session){
+  const v = VIEWS[session.role];
   const now = new Date();
 
   $('greet').textContent = now.getHours() < 12 ? 'Morning'
     : now.getHours() < 17 ? 'Afternoon' : 'Evening';
-  $('name').textContent = acct.name;
+  $('name').textContent = session.name;
+  $('hdRole').textContent = v.hdRole;
   $('today').textContent = now.toLocaleDateString([], { weekday:'long', month:'long', day:'numeric' });
 
   const tag = $('roleTag');
-  tag.textContent = acct.tag;
-  tag.className = 'tag' + (acct.role === 'crew' ? ' crew' : '');
+  tag.textContent = session.tag;
+  tag.className = 'tag' + (session.role === 'crew' ? ' crew' : '');
 
   $('strips').innerHTML = v.strips
-    .map(s => `<div class="strip ${s.cls}"><u></u><b>${s.b}</b><span>${s.s}</span></div>`)
-    .join('');
+    .map(s => `<div class="strip ${s.cls}"><u></u><b>${s.b}</b><span>${s.s}</span></div>`).join('');
 
   $('gridLab').textContent = v.lab;
   $('grid').innerHTML = v.tiles.map(t => `
@@ -276,42 +361,69 @@ function render(acct){
       <p>${t.p}</p>
     </button>`).join('');
 
-  $('loginView').classList.add('hide');
-  $('dashView').classList.remove('hide');
+  only('dashView');
+  installNag();
 }
 
-function showLogin(){
-  $('dashView').classList.add('hide');
-  $('loginView').classList.remove('hide');
-  $('pin').value = '';
-  $('loginErr').textContent = '';
+function pickName(){
+  $('names').innerHTML = CREW.map(n => `<button class="nameBtn" type="button" data-n="${n}">${n}</button>`).join('')
+    + '<button class="nameBtn new" type="button" data-n="">I\u2019M NEW &mdash; ADD ME</button>';
+  only('pickGate');
 }
 
-$('signin').onclick = () => {
-  const u = $('user').value.trim().toLowerCase();
-  const p = $('pin').value.trim();
-  const acct = ACCOUNTS[u];
-  if (!acct || acct.pin !== p){
-    $('loginErr').textContent = 'Wrong name or PIN. Try joe / 1234.';
+$('crewGo').onclick = () => {
+  if ($('crewPin').value.trim() !== CREW_PIN){
+    $('crewErr').textContent = 'Wrong PIN. Ask your foreman.';
     return;
   }
-  localStorage.setItem('a1-user', u);
-  render(acct);
+  $('crewErr').textContent = '';
+  pickName();
 };
-$('pin').addEventListener('keydown', e => { if (e.key === 'Enter') $('signin').click(); });
-$('user').addEventListener('keydown', e => { if (e.key === 'Enter') $('pin').focus(); });
+$('crewPin').addEventListener('keydown', e => { if (e.key === 'Enter') $('crewGo').click(); });
 
-$('signout').onclick = () => { localStorage.removeItem('a1-user'); showLogin(); };
+$('names').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-n]');
+  if (!b) return;
+  let n = b.dataset.n;
+  if (!n){
+    n = (prompt('First name?') || '').trim();
+    if (!n) return;
+  }
+  const s = { role:'crew', name:n, tag:'CREW' };
+  save(s); render(s);
+});
 
-document.querySelector('.grid').addEventListener('click', (e) => {
+$('mgrGo').onclick = () => {
+  const u = $('mgrUser').value.trim().toLowerCase();
+  const p = $('mgrPin').value.trim();
+  if (!MANAGERS[u] || MANAGER_PINS[u] !== p){
+    $('mgrErr').textContent = 'Wrong name or PIN.';
+    return;
+  }
+  const s = { role:'admin', name:MANAGERS[u].name, tag:MANAGERS[u].tag };
+  save(s); render(s);
+};
+$('mgrPin').addEventListener('keydown', e => { if (e.key === 'Enter') $('mgrGo').click(); });
+$('mgrUser').addEventListener('keydown', e => { if (e.key === 'Enter') $('mgrPin').focus(); });
+
+$('toMgr').onclick = () => { $('mgrErr').textContent=''; $('mgrPin').value=''; only('mgrGate'); };
+$('toCrew').onclick = () => { $('crewErr').textContent=''; $('crewPin').value=''; only('crewGate'); };
+
+$('signout').onclick = () => {
+  localStorage.removeItem(SAVE);
+  $('crewPin').value = ''; $('mgrPin').value = ''; $('mgrUser').value = '';
+  only('crewGate');
+};
+
+$('grid').addEventListener('click', (e) => {
   const t = e.target.closest('.tile');
   if (!t) return;
   if (t.dataset.go){ location.href = t.dataset.go; return; }
   alert(t.dataset.soon + ' \u2014 this is where it opens.\n\nWe build this one next.');
 });
 
-const remembered = ACCOUNTS[localStorage.getItem('a1-user')];
-if (remembered) render(remembered); else showLogin();
+const existing = load();
+if (existing) render(existing); else only('crewGate');
 </script>
 </body>
 </html>
