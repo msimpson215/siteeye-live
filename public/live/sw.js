@@ -1,4 +1,4 @@
-const CACHE = 'siteeye-app-v3';
+const CACHE = 'siteeye-app-v4';
 const SHELL = [
   '/live/watch',
   '/live/camera',

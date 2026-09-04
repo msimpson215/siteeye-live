@@ -27,9 +27,9 @@
     <audio id="talkBack" autoplay playsinline></audio>
     <div class="hud">
       <img src="/images/hero-cam.jpg" alt="" style="width:72px;height:72px;object-fit:cover;border-radius:8px;margin-bottom:8px;display:block"/>
-      <div class="k" id="hudK">Tell Joe this code</div>
+      <div class="k" id="hudK">Your 4-letter code</div>
       <div class="code" id="code">————</div>
-      <div class="st" id="status">Tap Start, then allow the camera.</div>
+      <div class="st" id="status">Getting a code&hellip; then tap Start and allow the camera.</div>
     </div>
   </div>
   <div class="bar">
@@ -49,7 +49,8 @@ const hudK = document.getElementById('hudK');
 const statusEl = document.getElementById('status');
 const errEl = document.getElementById('err');
 let facing = 'environment';
-let stream = null, ws = null, pc = null, room = null, wake = null, relayTimer = 0, watching = false;
+let stream = null, ws = null, pc = null, room = null, wake = null, relayTimer = 0, watching = false, joeWaiting = false;
+let connectTries = 0;
 const ICE = { iceServers: [
   { urls: 'stun:stun.l.google.com:19302' },
   { urls: 'stun:stun.relay.metered.ca:80' },
@@ -70,6 +71,13 @@ function showCode(){
   codeEl.style.display = '';
   hudK.textContent = 'Tell Joe this code';
   if (room) setStatus('Joe left. Same code — he can join again.');
+}
+
+function goLive(){
+  if (!stream || !ws || ws.readyState !== 1) return;
+  hideCode();
+  startRelay();
+  startCall();
 }
 
 async function setTorch(on){
@@ -98,22 +106,39 @@ async function getCam(){
 
 function signal(){
   const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+  if (ws) {
+    try { ws.onclose = null; ws.close(); } catch {}
+  }
   ws = new WebSocket(`${proto}//${location.host}/live-signal`);
   ws.onopen = () => ws.send(JSON.stringify({ type: 'create' }));
-  ws.onclose = () => setStatus('Connection dropped. Tap Start again.');
-  ws.onerror = () => setErr('Could not reach SiteEye. Stay on this page and try Start again.');
+  ws.onclose = () => {
+    if (!room && connectTries < 6) {
+      connectTries++;
+      setStatus('Getting a code… hang on.');
+      setTimeout(signal, 1500);
+      return;
+    }
+    setStatus(room ? 'Connection dropped. Tap Start again.' : 'Could not get a code. Refresh this page.');
+  };
+  ws.onerror = () => setErr('Could not reach SiteEye. Stay on this page.');
   ws.onmessage = async (e) => {
     const msg = JSON.parse(e.data);
     if (msg.type === 'created'){
       room = msg.room;
+      connectTries = 0;
       codeEl.textContent = room;
-      setStatus('Waiting for Joe to open Watch and type this code.');
+      hudK.textContent = 'Tell Joe this code';
+      setStatus(stream
+        ? 'Waiting for Joe to open Watch and type this code.'
+        : 'Tap Start and allow the camera so Joe can see.');
     }
     if (msg.type === 'peer-joined'){
-      setStatus('Joe is connecting…');
-      hideCode();
-      startRelay();
-      await startCall();
+      joeWaiting = true;
+      if (!stream){
+        setStatus('Joe is in. Tap Start and allow the camera so he can see.');
+        return;
+      }
+      goLive();
     }
     if (msg.type === 'answer' && pc){
       await pc.setRemoteDescription(msg.payload);
@@ -129,6 +154,7 @@ function signal(){
       try { await pc.addIceCandidate(msg.payload); } catch {}
     }
     if (msg.type === 'peer-left'){
+      joeWaiting = false;
       showCode();
       stopRelay();
       if (pc){ pc.close(); pc = null; }
@@ -192,13 +218,15 @@ async function start(){
       try { wake = await navigator.wakeLock.request('screen'); } catch {}
     }
     if (!ws || ws.readyState > 1) signal();
-    else setStatus(room ? 'Waiting for Joe…' : 'Starting…');
+    else if (room) setStatus('Waiting for Joe to open Watch and type this code.');
+    if (joeWaiting) goLive();
   } catch {
-    setErr('Allow the camera and the microphone when the phone asks.');
+    setErr('Allow the camera and the microphone when the phone asks. Then tap Start again.');
   }
 }
 
 document.getElementById('start').onclick = start;
+signal();
 document.getElementById('flip').onclick = async () => {
   facing = facing === 'environment' ? 'user' : 'environment';
   try {
