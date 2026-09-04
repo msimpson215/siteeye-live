@@ -219,6 +219,7 @@ app.post('/api/chat', requireAxonAuth, async (req, res) => {
   }
 });
 
+app.get('/a1', (_req, res) => res.sendFile(join(publicDir, 'a1/index.html')));
 app.get('/live', (_req, res) => res.sendFile(join(publicDir, 'live/index.html')));
 app.get('/live/camera', (_req, res) => res.sendFile(join(publicDir, 'live/camera.html')));
 app.get('/live/watch', (_req, res) => res.sendFile(join(publicDir, 'live/watch.html')));

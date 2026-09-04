@@ -17,12 +17,14 @@
 
   <div class="sheet" id="join">
     <div class="box">
-      <h2>Enter site code</h2>
-      <p>Type the 4-letter site code, then tap View live camera.</p>
-      <label class="code-lab" for="code">Pending code</label>
-      <input id="code" type="text" maxlength="4" autocapitalize="characters" autocomplete="off" placeholder="----"/>
-      <div class="err" id="err"></div>
-      <button class="go" id="joinBtn" type="button">View live camera</button>
+      <h2 id="joinTitle">Enter site code</h2>
+      <p id="joinCopy">Type the 4-letter site code, then tap View live camera.</p>
+      <div id="manualEntry">
+        <label class="code-lab" for="code">Pending code</label>
+        <input id="code" type="text" maxlength="4" autocapitalize="characters" autocomplete="off" placeholder="----"/>
+        <div class="err" id="err"></div>
+        <button class="go" id="joinBtn" type="button">View live camera</button>
+      </div>
       <div id="getApp">
         <button class="install" id="installBtn" type="button">Add to Home Screen (optional)</button>
         <p class="install-hint" id="installHint" hidden></p>
@@ -153,6 +155,7 @@ const errEl = document.getElementById('err');
 let ws = null, pc = null, dc = null, stream = null, lastFrameUrl = '';
 let scale = 1, tx = 0, ty = 0, t0 = 0, timerId = 0, torch = false;
 let talkStream = null, talking = false;
+let autoRoom = '', retryTimer = 0;
 const helpEl = document.getElementById('help');
 const ICE = { iceServers: [
   { urls: 'stun:stun.l.google.com:19302' },
@@ -162,6 +165,22 @@ const ICE = { iceServers: [
 ]};
 
 function setErr(t){ errEl.textContent = t || ''; }
+
+/* A link with ?c=CODE may be opened before the site starts its camera, so the
+   viewer parks on a waiting screen and keeps retrying until the camera appears. */
+function waitingMode(room){
+  autoRoom = room;
+  document.getElementById('joinTitle').textContent = 'Waiting for the camera';
+  document.getElementById('joinCopy').textContent =
+    'Site ' + room + ' has not started streaming yet. Leave this open — it connects by itself the moment the camera turns on.';
+  document.getElementById('manualEntry').hidden = true;
+  setErr('');
+}
+function scheduleRetry(){
+  if (!autoRoom) return;
+  clearTimeout(retryTimer);
+  retryTimer = setTimeout(() => connect(autoRoom), 3000);
+}
 function setHelp(t){ if (helpEl) helpEl.textContent = t; }
 function applyZoom(){
   const t = `translate(${tx}px,${ty}px) scale(${scale})`;
@@ -187,6 +206,7 @@ function tick(){
 }
 
 function gotLive(){
+  clearTimeout(retryTimer);
   if (t0) return;
   t0 = Date.now();
   clearInterval(timerId);
@@ -276,14 +296,18 @@ function connect(room){
   ws = new WebSocket(`${proto}//${location.host}/live-signal`);
   ws.binaryType = 'arraybuffer';
   ws.onopen = () => ws.send(JSON.stringify({ type:'join', room }));
-  ws.onerror = () => setErr('Could not reach SiteEye.');
+  ws.onerror = () => { if (autoRoom) scheduleRetry(); else setErr('Could not reach SiteEye.'); };
+  ws.onclose = () => { if (autoRoom && !stream) scheduleRetry(); };
   ws.onmessage = async (e) => {
     if (e.data instanceof ArrayBuffer){
       showFrame(e.data);
       return;
     }
     const msg = JSON.parse(e.data);
-    if (msg.type === 'error'){ setErr(msg.error); return; }
+    if (msg.type === 'error'){
+      if (autoRoom) scheduleRetry(); else setErr(msg.error);
+      return;
+    }
     if (msg.type === 'joined'){
       document.getElementById('join').classList.add('hide');
     }
@@ -322,8 +346,12 @@ function connect(room){
       stream = null;
       if (talkStream){ talkStream.getTracks().forEach(t => t.stop()); talkStream = null; }
       talking = false;
-      setErr('Camera stopped. Ask the site to start it again.');
+      t0 = 0;
+      clearInterval(timerId);
+      showTab('tabCameras');
       document.getElementById('join').classList.remove('hide');
+      if (autoRoom){ waitingMode(autoRoom); scheduleRetry(); }
+      else setErr('Camera stopped. Ask the site to start it again.');
     }
   };
 }
@@ -463,6 +491,7 @@ const saved = sessionStorage.getItem('siteeye-room');
 if (fromLink.length === 4){
   document.getElementById('code').value = fromLink;
   sessionStorage.setItem('siteeye-room', fromLink);
+  waitingMode(fromLink);
   connect(fromLink);
 } else if (saved) {
   document.getElementById('code').value = saved;

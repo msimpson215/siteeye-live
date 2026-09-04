@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="robots" content="noindex,nofollow"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-title" content="A1 Dashboard"/>
+<meta name="theme-color" content="#1c1c1c"/>
+<link rel="apple-touch-icon" href="/live/icon-192.png"/>
+<title>A1 Dashboard</title>
+<style>
+:root{
+  --gold:#FFD000;
+  --bg:#1c1c1c;
+  --card:#2c2c2c;
+  --card-2:#343434;
+  --line:#454545;
+  --muted:#9a9a9a;
+  --green:#2EE56B;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:#141414;color:#fff;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,Helvetica,sans-serif;
+  -webkit-font-smoothing:antialiased
+}
+button{font-family:inherit;cursor:pointer}
+
+.app{
+  max-width:430px;margin:0 auto;min-height:100%;background:var(--bg);
+  display:flex;flex-direction:column;position:relative
+}
+
+/* ---- header ---- */
+.hd{
+  padding:calc(18px + env(safe-area-inset-top)) 20px 16px;
+  border-bottom:1px solid var(--line);background:#181818
+}
+.brand{display:flex;align-items:center;gap:12px}
+.mark{
+  width:44px;height:44px;border-radius:12px;background:var(--gold);
+  display:grid;place-items:center;flex:0 0 auto
+}
+.mark span{font-weight:900;font-size:19px;color:#141414;letter-spacing:-.02em}
+.brand h1{font-size:15px;font-weight:900;letter-spacing:.02em;line-height:1.25}
+.brand h1 em{display:block;font-style:normal;font-size:10.5px;font-weight:700;color:var(--muted);letter-spacing:.16em;margin-top:3px}
+.hello{margin-top:16px;font-size:22px;font-weight:800;letter-spacing:-.01em}
+.hello b{color:var(--gold)}
+.sub{margin-top:5px;font-size:13px;color:var(--muted)}
+
+/* ---- status strip ---- */
+.strip{
+  margin:14px 20px 0;padding:12px 14px;border-radius:12px;
+  background:var(--card);border:1px solid var(--line);
+  display:flex;align-items:center;gap:10px;font-size:12.5px
+}
+.strip u{width:8px;height:8px;border-radius:50%;background:var(--green);text-decoration:none;flex:0 0 auto}
+.strip b{color:#fff;font-weight:800}
+.strip span{color:var(--muted)}
+
+/* ---- tiles ---- */
+.lab{padding:22px 20px 12px;font-size:11px;letter-spacing:.16em;color:var(--gold);font-weight:800}
+.grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;
+  padding:0 20px calc(28px + env(safe-area-inset-bottom))
+}
+.tile{
+  background:var(--card);border:1px solid var(--line);border-radius:16px;
+  padding:18px 14px 16px;text-align:left;color:#fff;
+  display:flex;flex-direction:column;gap:10px;min-height:152px;
+  transition:transform .08s ease,border-color .15s ease
+}
+.tile:active{transform:scale(.97)}
+.tile.live{border-color:var(--gold)}
+.circle{
+  width:52px;height:52px;border-radius:50%;background:var(--card-2);
+  display:grid;place-items:center;flex:0 0 auto;border:1px solid var(--line)
+}
+.tile.live .circle{background:var(--gold);border-color:var(--gold)}
+.circle svg{width:26px;height:26px;stroke:var(--gold);fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.tile.live .circle svg{stroke:#141414}
+.tile h2{font-size:14.5px;font-weight:900;letter-spacing:.01em;margin-top:auto}
+.tile p{font-size:11.5px;line-height:1.45;color:var(--muted)}
+.pill{
+  align-self:flex-start;font-size:9.5px;font-weight:900;letter-spacing:.1em;
+  padding:3px 8px;border-radius:99px;background:#3d3d3d;color:var(--muted)
+}
+.tile.live .pill{background:var(--gold);color:#141414}
+
+.foot{
+  padding:4px 20px calc(30px + env(safe-area-inset-bottom));
+  text-align:center;font-size:10.5px;letter-spacing:.14em;color:#6a6a6a;font-weight:700
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="hd">
+    <div class="brand">
+      <div class="mark"><span>A1</span></div>
+      <h1>A1 PROFESSIONAL<br/>ASPHALT &amp; CONCRETE<em>CREW DASHBOARD</em></h1>
+    </div>
+    <div class="hello"><span id="greet">Morning</span>, <b>crew</b>.</div>
+    <div class="sub" id="today">Let's get after it.</div>
+  </header>
+
+  <div class="strip">
+    <u></u><b>1 job live</b><span>&middot; Site camera streaming</span>
+  </div>
+
+  <div class="lab">WHAT DO YOU NEED?</div>
+
+  <div class="grid">
+
+    <button class="tile live" type="button" data-go="/live/watch">
+      <div class="circle">
+        <svg viewBox="0 0 24 24"><path d="M4 12c2-4 4-6 8-6s6 2 8 6-4 6-8 6-6-2-8-6z"/><circle cx="12" cy="12" r="2.4"/></svg>
+      </div>
+      <span class="pill">LIVE</span>
+      <h2>SITE EYE</h2>
+      <p>See the job right now. Talk to the crew.</p>
+    </button>
+
+    <button class="tile" type="button" data-soon="Foreman">
+      <div class="circle">
+        <svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 4.5-3.2 7.8-8 9-4.8-1.2-8-4.5-8-9V7z"/><path d="M12 10v3"/><circle cx="12" cy="16" r=".6" fill="currentColor"/></svg>
+      </div>
+      <span class="pill">ASK</span>
+      <h2>FOREMAN</h2>
+      <p>Stuck? Ask before you call Joe.</p>
+    </button>
+
+    <button class="tile" type="button" data-soon="The Book">
+      <div class="circle">
+        <svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M8 7.5h7M8 11h7"/></svg>
+      </div>
+      <span class="pill">SOP</span>
+      <h2>THE BOOK</h2>
+      <p>How A1 does it. Step by step.</p>
+    </button>
+
+    <button class="tile" type="button" data-soon="Day One">
+      <div class="circle">
+        <svg viewBox="0 0 24 24"><path d="M3 8l9-4 9 4-9 4z"/><path d="M7 10.5V15c0 1.4 2.2 2.5 5 2.5s5-1.1 5-2.5v-4.5"/><path d="M21 8v5"/></svg>
+      </div>
+      <span class="pill">TRAIN</span>
+      <h2>DAY ONE</h2>
+      <p>New guy? Start here. Tools and sequence.</p>
+    </button>
+
+    <button class="tile" type="button" data-soon="Job Log">
+      <div class="circle">
+        <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2.5"/><path d="M8 3v3M16 3v3M8 12h8M8 16h5"/></svg>
+      </div>
+      <span class="pill">LOG</span>
+      <h2>JOB LOG</h2>
+      <p>Clock in. Photos before and after.</p>
+    </button>
+
+    <button class="tile" type="button" data-soon="Safety">
+      <div class="circle">
+        <svg viewBox="0 0 24 24"><path d="M4 15a8 8 0 0 1 16 0z"/><path d="M2.5 15h19"/><path d="M9.5 15V8.2A2.5 2.5 0 0 1 12 6"/></svg>
+      </div>
+      <span class="pill">DAILY</span>
+      <h2>SAFETY</h2>
+      <p>Toolbox talk. Sign off in 30 seconds.</p>
+    </button>
+
+  </div>
+
+  <div class="foot">POWERED BY SITE EYE 360</div>
+</div>
+
+<script>
+const now = new Date();
+document.getElementById('greet').textContent =
+  now.getHours() < 12 ? 'Morning' : now.getHours() < 17 ? 'Afternoon' : 'Evening';
+document.getElementById('today').textContent =
+  now.toLocaleDateString([], { weekday:'long', month:'long', day:'numeric' });
+
+document.querySelector('.grid').addEventListener('click', (e) => {
+  const t = e.target.closest('.tile');
+  if (!t) return;
+  if (t.dataset.go){ location.href = t.dataset.go; return; }
+  alert(t.dataset.soon + ' — this is where it opens.\n\nWe build this one next.');
+});
+</script>
+</body>
+</html>
