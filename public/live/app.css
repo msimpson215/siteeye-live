@@ -32,7 +32,7 @@ button,input{font-family:inherit}
 .hero{
   margin:8px 12px 14px;border-radius:12px;overflow:hidden;line-height:0;background:#555
 }
-.hero img{width:100%;height:auto;display:block;filter:brightness(1.1)}
+.hero img{width:100%;height:auto;display:block}
 
 .sec{padding:0 14px 10px;display:flex;align-items:center;justify-content:space-between}
 .sec h2{color:var(--gold);font-size:12px;letter-spacing:.12em}
