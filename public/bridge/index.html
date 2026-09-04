@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="robots" content="noindex,nofollow"/>
+<title>A1 Bridge</title>
+<style>
+:root{
+  --gold:#FFD000;
+  --bg:#111;
+  --panel:#1c1c1c;
+  --panel-2:#242424;
+  --line:#333;
+  --line-2:#3d3d3d;
+  --muted:#8e8e8e;
+  --dim:#6a6a6a;
+  --green:#2EE56B;
+  --red:#FF5A38;
+  --blue:#4AA8FF;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg);color:#fff;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;font-size:13px
+}
+button{font-family:inherit;cursor:pointer}
+
+/* ---------- top bar ---------- */
+.bar{
+  display:flex;align-items:center;gap:18px;padding:13px 22px;
+  background:#161616;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10
+}
+.mark{width:36px;height:36px;border-radius:9px;background:var(--gold);display:grid;place-items:center}
+.mark span{font-weight:900;font-size:16px;color:#141414}
+.bar h1{font-size:15px;font-weight:900;letter-spacing:.14em}
+.bar h1 b{color:var(--gold)}
+.bar .date{color:var(--muted);font-size:12.5px}
+.bar .spacer{margin-left:auto}
+.chip{
+  display:flex;align-items:center;gap:7px;padding:7px 12px;border-radius:99px;
+  background:var(--panel-2);border:1px solid var(--line-2);font-size:12px;font-weight:700
+}
+.chip u{width:7px;height:7px;border-radius:50%;text-decoration:none}
+.chip u.g{background:var(--green)}
+.chip u.y{background:var(--gold)}
+.chip u.r{background:var(--red)}
+.chip b{color:var(--gold)}
+.me{display:flex;align-items:center;gap:9px;font-weight:800;font-size:12.5px}
+.me i{
+  width:30px;height:30px;border-radius:50%;background:var(--gold);color:#141414;
+  display:grid;place-items:center;font-style:normal;font-weight:900;font-size:12px
+}
+
+/* ---------- layout ---------- */
+.wrap{padding:16px 22px 30px;max-width:1780px;margin:0 auto}
+.row{display:grid;gap:14px;margin-bottom:14px}
+.r1{grid-template-columns:1.45fr 1fr}
+.r2{grid-template-columns:1fr 1fr 1fr}
+.r3{grid-template-columns:1fr 1fr 1fr}
+@media (max-width:1200px){ .r1,.r2,.r3{grid-template-columns:1fr} }
+
+.panel{
+  background:var(--panel);border:1px solid var(--line);border-radius:12px;
+  display:flex;flex-direction:column;overflow:hidden
+}
+.ph{
+  display:flex;align-items:center;gap:10px;padding:12px 15px;
+  border-bottom:1px solid var(--line);background:#1a1a1a
+}
+.ph h2{font-size:11px;letter-spacing:.15em;color:var(--gold);font-weight:900}
+.ph .ct{
+  margin-left:auto;font-size:10.5px;font-weight:900;letter-spacing:.06em;
+  padding:3px 8px;border-radius:99px;background:var(--panel-2);color:var(--muted)
+}
+.ph .ct.hot{background:var(--red);color:#fff}
+.pb{padding:14px 15px;flex:1}
+.pb.tight{padding:0}
+
+/* ---------- camera wall ---------- */
+.cams{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:13px}
+.cam{
+  position:relative;aspect-ratio:16/10;border-radius:9px;overflow:hidden;
+  background:#0a0a0a;border:1px solid var(--line-2)
+}
+.cam img{width:100%;height:100%;object-fit:cover;display:block}
+.cam.off{display:grid;place-items:center;color:#3f3f3f;font-size:11px;
+  font-weight:800;letter-spacing:.1em}
+.cam .tagline{
+  position:absolute;left:0;right:0;bottom:0;padding:8px 10px;
+  background:linear-gradient(transparent,rgba(0,0,0,.88));
+  display:flex;align-items:flex-end;justify-content:space-between;gap:8px
+}
+.cam .tagline b{font-size:12px;font-weight:800}
+.cam .tagline em{display:block;font-style:normal;font-size:10.5px;color:#bdbdbd;margin-top:2px}
+.cam .lv{
+  position:absolute;top:8px;left:8px;font-size:9.5px;font-weight:900;letter-spacing:.09em;
+  padding:3px 7px;border-radius:4px;background:var(--red);color:#fff
+}
+.cam .cid{
+  position:absolute;top:8px;right:8px;font-size:9.5px;font-weight:900;
+  padding:3px 7px;border-radius:4px;background:rgba(0,0,0,.7);color:var(--gold)
+}
+
+/* ---------- queue ---------- */
+.q{border-bottom:1px solid var(--line);padding:13px 15px;cursor:pointer}
+.q:last-child{border-bottom:0}
+.q:hover{background:#202020}
+.qt{display:flex;align-items:center;gap:9px}
+.who{
+  font-size:10px;font-weight:900;letter-spacing:.05em;padding:3px 7px;border-radius:5px;
+  background:var(--panel-2);border:1px solid var(--line-2);color:var(--gold);flex:0 0 auto
+}
+.qt .job{font-size:11px;color:var(--dim)}
+.qt .ago{margin-left:auto;font-size:11px;color:var(--dim)}
+.qq{margin-top:8px;font-size:13.5px;font-weight:700;line-height:1.4}
+.qa{
+  margin-top:9px;padding:11px 12px;border-radius:8px;background:#191919;
+  border-left:3px solid var(--blue);font-size:12.5px;color:#c9c9c9;line-height:1.55
+}
+.qa b{color:var(--blue);display:block;font-size:10px;letter-spacing:.12em;margin-bottom:5px}
+.qacts{margin-top:10px;display:flex;gap:8px}
+.qacts button{
+  padding:8px 14px;border-radius:7px;font-size:11.5px;font-weight:800;
+  border:1px solid var(--line-2);background:var(--panel-2);color:#ddd;letter-spacing:.03em
+}
+.qacts .ok{background:var(--green);border-color:var(--green);color:#0d2c17}
+.qacts .fix{background:var(--gold);border-color:var(--gold);color:#141414}
+.done{padding:13px 15px;font-size:12.5px;color:var(--green);font-weight:700;
+  border-bottom:1px solid var(--line)}
+
+/* ---------- lists ---------- */
+.lst{display:flex;flex-direction:column}
+.li{
+  display:flex;align-items:center;gap:11px;padding:11px 15px;
+  border-bottom:1px solid #262626;font-size:12.5px
+}
+.li:last-child{border-bottom:0}
+.li .nm{font-weight:800}
+.li .sub{color:var(--dim);font-size:11.5px}
+.li .rt{margin-left:auto;text-align:right}
+.li .rt b{display:block;font-weight:800;font-size:12px}
+.li .rt em{font-style:normal;font-size:10.5px;color:var(--dim)}
+.dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto}
+.dot.g{background:var(--green)}
+.dot.y{background:var(--gold)}
+.dot.r{background:var(--red)}
+.dot.o{background:#3f3f3f}
+
+/* ---------- bars ---------- */
+.mrow{padding:12px 15px;border-bottom:1px solid #262626}
+.mrow:last-child{border-bottom:0}
+.mtop{display:flex;align-items:baseline;gap:8px;font-size:12.5px}
+.mtop b{font-weight:800}
+.mtop span{margin-left:auto;color:var(--muted);font-size:11.5px}
+.track{margin-top:7px;height:6px;border-radius:99px;background:#2c2c2c;overflow:hidden}
+.fill{height:100%;border-radius:99px;background:var(--gold)}
+.fill.g{background:var(--green)}
+.fill.r{background:var(--red)}
+
+/* ---------- weather ---------- */
+.wx{display:flex;flex-direction:column}
+.wxr{display:flex;align-items:center;gap:12px;padding:12px 15px;border-bottom:1px solid #262626}
+.wxr:last-child{border-bottom:0}
+.wxd{font-size:11px;font-weight:900;letter-spacing:.08em;color:var(--muted);width:38px}
+.wxt{font-size:16px;font-weight:900;width:52px}
+.wxs{font-size:11.5px;color:var(--dim);flex:1}
+.verdict{font-size:10px;font-weight:900;letter-spacing:.08em;padding:4px 9px;border-radius:5px}
+.verdict.go{background:rgba(46,229,107,.15);color:var(--green)}
+.verdict.no{background:rgba(255,90,56,.15);color:var(--red)}
+
+.big{padding:16px 15px;display:flex;gap:22px;flex-wrap:wrap}
+.big div b{display:block;font-size:26px;font-weight:900;letter-spacing:-.02em}
+.big div em{font-style:normal;font-size:10.5px;letter-spacing:.1em;color:var(--dim);font-weight:800}
+.big div b.g{color:var(--green)}
+.big div b.y{color:var(--gold)}
+.big div b.r{color:var(--red)}
+.note{padding:0 15px 15px;font-size:11.5px;color:var(--dim);line-height:1.6}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="mark"><span>A1</span></div>
+  <h1>A1 <b>BRIDGE</b></h1>
+  <div class="date" id="date"></div>
+  <div class="spacer"></div>
+  <div class="chip"><u class="g"></u>3 jobs running</div>
+  <div class="chip"><u class="y"></u><b>4</b>&nbsp;need you</div>
+  <div class="chip"><u class="r"></u>3 missed safety</div>
+  <div class="me"><i>J</i>Joe &middot; Owner</div>
+</div>
+
+<div class="wrap">
+
+  <!-- ============ ROW 1 ============ -->
+  <div class="row r1">
+
+    <div class="panel">
+      <div class="ph"><h2>THE YARD &amp; THE JOBS</h2><span class="ct">3 LIVE / 4</span></div>
+      <div class="cams">
+        <div class="cam">
+          <img src="/images/ind-asphalt.jpg" alt=""/>
+          <span class="lv">LIVE</span><span class="cid">CAM 1</span>
+          <div class="tagline"><div><b>Amazon lot</b><em>Crew 2 &middot; seal + stripe</em></div></div>
+        </div>
+        <div class="cam">
+          <img src="/images/ind-concrete.jpg" alt=""/>
+          <span class="lv">LIVE</span><span class="cid">CAM 2</span>
+          <div class="tagline"><div><b>Kirkwood Plaza</b><em>Crew 1 &middot; curb pour</em></div></div>
+        </div>
+        <div class="cam">
+          <img src="/images/ind-pressure-washing.jpg" alt=""/>
+          <span class="lv">LIVE</span><span class="cid">CAM 3</span>
+          <div class="tagline"><div><b>Yard</b><em>Loading out</em></div></div>
+        </div>
+        <div class="cam off">CAM 4 &mdash; OFFLINE</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="ph"><h2>NEEDS YOU</h2><span class="ct hot" id="qct">4 WAITING</span></div>
+      <div class="pb tight" id="queue"></div>
+    </div>
+
+  </div>
+
+  <!-- ============ ROW 2 ============ -->
+  <div class="row r2">
+
+    <div class="panel">
+      <div class="ph"><h2>ON THE CLOCK</h2><span class="ct">9 IN</span></div>
+      <div class="lst">
+        <div class="li"><span class="dot g"></span><div><div class="nm">Omar R. <span class="who">A1-07</span></div><div class="sub">Amazon lot &middot; Crew 2</div></div><div class="rt"><b>6:42a</b><em>5h 51m</em></div></div>
+        <div class="li"><span class="dot g"></span><div><div class="nm">Luis M. <span class="who">A1-03</span></div><div class="sub">Amazon lot &middot; Crew 2</div></div><div class="rt"><b>6:40a</b><em>5h 53m</em></div></div>
+        <div class="li"><span class="dot g"></span><div><div class="nm">Tyler K. <span class="who">A1-11</span></div><div class="sub">Kirkwood &middot; Crew 1</div></div><div class="rt"><b>6:58a</b><em>5h 35m</em></div></div>
+        <div class="li"><span class="dot y"></span><div><div class="nm">Marcus D. <span class="who">A1-05</span></div><div class="sub">Kirkwood &middot; Crew 1</div></div><div class="rt"><b>7:35a</b><em>late 35m</em></div></div>
+        <div class="li"><span class="dot o"></span><div><div class="nm">Ray S. <span class="who">A1-09</span></div><div class="sub">Not clocked in</div></div><div class="rt"><b>&mdash;</b><em>off today</em></div></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="ph"><h2>TODAY&rsquo;S JOBS</h2><span class="ct">3 ACTIVE</span></div>
+      <div class="lst">
+        <div class="mrow">
+          <div class="mtop"><b>Amazon lot</b> <span>18 of 24 hrs &middot; 14 photos</span></div>
+          <div class="track"><div class="fill" style="width:75%"></div></div>
+        </div>
+        <div class="mrow">
+          <div class="mtop"><b>Kirkwood Plaza</b> <span>9 of 16 hrs &middot; 6 photos</span></div>
+          <div class="track"><div class="fill" style="width:56%"></div></div>
+        </div>
+        <div class="mrow">
+          <div class="mtop"><b>Riverbend HOA</b> <span>crack fill &middot; 2 photos</span></div>
+          <div class="track"><div class="fill g" style="width:96%"></div></div>
+        </div>
+        <div class="mrow">
+          <div class="mtop"><b>Mercy lot &mdash; callback</b> <span>needs scheduling</span></div>
+          <div class="track"><div class="fill r" style="width:12%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="ph"><h2>WEATHER GATE</h2><span class="ct">SEAL WINDOW</span></div>
+      <div class="wx">
+        <div class="wxr"><span class="wxd">FRI</span><span class="wxt">78&deg;</span><span class="wxs">Clear, dry &middot; low 61&deg;</span><span class="verdict go">SEAL</span></div>
+        <div class="wxr"><span class="wxd">SAT</span><span class="wxt">81&deg;</span><span class="wxs">Clear &middot; low 64&deg;</span><span class="verdict go">SEAL</span></div>
+        <div class="wxr"><span class="wxd">SUN</span><span class="wxt">69&deg;</span><span class="wxs">Rain 80% after 2p</span><span class="verdict no">NO SEAL</span></div>
+        <div class="wxr"><span class="wxd">MON</span><span class="wxt">58&deg;</span><span class="wxs">Overnight low 46&deg;</span><span class="verdict no">TOO COLD</span></div>
+      </div>
+      <div class="note">Cuts off below 50&deg; overnight or rain inside 24 hours. Change the rule in The Book.</div>
+    </div>
+
+  </div>
+
+  <!-- ============ ROW 3 ============ -->
+  <div class="row r3">
+
+    <div class="panel">
+      <div class="ph"><h2>SAFETY TODAY</h2><span class="ct hot">3 MISSING</span></div>
+      <div class="lst">
+        <div class="li"><span class="dot g"></span><div><div class="nm">Crew 1 &mdash; Kirkwood</div><div class="sub">Signed 6:59a &middot; 5 of 5</div></div></div>
+        <div class="li"><span class="dot g"></span><div><div class="nm">Crew 2 &mdash; Amazon</div><div class="sub">Signed 6:45a &middot; 6 of 6</div></div></div>
+        <div class="li"><span class="dot r"></span><div><div class="nm">Crew 3 &mdash; Riverbend</div><div class="sub">Not signed &middot; 3 men on site</div></div></div>
+      </div>
+      <div class="note">Trench and traffic talk. Signed records keep the OSHA file clean.</div>
+    </div>
+
+    <div class="panel">
+      <div class="ph"><h2>NEW HIRES</h2><span class="ct">2 IN TRAINING</span></div>
+      <div class="lst">
+        <div class="mrow">
+          <div class="mtop"><b>Dave P.</b> <span class="who">A1-14</span> <span>day 3 &middot; 6 of 8</span></div>
+          <div class="track"><div class="fill g" style="width:75%"></div></div>
+        </div>
+        <div class="mrow">
+          <div class="mtop"><b>Ray S.</b> <span class="who">A1-09</span> <span>day 1 &middot; 2 of 8</span></div>
+          <div class="track"><div class="fill" style="width:25%"></div></div>
+        </div>
+      </div>
+      <div class="note">Cleared for: blowing, edging. Not cleared: wand, kettle.</div>
+    </div>
+
+    <div class="panel">
+      <div class="ph"><h2>THE BRAIN</h2><span class="ct">THIS WEEK</span></div>
+      <div class="big">
+        <div><b class="g">31</b><em>ANSWERED</em></div>
+        <div><b class="y">4</b><em>SENT TO YOU</em></div>
+        <div><b>7</b><em>NEW SOPs</em></div>
+        <div><b class="g">87%</b><em>HANDLED</em></div>
+      </div>
+      <div class="note">
+        <b style="color:#bbb">Asked most this month</b><br/>
+        1. How thick on the second coat? &mdash; 6&times;<br/>
+        2. How long before they can drive on it? &mdash; 5&times;<br/>
+        3. Which primer for oil spots? &mdash; 4&times;
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+document.getElementById('date').textContent =
+  new Date().toLocaleDateString([], { weekday:'long', month:'long', day:'numeric' });
+
+/* Every question carries the crew ID it came from, so Joe always knows the source. */
+const QUEUE = [
+  {
+    id:'A1-07', who:'Omar R.', job:'Amazon lot', ago:'8 min ago',
+    q:'Second coat is beading up on the north end. Do we keep going or stop?',
+    a:'Beading usually means the surface is still damp or the first coat has not cured. Stop, check for moisture, and wait for the surface to dry before continuing.',
+    why:'Money call over $500 \u2014 sent to you'
+  },
+  {
+    id:'A1-11', who:'Tyler K.', job:'Kirkwood Plaza', ago:'23 min ago',
+    q:'Customer wants us to add 40 feet of curb that is not on the ticket. OK to do it?',
+    a:'I cannot approve added scope. This needs Joe.',
+    why:'Change order \u2014 always yours'
+  },
+  {
+    id:'A1-03', who:'Luis M.', job:'Amazon lot', ago:'41 min ago',
+    q:'How long before the store can park on the section we finished at 9?',
+    a:'Rule in The Book is 24 hours in full sun, longer if it is shaded or cool. Barricade until tomorrow 9am.',
+    why:'Answered \u2014 confirm the rule is still right'
+  },
+  {
+    id:'A1-05', who:'Marcus D.', job:'Kirkwood Plaza', ago:'1 hr ago',
+    q:'Kettle is reading 410. Is that too hot?',
+    a:'That is above the range in The Book. Shut the burner down and let it come back to 380 before you pull material.',
+    why:'Safety \u2014 confirm and log'
+  }
+];
+
+let open = null;
+
+function draw(){
+  const box = document.getElementById('queue');
+  box.innerHTML = QUEUE.map((r, i) => {
+    if (r.settled){
+      return `<div class="done">&#10003; ${r.who} &mdash; ${r.settled}</div>`;
+    }
+    const body = open === i ? `
+      <div class="qa"><b>AI FOREMAN SAID</b>${r.a}</div>
+      <div class="qacts">
+        <button class="ok"  data-ok="${i}">THAT&rsquo;S RIGHT</button>
+        <button class="fix" data-fix="${i}">FIX THE ANSWER</button>
+        <button data-call="${i}">CALL HIM</button>
+      </div>` : '';
+    return `
+      <div class="q" data-open="${i}">
+        <div class="qt">
+          <span class="who">${r.id}</span>
+          <span class="job">${r.who} &middot; ${r.job}</span>
+          <span class="ago">${r.ago}</span>
+        </div>
+        <div class="qq">${r.q}</div>
+        <div class="qa" style="border-left-color:#FFD000;background:#221e12;color:#d8c99a">${r.why}</div>
+        ${body}
+      </div>`;
+  }).join('');
+
+  const left = QUEUE.filter(r => !r.settled).length;
+  const ct = document.getElementById('qct');
+  ct.textContent = left ? left + ' WAITING' : 'ALL CLEAR';
+  ct.className = 'ct' + (left ? ' hot' : '');
+}
+
+document.getElementById('queue').addEventListener('click', (e) => {
+  const ok = e.target.closest('[data-ok]');
+  const fix = e.target.closest('[data-fix]');
+  const call = e.target.closest('[data-call]');
+
+  if (ok){
+    QUEUE[ok.dataset.ok].settled = 'approved \u2014 answer locked into The Book';
+    open = null; draw(); return;
+  }
+  if (fix){
+    const r = QUEUE[fix.dataset.fix];
+    const better = prompt('What should it have told him?\n\nYour answer replaces it and goes into The Book.', r.a);
+    if (better && better.trim()){
+      r.settled = 'you corrected it \u2014 The Book updated';
+      open = null; draw();
+    }
+    return;
+  }
+  if (call){
+    QUEUE[call.dataset.call].settled = 'you called him';
+    open = null; draw(); return;
+  }
+
+  const row = e.target.closest('[data-open]');
+  if (row){
+    const i = Number(row.dataset.open);
+    open = open === i ? null : i;
+    draw();
+  }
+});
+
+draw();
+</script>
+</body>
+</html>
